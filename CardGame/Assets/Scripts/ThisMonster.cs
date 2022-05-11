@@ -57,17 +57,23 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     void Update()
     {
         damage = monsterCard.GetComponent<ThisMonsterCard>().card.damage;
-        if (health <= 0)
-        {
-            BattleField.Instance.MonsterDead(this.gameObject,monsterCard);
-            monsterCard.GetComponent<ThisMonsterCard>().card.summonTimes--;
-            Destroy(gameObject);
-        }
+        
     }
 
     public void HealthDecrease(int damage)
     {
         health -= damage;
         slider.value = (float)health / maxHealth;
+        if (health <= 0)
+        {
+            monsterCard.GetComponent<ThisMonsterCard>().card.summonTimes--;
+            int n= monsterCard.GetComponent<ThisMonsterCard>().card.summonTimes;
+            if (n == 0)
+            {
+                Destroy(monsterCard);
+            }
+            BattleField.Instance.MonsterDead(this.gameObject, monsterCard);
+        }
+
     }
 }

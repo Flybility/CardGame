@@ -13,7 +13,7 @@ public class Blocks : MonoBehaviour, IPointerClickHandler
         highLightImage = transform.GetChild(0).gameObject;
         highLightImage.SetActive(false);
         BattleField.Instance.highlightClear.AddListener(HighlightClear);
-        BattleField.Instance.BattleEnd.AddListener(ClearMonster);
+        //BattleField.Instance.BattleEnd.AddListener(ClearMonster);
     }
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -29,16 +29,16 @@ public class Blocks : MonoBehaviour, IPointerClickHandler
     {
         highLightImage.SetActive(false);
     }
-    public void ClearMonster()
-    {
-        if (transform.childCount>1)
-        {
-            card = null;
-            Destroy(transform.GetChild(1));
-            Destroy(transform.GetChild(2));
-        }
-        else return;
-    }
+   //public void ClearMonster()
+   //{
+   //    if (transform.childCount>1)
+   //    {
+   //        card = null;
+   //        Destroy(transform.GetChild(1));
+   //        Destroy(transform.GetChild(2));
+   //    }
+   //    else return;
+   //}
 
     // Update is called once per frame
     void Update()

@@ -95,7 +95,11 @@ public class BattleField : MonoSingleton<BattleField>
     //战斗结束时调用，目前由面板上战斗结束按钮调用
     public void OnBattleEnd()
     {
-        BattleEnd.Invoke();
+        //BattleEnd.Invoke();
+        for(int i = 0; i < monsterInBattle.Count; i++)
+        {
+            Destroy(monsterInBattle[i]);
+        }
         //清空场上所有牌堆
        for(int i = 0; i < monsterArea.childCount; i++)
         {
@@ -521,7 +525,15 @@ public class BattleField : MonoSingleton<BattleField>
     public void MonsterDead(GameObject monster,GameObject monsterCard)
     {
         monsterInBattle.Remove(monster);
-        monsterCard.transform.SetParent(discardArea);
+        if (monsterCard.GetComponent<ThisMonsterCard>().summonTimes <= 0)
+        {
+            Destroy(monsterCard);
+        }
+         if(monsterCard.GetComponent<ThisMonsterCard>().summonTimes > 0)
+        {
+            monsterCard.transform.SetParent(discardArea);
+        }
+        Destroy(monster);
         summonCounter++;
     }
 

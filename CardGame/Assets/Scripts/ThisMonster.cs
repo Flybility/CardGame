@@ -18,7 +18,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left && BattleField.Instance.SelectingMonster==1&& BattleField.Instance.usingEquipment==null)
+        if (eventData.button == PointerEventData.InputButton.Left && BattleField.Instance.SelectingMonster!=1&& BattleField.Instance.usingEquipment==null&&BattleField.Instance.AttackSelecting)
         {
             BattleField.Instance.StartPlayerAttack(this.gameObject);
             //BattleField.Instance.CloseHighlightWithinMonster();

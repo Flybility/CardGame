@@ -29,6 +29,7 @@ public class BattleField : MonoSingleton<BattleField>
     public GameObject ArrowPrefab;    //箭头预制体
     public int SelectingMonster;      //是否在玩家回合选择召唤怪物卡牌的伪bool类型，由于使用bool出了bug，改为了int，0代表false，1代表true
     public GameObject usingEquipment; //是否在玩家回合选择装备卡牌的bool类型
+    public bool AttackSelecting;      //是否玩家选择怪物攻击
 
     public GameState gameState;       //战斗回合状态  
 
@@ -130,7 +131,7 @@ public class BattleField : MonoSingleton<BattleField>
         if (SelectingMonster == 1 && Input.GetMouseButtonUp(1))
         {
             DestroyArrow();
-            CloseHighlightWithinMonster();
+            highlightClear.Invoke();
             SelectingMonster = 0;
         }
         if(usingEquipment!=null&& Input.GetMouseButtonUp(1))
@@ -138,6 +139,12 @@ public class BattleField : MonoSingleton<BattleField>
             DestroyArrow();
             CloseHighlightWithinMonster();
             usingEquipment = null;
+        }
+        if(AttackSelecting&& Input.GetMouseButtonUp(1))
+        {
+            DestroyArrow();
+            CloseHighlightWithinMonster();
+            AttackSelecting = false;
         }
     }
     //游戏开始
@@ -149,6 +156,7 @@ public class BattleField : MonoSingleton<BattleField>
         {
             CreateArrow(player.transform, ArrowPrefab);
             OpenHighlightWithinMonster();
+            AttackSelecting = true;
         }
     }
     //玩家抽牌
@@ -205,7 +213,7 @@ public class BattleField : MonoSingleton<BattleField>
         DestroyArrow();
         CloseHighlightWithinMonster();
         StartCoroutine(PlayerAttack(monster));
-        SelectingMonster = 0;
+        AttackSelecting = false;
     }
     //抽牌堆牌进入手牌协程（包含动效）
     IEnumerator FlyToHand(int count)
@@ -372,9 +380,13 @@ public class BattleField : MonoSingleton<BattleField>
     {
         monsterDeck.Clear();
         //将读取的每一关的卡组给到当前战场上的抽牌堆monsterdeck
-        for(int i = 0; i < ReadEachLevelMonsters.Instance.monsterCardList.Count; i++)
+        //for(int i = 0; i < ReadEachLevelMonsters.Instance.monsterCardList.Count; i++)
+        //{
+        //    monsterDeck.Add(ReadEachLevelMonsters.Instance.monsterCardList[i]);
+        //}
+        for (int i = 0; i < PlayerData.Instance.playerMonsterCards.Count; i++)
         {
-            monsterDeck.Add(ReadEachLevelMonsters.Instance.monsterCardList[i]);
+            monsterDeck.Add(PlayerData.Instance.playerMonsterCards[i]);
         }
 
     }
@@ -418,6 +430,7 @@ public class BattleField : MonoSingleton<BattleField>
             waitingMonster = _monsterCard;
         }
         CreateArrow(_monsterCard.transform, ArrowPrefab);
+        SelectingMonster = 1;
     }
     //召唤请求确认
     public void SummonConfirm(Transform _block)
@@ -435,12 +448,14 @@ public class BattleField : MonoSingleton<BattleField>
         highlightClear.Invoke();
         waitingMonster = null;
         DestroyArrow();
+        SelectingMonster = 0;
         PanelMask.SetActive(false);
     }
     //召唤开始
     public void Summon(GameObject _monster,Transform _block)
     {  
         DestroyArrow();
+        SelectingMonster = 0;
         int monsterId = _monster.GetComponent<ThisMonsterCard>().id;
         int monsterCost = _monster.GetComponent<ThisMonsterCard>().cost;
 
@@ -511,7 +526,6 @@ public class BattleField : MonoSingleton<BattleField>
     public void CreateArrow(Transform startPoint,GameObject prefab)
     {
         DestroyArrow();
-        SelectingMonster = 1;
         arrow = Instantiate(prefab, startPoint.position,Quaternion.identity,this.transform.parent);
         arrow.GetComponent<BezierArrow>().SetStartPoint(new Vector2(startPoint.position.x, startPoint.position.y));
     }
@@ -519,7 +533,6 @@ public class BattleField : MonoSingleton<BattleField>
     public void DestroyArrow()
     {
         Destroy(arrow);
-        SelectingMonster = 0;
     }
     //怪物死亡
     public void MonsterDead(GameObject monster,GameObject monsterCard)

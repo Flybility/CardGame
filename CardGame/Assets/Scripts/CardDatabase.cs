@@ -13,10 +13,10 @@ public class CardDatabase : MonoSingleton<CardDatabase>
         equipmentCardList.Add(new EquipmentCard(2, "装备名称3", 2, 10, 3, "装备描述3", Resources.Load<Sprite>("CardImages/2"), Resources.Load<Sprite>("CardBackgrounds/2")));
         equipmentCardList.Add(new EquipmentCard(3, "装备名称4", 2, 10, 4,"装备描述4", Resources.Load<Sprite>("CardImages/2"), Resources.Load<Sprite>("CardBackgrounds/1")));
 
-        monsterCardList.Add(new MonsterCard(0, "怪物名称1", 1, 10, 1, "怪物描述1", Resources.Load<Sprite>("CardImages/1"), Resources.Load<Sprite>("CardBackgrounds/1"),20));
-        monsterCardList.Add(new MonsterCard(1, "怪物名称2", 1, 10, 1, "怪物描述2", Resources.Load<Sprite>("CardImages/1"), Resources.Load<Sprite>("CardBackgrounds/2"),20));
-        monsterCardList.Add(new MonsterCard(2, "怪物名称3", 1, 10, 1, "怪物描述3", Resources.Load<Sprite>("CardImages/2"), Resources.Load<Sprite>("CardBackgrounds/1"), 20));
-        monsterCardList.Add(new MonsterCard(3, "怪物名称4", 1, 10, 1, "怪物描述4", Resources.Load<Sprite>("CardImages/2"), Resources.Load<Sprite>("CardBackgrounds/2"), 20));
+        monsterCardList.Add(new MonsterCard(0, "怪物名称1", 1, 10, 3, "怪物描述1", Resources.Load<Sprite>("CardImages/1"), Resources.Load<Sprite>("CardBackgrounds/1"),20));
+        monsterCardList.Add(new MonsterCard(1, "怪物名称2", 1, 10, 3, "怪物描述2", Resources.Load<Sprite>("CardImages/1"), Resources.Load<Sprite>("CardBackgrounds/2"),20));
+        monsterCardList.Add(new MonsterCard(2, "怪物名称3", 1, 10, 3, "怪物描述3", Resources.Load<Sprite>("CardImages/2"), Resources.Load<Sprite>("CardBackgrounds/1"), 20));
+        monsterCardList.Add(new MonsterCard(3, "怪物名称4", 1, 10, 3, "怪物描述4", Resources.Load<Sprite>("CardImages/2"), Resources.Load<Sprite>("CardBackgrounds/2"), 20));
     }
     public EquipmentCard RandomEquipmentCard()
     {

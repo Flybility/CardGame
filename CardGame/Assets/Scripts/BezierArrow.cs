@@ -55,7 +55,7 @@ public class BezierArrow : MonoBehaviour
         Vector2 ctrlAPos = new Vector2();
         Vector2 ctrlBPos = new Vector2();
         //这里原文作者对参数做了微调，更加符合杀戮尖塔的效果，我照搬了过来
-        ctrlAPos.x = startPos.x + (startPos.x - endPos.x) * 0.15f;
+        ctrlAPos.x = startPos.x + (startPos.x - endPos.x) * 0.1f;
         ctrlAPos.y = endPos.y - (endPos.y - startPos.y) * 0.2f;
         ctrlBPos.y = endPos.y + (endPos.y - startPos.y) * 0.3f;
         ctrlBPos.x = startPos.x - (startPos.x - endPos.x) * 0.3f;

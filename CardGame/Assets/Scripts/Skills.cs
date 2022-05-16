@@ -9,8 +9,9 @@ public class Skills : MonoSingleton<Skills>
     {
         PlayerData.Instance.HealthDecrease(damage);
     }
-    public void AttackMonster(int damage, ThisMonster target)
+    public void AttackMonster(int damage, GameObject target)
     {
-        target.HealthDecrease(damage);
+        target.GetComponent<ThisMonster>().HealthDecrease(damage);
     }
+    
 }

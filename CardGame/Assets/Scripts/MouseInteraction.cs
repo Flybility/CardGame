@@ -103,7 +103,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     public void OnPointerUp(PointerEventData eventData)
     {
         //当在战场手牌里和怪物当前可召唤数量大于0和是否已经点击召唤为false和点击鼠标左键和战斗状态为玩家回合时才可召唤
-        if (isInBattle && BattleField.Instance.summonCounter > 0&&clicked==false&& eventData.button == PointerEventData.InputButton.Left&&BattleField.Instance.gameState==GameState.玩家回合)
+        if (isInBattle && BattleField.Instance.monstersCounter < 6 &&clicked==false&& eventData.button == PointerEventData.InputButton.Left&&BattleField.Instance.gameState==GameState.玩家回合)
         {
             transform.DOScale(1.1f, 0.1f);
             clicked = true;

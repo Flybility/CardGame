@@ -11,7 +11,6 @@ public class ThisMonsterCard : MonoBehaviour
 
     public int id;
     public string cardName;
-    public int cost;
     public int damage;
     public int summonTimes;
     public int health;
@@ -26,7 +25,6 @@ public class ThisMonsterCard : MonoBehaviour
     public MonsterCard card;
 
     public TextMeshProUGUI summonTimesText;
-    public TextMeshProUGUI costText;
     public TextMeshProUGUI healthText; 
     public TextMeshProUGUI cardNameText;
     public TextMeshProUGUI damageText;
@@ -49,14 +47,12 @@ public class ThisMonsterCard : MonoBehaviour
         var monster = card as MonsterCard;
         id = monster.id;
         cardName = monster.cardName;
-        cost = monster.cost;
         description = monster.description;
         thisSprite = monster.thisImage;
         thisBackground = monster.thisBackground;
 
 
-        cardNameText.text = "" + cardName;
-        costText.text = "" + cost;        
+        cardNameText.text = "" + cardName;    
         descriptionText.text = "" + description;
 
         thatImage.sprite = thisSprite;

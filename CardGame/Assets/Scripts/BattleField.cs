@@ -21,7 +21,7 @@ public class BattleField : MonoSingleton<BattleField>
     public Transform monsterArea;     //怪物手牌堆父物体
     public float interval;            //抽取单张手牌动画时间间隔
     public int summonMax;             //最大召唤怪物数量（默认为6），可删除
-    public int summonCounter;         //当前空余召唤位数
+    public int monstersCounter;
     public int chosenCardNumber;      //选取的怪物牌在手牌父物体中的子物体序号
     public int currentRound;          //当前回合数
     public GameObject _block;         //所有场上位格父物体
@@ -49,7 +49,11 @@ public class BattleField : MonoSingleton<BattleField>
     public UnityEvent stateChangeEvent = new UnityEvent();    //战斗状态切换事件，用于屏幕中央战斗状态文字的切换
     public UnityEvent highlightClear = new UnityEvent();      //战场位格高亮清除事件，用于解除战场上所有位格的高亮状态
     public UnityEvent summonEvent = new UnityEvent();         //召唤完成事件，用于解除场上每个怪物卡牌禁止召唤状态
+    public UnityEvent monsterChange = new UnityEvent();
     public UnityEvent BattleEnd = new UnityEvent();           //战斗结束事件，用于Blocks脚本清除怪兽子物体
+    public UnityEvent PlayerRoundEnd = new UnityEvent();      //玩家回合结束事件(结算buff)
+    public UnityEvent MonsterRoundEnd = new UnityEvent();     //怪物回合结束事件(结算buff)
+    public UnityEvent MonsterDeadEvent = new UnityEvent();
     public UnityEvent ChangeParent = new UnityEvent();        //卡牌父物体改变事件，用于检测卡牌父物体是哪个牌堆
     // Start is called before the first frame update
 
@@ -72,7 +76,6 @@ public class BattleField : MonoSingleton<BattleField>
         stateChangeEvent.Invoke();
         currentRound = 1;
         PanelMask.SetActive(false);
-        summonCounter = summonMax;
         //读取玩家卡组
         ReadDeck();
         //洗牌打乱顺序
@@ -88,9 +91,10 @@ public class BattleField : MonoSingleton<BattleField>
         gameState = GameState.玩家回合;
         stateChangeEvent.Invoke();
         //剩余格子数量等于最大格子数量
-        summonCounter = summonMax;
+        monstersCounter = 0;
         //玩家数据脚本每回合恢复变量
-        PlayerData.Instance.PerBattleRecover();
+
+        
 
     }
     //战斗结束时调用，目前由面板上战斗结束按钮调用
@@ -123,7 +127,7 @@ public class BattleField : MonoSingleton<BattleField>
         waitingMonster = null;
         usingEquipment = null;
         SelectingMonster=0;
-        summonCounter = summonMax;
+        monstersCounter = 0;
         PanelMask.SetActive(false);
     }
     private void Update()
@@ -169,6 +173,7 @@ public class BattleField : MonoSingleton<BattleField>
             FlyToDiscardArea();
 
             DrawHandMonster();
+            PlayerData.Instance.PerRoundChange();
         }
 
     }
@@ -317,18 +322,27 @@ public class BattleField : MonoSingleton<BattleField>
     //怪物攻击协程（包含动效）
     IEnumerator MonsterAttack(GameObject target)
     {
-        foreach(var monster in monsterInBattle)
+        if (monsterInBattle != null)
         {
-            Vector3 targetPos = target.transform.localPosition;
-            Vector3 monsterPos = monster.transform.parent.localPosition;
-            monster.transform.DOPunchPosition(targetPos - monsterPos, 0.4f,1);
-            yield return new WaitForSeconds(0.2f);
-            PlayerData.Instance.HealthDecrease(monster.GetComponent<ThisMonster>().damage);
-            //Skills.Instance.Attack(monster.GetComponent<ThisMonster>().damage, player);
-            yield return new WaitForSeconds(0.2f);
+            Debug.Log("敌人回合");
+            gameState = GameState.敌方回合;
+            stateChangeEvent.Invoke();
+            foreach (var monster in monsterInBattle)
+            {
+                Vector3 targetPos = target.transform.localPosition;
+                Vector3 monsterPos = monster.transform.parent.localPosition;
+                monster.transform.DOPunchPosition(targetPos - monsterPos, 0.4f, 1);
+                yield return new WaitForSeconds(0.2f);
+                PlayerData.Instance.HealthDecrease(monster.GetComponent<ThisMonster>().damage);
+                //Skills.Instance.Attack(monster.GetComponent<ThisMonster>().damage, player);
+                yield return new WaitForSeconds(0.2f);
+            }
         }
+        
         gameState = GameState.玩家抽牌;
         stateChangeEvent.Invoke();
+
+        MonsterRoundEnd.Invoke();//怪物回合结束事件（结算buff）
         yield return new WaitForSeconds(0.5f);
         PlayerExtractCard();
         currentRound++;
@@ -339,14 +353,16 @@ public class BattleField : MonoSingleton<BattleField>
     {
         Vector3 monsterPos = monster.transform.parent.localPosition;
         Vector3 playerPos = player.transform.localPosition;
-        player.transform.DOPunchPosition(monsterPos- playerPos, 0.6f, 1);
-        yield return new WaitForSeconds(0.3f);
+        player.transform.DOPunchPosition(monsterPos- playerPos, 0.4f, 1);
+        yield return new WaitForSeconds(0.2f);
         monster.GetComponent<ThisMonster>().HealthDecrease(PlayerData.Instance.attacks);
+        monsterChange.Invoke();
         yield return new WaitForSeconds(0.5f);
-        Debug.Log("敌人回合");
-        gameState = GameState.敌方回合;
-        stateChangeEvent.Invoke();
+                PlayerRoundEnd.Invoke();//玩家回合结束事件(结算buff)
+
         StartCoroutine(MonsterAttack(player));
+
+        
     }
     //将装备牌显示到装备牌堆（包含动效）
     IEnumerator DrawEquipmentDeck()
@@ -408,7 +424,7 @@ public class BattleField : MonoSingleton<BattleField>
    public void SummonRequest(GameObject _monsterCard)
     {
         bool hasEmptyBlock = false;
-        if (PlayerData.Instance.actionCost>= _monsterCard.GetComponent<ThisMonsterCard>().cost)
+        if (_monsterCard)
         {
             chosenCardNumber = _monsterCard.transform.GetSiblingIndex();
             foreach (var block in blocks)
@@ -457,23 +473,23 @@ public class BattleField : MonoSingleton<BattleField>
         DestroyArrow();
         SelectingMonster = 0;
         int monsterId = _monster.GetComponent<ThisMonsterCard>().id;
-        int monsterCost = _monster.GetComponent<ThisMonsterCard>().cost;
 
         
         //此怪物对应的卡牌赋予给生成的怪物所在的block中的卡牌
-        _block.GetComponent<Blocks>().card = _monster; ;
+        _block.GetComponent<Blocks>().card = _monster; 
         _monster.transform.SetParent(_block);
         _monster.SetActive(false);
 
         //依据怪物编号找出monsterPrefab里对应的怪物并生成于_block处
         GameObject monster=Instantiate(monstersPrefab.transform.GetChild(monsterId), _block).gameObject;
         monsterInBattle.Add(monster);
+        monster.GetComponent<ThisMonster>().monsterCard = _monster;
 
-        PlayerData.Instance.actionCost -= monsterCost;
 
         waitingMonster = null;
-        summonCounter--;
+        monstersCounter++;
         summonEvent.Invoke();
+        monsterChange.Invoke();
     }
     //使用装备请求，传入使用的装备（其他脚本调用）
     public void UseEquipmentRequest(GameObject equipment)
@@ -498,6 +514,7 @@ public class BattleField : MonoSingleton<BattleField>
         EquipmentCard card = usingEquipment.GetComponent<ThisEquiptmentCard>().card;        
         int damage = card.damage;
         monster.GetComponent<ThisMonster>().HealthDecrease(damage);
+        usingEquipment = null;
         //其他装备效果
 
 
@@ -537,17 +554,24 @@ public class BattleField : MonoSingleton<BattleField>
     //怪物死亡
     public void MonsterDead(GameObject monster,GameObject monsterCard)
     {
+
         monsterInBattle.Remove(monster);
-        if (monsterCard.GetComponent<ThisMonsterCard>().summonTimes <= 0)
+        
+        if (monsterCard.GetComponent<ThisMonsterCard>().card.summonTimes== 0)
         {
-            Destroy(monsterCard);
+            Destroy(monsterCard);            
         }
-         if(monsterCard.GetComponent<ThisMonsterCard>().summonTimes > 0)
+        else if (monsterCard.GetComponent<ThisMonsterCard>().card.summonTimes> 0)
         {
-            monsterCard.transform.SetParent(discardArea);
+            monsterCard.transform.SetParent(discardArea);            
         }
         Destroy(monster);
-        summonCounter++;
+        Debug.Log("怪物死亡");
+
+        monstersCounter--;
+        MonsterDeadEvent.Invoke();//怪物死亡事件（用于开启怪物死亡事件）
+        monsterChange.Invoke();
+
     }
 
 }

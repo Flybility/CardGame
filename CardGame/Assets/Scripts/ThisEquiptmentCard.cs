@@ -11,7 +11,6 @@ public class ThisEquiptmentCard : MonoBehaviour
 
     public int id;
     public string cardName;
-    public int cost;
     public int damage;
     public int summonTimes;
     public string description;
@@ -45,7 +44,6 @@ public class ThisEquiptmentCard : MonoBehaviour
         var equipment = card as EquipmentCard;
         id = equipment.id;
         cardName = equipment.cardName;
-        cost = equipment.cost;
         description = equipment.description;
         thisSprite = equipment.thisImage;
 

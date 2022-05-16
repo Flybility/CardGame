@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using TMPro;
 
 
@@ -12,37 +13,48 @@ public class PlayerData : MonoSingleton<PlayerData>
     public TextMeshProUGUI attackText;
     public List<EquipmentCard> playerEquipmentCards = new List<EquipmentCard>();
     public List<MonsterCard> playerMonsterCards = new List<MonsterCard>();
-    public int actionCost;//行动力
+
+    public Slider slider;
+    //基础状态
     public int maxHealth;
-    public int currentHealth;
-    public int maxSanValue;
-    public int currentSanValue;//san值
-    public int attacks;
+    public int currentHealth;//当前生命值
+    public int perRoundHealthDecrease;//每回合降低生命值
+
+    //Buff状态
+    public int armorCount;//护甲层数
+    public int scareCount;//恐惧层数
+    public int counterattackCount;//反击层数
+    public int burnsCount;//灼伤层数
+    public int bondageCount;//束缚层数
+    public int attacks;//攻击力
     public int monsterCardMaxCount;//初始最大怪物手牌数
     public int perRoundExtractCount;//每回合抽牌数
 
-    public UnityEvent healthChange = new UnityEvent();
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        playerMonsterCards.Add(cardData.CopyMonsterCard(0));
+        slider =transform.GetChild(0).GetComponent<Slider>();
+        currentHealth = maxHealth;
+        HealthBarChange();
+
         playerMonsterCards.Add(cardData.CopyMonsterCard(1));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(2));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(3));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(3));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(1));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(1));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(1));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(1));
 
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(0));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(2));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(3));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(0));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(2));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(3));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(4));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(5));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(6));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(7));
 
 
         attackText.text = attacks.ToString();
-        currentHealth = maxHealth;
+        BattleField.Instance.PlayerRoundEnd.AddListener(PerRoundChange);
     }
     //public MonsterCard PlayerRandomMonsterCard()
     //{
@@ -56,15 +68,28 @@ public class PlayerData : MonoSingleton<PlayerData>
     //}
     public void PerBattleRecover()
     {
-        actionCost=6;//行动力
-        currentHealth=maxHealth;
-        currentSanValue=maxSanValue;//san值
-        healthChange.Invoke();
+        currentHealth = maxHealth;
+        HealthBarChange();
+    }
+    public void PerRoundChange()
+    {
+        currentHealth -= perRoundHealthDecrease;
+        if (armorCount >0)          armorCount--;
+        if (scareCount > 0)         scareCount--;
+        if (counterattackCount > 0) counterattackCount--;
+        if (burnsCount > 0)         burnsCount--;
+        if (bondageCount > 0)       bondageCount--;
+        return;
     }
     public void HealthDecrease(int damage)
     {
         currentHealth -= damage;
-        healthChange.Invoke();
+        HealthBarChange();
+    }
+    public void HealthBarChange()
+    {
+        Debug.Log("生命值改变");
+        slider.value = (float)PlayerData.Instance.currentHealth / PlayerData.Instance.maxHealth;
     }
     public void AttackChange(int value)
     {

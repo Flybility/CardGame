@@ -200,6 +200,7 @@ MonoBehaviour:
   ArrowPrefab: {fileID: 2654867460330065363, guid: eab550f43ea879646830894a3dbc9e17, type: 3}
   SelectingMonster: 0
   usingEquipment: {fileID: 0}
+  AttackSelecting: 0
   gameState: 0
   cardData: {fileID: 238117719}
   cardsEquiptment: []
@@ -214,6 +215,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   BattleEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  PlayerRoundEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  MonsterRoundEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  MonsterDeadEvent:
     m_PersistentCalls:
       m_Calls: []
   ChangeParent:
@@ -2729,7 +2739,7 @@ GameObject:
   - component: {fileID: 896810259}
   - component: {fileID: 896810262}
   m_Layer: 5
-  m_Name: Monster0
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2829,11 +2839,14 @@ MonoBehaviour:
   battleField: {fileID: 82153615}
   attackText: {fileID: 2103266339}
   playerEquipmentCards: []
-  actionCost: 5
   maxHealth: 100
   currentHealth: 0
-  maxSanValue: 0
-  currentSanValue: 0
+  perRoundHealthDecrease: 5
+  armorCount: 0
+  scareCount: 0
+  counterattackCount: 0
+  burnsCount: 0
+  bondageCount: 0
   attacks: 5
   monsterCardMaxCount: 4
   perRoundExtractCount: 2
@@ -3592,6 +3605,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1117331355}
+  - component: {fileID: 1117331356}
   m_Layer: 5
   m_Name: Blocks
   m_TagString: Untagged
@@ -3624,6 +3638,19 @@ RectTransform:
   m_AnchoredPosition: {x: 343, y: 7}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1117331356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117331354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98950a56641414f42aa8cb0a401befba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsters: []
 --- !u!1 &1120513097
 GameObject:
   m_ObjectHideFlags: 0

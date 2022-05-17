@@ -132,7 +132,6 @@ MonoBehaviour:
   thisId: 2
   id: 2
   cardName: 
-  cost: 0
   damage: 0
   summonTimes: 0
   description: 
@@ -143,12 +142,10 @@ MonoBehaviour:
   card:
     id: 0
     cardName: 
-    cost: 0
     damage: 0
     summonTimes: 0
     description: 
     thisImage: {fileID: 0}
-    thisBackground: {fileID: 0}
   summonTimesText: {fileID: 4822768034103878319}
 --- !u!225 &1547506657346540369
 CanvasGroup:

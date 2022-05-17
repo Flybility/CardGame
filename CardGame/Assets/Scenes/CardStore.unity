@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c75efad40e4bd334eb561938dead1b28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eqiupmentCardPrefab: {fileID: 1547506657346540382, guid: ade48c9b72179864da23306cdf3adce9, type: 3}
+  eqiupmentCardPrefab: {fileID: 4754383265742220407, guid: d57aa43c66bd70048a2ea580badc2e35, type: 3}
   monsterCardPrefab: {fileID: 5089638974591225923, guid: b97dc00ae6ab07c4fa58c2d047737f77, type: 3}
   monstersPrefab: {fileID: 1622370606236007821, guid: 0c58fc87d7c81d84283ade1e707ae655, type: 3}
   PanelMask: {fileID: 847542033}

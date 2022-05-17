@@ -8,14 +8,19 @@ public class CardDatabase : MonoSingleton<CardDatabase>
     public  List<MonsterCard> monsterCardList = new List<MonsterCard>();
     private void Awake()
     {
-        equipmentCardList.Add(new EquipmentCard(0, "装备名称1", 10, 1, "装备描述1", Resources.Load<Sprite>("CardImages/1"), Resources.Load<Sprite>("CardBackgrounds/1")));
-        equipmentCardList.Add(new EquipmentCard(1, "装备名称2", 10, 2, "装备描述2", Resources.Load<Sprite>("CardImages/1"), Resources.Load<Sprite>("CardBackgrounds/2")));
-        equipmentCardList.Add(new EquipmentCard(2, "装备名称3", 10, 3, "装备描述3", Resources.Load<Sprite>("CardImages/2"), Resources.Load<Sprite>("CardBackgrounds/2")));
-        equipmentCardList.Add(new EquipmentCard(3, "装备名称4", 10, 4,"装备描述4", Resources.Load<Sprite>("CardImages/2"), Resources.Load<Sprite>("CardBackgrounds/1")));
-        equipmentCardList.Add(new EquipmentCard(4, "装备名称1", 10, 1, "装备描述1", Resources.Load<Sprite>("CardImages/1"), Resources.Load<Sprite>("CardBackgrounds/1")));
-        equipmentCardList.Add(new EquipmentCard(5, "装备名称2", 10, 2, "装备描述2", Resources.Load<Sprite>("CardImages/1"), Resources.Load<Sprite>("CardBackgrounds/2")));
-        equipmentCardList.Add(new EquipmentCard(6, "装备名称3", 10, 3, "装备描述3", Resources.Load<Sprite>("CardImages/2"), Resources.Load<Sprite>("CardBackgrounds/2")));
-        equipmentCardList.Add(new EquipmentCard(7, "装备名称4", 10, 4, "装备描述4", Resources.Load<Sprite>("CardImages/2"), Resources.Load<Sprite>("CardBackgrounds/1")));
+        equipmentCardList.Add(new EquipmentCard(0, "蓝宝石", 10, 10, "使相邻位置的心魔互换", Resources.Load<Sprite>("EquipmentImages/1")));
+        equipmentCardList.Add(new EquipmentCard(1, "紫宝石", 10, 10, "使相间位置的心魔互换", Resources.Load<Sprite>("EquipmentImages/1")));
+        equipmentCardList.Add(new EquipmentCard(2, "红宝石", 10, 10, "下次攻击对目标攻击2次", Resources.Load<Sprite>("EquipmentImages/2")));
+        equipmentCardList.Add(new EquipmentCard(3, "橙宝石", 10, 3, "装备描述4", Resources.Load<Sprite>("EquipmentImages/2")));
+        equipmentCardList.Add(new EquipmentCard(4, "黄宝石", 10, 3, "装备描述1", Resources.Load<Sprite>("EquipmentImages/1")));
+        equipmentCardList.Add(new EquipmentCard(5, "红水晶", 10, 2, "下次攻击对目标攻击3次", Resources.Load<Sprite>("EquipmentImages/1")));
+        equipmentCardList.Add(new EquipmentCard(6, "橙水晶", 10, 3, "下次攻击间位获得与被攻击目标同样的伤害", Resources.Load<Sprite>("EquipmentImages/2")));
+        equipmentCardList.Add(new EquipmentCard(7, "黄水晶", 10, 4, "下次攻击邻位获得与被攻击目标同样的伤害", Resources.Load<Sprite>("EquipmentImages/2")));        
+        equipmentCardList.Add(new EquipmentCard(0, "酒精", 10, 10, "被击中的目标本回合内若受到“爆炸伤害”被添加3层“灼伤”", Resources.Load<Sprite>("EquipmentImages/1")));
+        equipmentCardList.Add(new EquipmentCard(1, "燃烧的烟头", 10, 10, "场上所有带有“灼伤”效果的敌人每回合受到的“灼伤”伤害+6，但每触发一次增加1层“恐惧”", Resources.Load<Sprite>("EquipmentImages/1")));
+        equipmentCardList.Add(new EquipmentCard(2, "小喇叭", 10, 10, "本回合受到爆炸伤害的心魔被添加1层“眩晕”", Resources.Load<Sprite>("EquipmentImages/2")));
+        equipmentCardList.Add(new EquipmentCard(3, "橙宝石", 10, 3, "装备描述4", Resources.Load<Sprite>("EquipmentImages/2")));
+        equipmentCardList.Add(new EquipmentCard(4, "黄宝石", 10, 3, "装备描述1", Resources.Load<Sprite>("EquipmentImages/1")));
 
         monsterCardList.Add(new MonsterCard(00, "愤怒0", 8, 3, 2, 1, "怪物描述1", Resources.Load<Sprite>("CardImages/1"), Resources.Load<Sprite>("CardBackgrounds/1")));
         monsterCardList.Add(new MonsterCard(01, "愤怒0",    8,   3, 2, 1, "怪物描述1", Resources.Load<Sprite>("CardImages/1"), Resources.Load<Sprite>("CardBackgrounds/1")));
@@ -67,7 +72,7 @@ public class CardDatabase : MonoSingleton<CardDatabase>
     {
         var equipment = equipmentCardList[_id];
         EquipmentCard copyCard = new EquipmentCard(_id, equipment.cardName, equipment.damage,equipment.summonTimes, equipment.description,
-               equipment.thisImage, equipment.thisBackground);
+               equipment.thisImage);
         return copyCard;
     }
     public MonsterCard CopyMonsterCard(int _id)

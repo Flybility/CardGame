@@ -22,6 +22,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     public int perRoundHealthDecrease;//每回合降低生命值
 
     //Buff状态
+    public int attackTimes;//攻击次数
     public int armorCount;//护甲层数
     public int scareCount;//恐惧层数
     public int counterattackCount;//反击层数
@@ -34,6 +35,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     // Start is called before the first frame update
     void Awake()
     {
+        attackTimes = 2;
         slider =transform.GetChild(0).GetComponent<Slider>();
         currentHealth = maxHealth;
         HealthBarChange();

@@ -69,6 +69,19 @@ public class BattleField : MonoSingleton<BattleField>
             blocks[i] = _block.transform.GetChild(i).gameObject;
         }
     }
+    //判断战斗是否结束
+    public void IsFinished()
+    {
+        if(monsterArea.childCount==0&& extractArea.childCount == 0&& discardArea.childCount == 0 && monsterInBattle.Count == 0)
+        {
+            //执行战斗结束函数
+            GameManager.Instance.BattleEnd();
+        }
+        else
+        {
+            return;
+        }
+    }
     //战斗开始，由面板上战斗开始按钮调用
     public void BattleStart()
     {
@@ -105,8 +118,13 @@ public class BattleField : MonoSingleton<BattleField>
         {
             Destroy(monsterInBattle[i]);
         }
+       //for (int i = 0; i < blocks.Length; i++)
+       //{
+       //    if()
+       //    Destroy(blocks[i].transform.GetChild(1));
+       //}
         //清空场上所有牌堆
-       for(int i = 0; i < monsterArea.childCount; i++)
+        for (int i = 0; i < monsterArea.childCount; i++)
         {
             Destroy(monsterArea.GetChild(i).gameObject);
         }
@@ -353,10 +371,23 @@ public class BattleField : MonoSingleton<BattleField>
     {
         Vector3 monsterPos = monster.transform.parent.localPosition;
         Vector3 playerPos = player.transform.localPosition;
-        player.transform.DOPunchPosition(monsterPos- playerPos, 0.4f, 1);
-        yield return new WaitForSeconds(0.2f);
-        monster.GetComponent<ThisMonster>().HealthDecrease(PlayerData.Instance.attacks);
-        monsterChange.Invoke();
+        
+        for(int i = 0; i < PlayerData.Instance.attackTimes;i++)
+        {
+            if (monster != null)
+            {
+                player.transform.DOPunchPosition(monsterPos - playerPos, 0.3f, 1);
+                yield return new WaitForSeconds(0.15f);
+                if(monster != null)
+                {
+                    monster.GetComponent<ThisMonster>().HealthDecrease(PlayerData.Instance.attacks);
+
+                }
+                monsterChange.Invoke();
+            }
+                
+        }
+        player.transform.DOLocalMove(playerPos, 0.3f);
         yield return new WaitForSeconds(0.5f);
                 PlayerRoundEnd.Invoke();//玩家回合结束事件(结算buff)
 
@@ -374,7 +405,8 @@ public class BattleField : MonoSingleton<BattleField>
         cardsEquiptment.Clear();
         for (int i = 0; i < PlayerData.Instance.playerEquipmentCards.Count; i++)
         {
-            GameObject newCard = GameObject.Instantiate(eqiupmentCardPrefab, equipmentArea);
+            int id = PlayerData.Instance.playerEquipmentCards[i].id;
+            GameObject newCard = GameObject.Instantiate(eqiupmentCardPrefab.transform.GetChild(id).gameObject, equipmentArea);
             cardsEquiptment.Add(newCard);
             newCard.GetComponent<ThisEquiptmentCard>().card = PlayerData.Instance.playerEquipmentCards[i];
             newCard.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), interval);
@@ -580,6 +612,7 @@ public class BattleField : MonoSingleton<BattleField>
         
         monstersCounter--;
         monsterChange.Invoke();
+        IsFinished();
         
     }
 

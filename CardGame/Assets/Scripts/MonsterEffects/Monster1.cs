@@ -10,7 +10,7 @@ public class Monster1 :MonoBehaviour
     void Start()//怪物上场时调用技能函数
     {
         monster = GetComponent<ThisMonster>();
-        boomDamage = 2;
+        boomDamage = 8;
        // Skills.Instance.AttackPlayer(1);
     }
 

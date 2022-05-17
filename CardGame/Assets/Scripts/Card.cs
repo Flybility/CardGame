@@ -11,13 +11,12 @@ public class EquipmentCard
     public int summonTimes;
     public string description;
     public Sprite thisImage;
-    public Sprite thisBackground;
 
     public EquipmentCard()
     {
 
     }
-    public EquipmentCard(int Id, string CardName, int Damage, int SummonTimes,string CardDescription, Sprite ThisImage, Sprite ThisBackground)
+    public EquipmentCard(int Id, string CardName, int Damage, int SummonTimes,string CardDescription, Sprite ThisImage)
     {
         this.id = Id;
         this.cardName = CardName;
@@ -25,7 +24,6 @@ public class EquipmentCard
         this.summonTimes = SummonTimes;
         this.description = CardDescription;
         this.thisImage = ThisImage;
-        this.thisBackground = ThisBackground;
     }
 
 }
@@ -33,15 +31,17 @@ public class MonsterCard : EquipmentCard
 {
     public int health;
     public int award;
+    public Sprite thisBackground;
     public MonsterCard()
     {
 
     }
     public MonsterCard(int Id, string CardName,int Health,int Damage,int Award, int SummonTimes,string CardDescription, Sprite ThisImage,
-        Sprite ThisBackground) : base(Id, CardName, Damage,SummonTimes, CardDescription, ThisImage, ThisBackground)
+        Sprite ThisBackground) : base(Id, CardName, Damage,SummonTimes, CardDescription, ThisImage)
     {
         this.health = Health;
         this.award = Award;
+        this.thisBackground = ThisBackground;
     }
 }
 

@@ -351,7 +351,7 @@ public class BattleField : MonoSingleton<BattleField>
                 Vector3 monsterPos = monster.transform.parent.localPosition;
                 monster.transform.DOPunchPosition(targetPos - monsterPos, 0.4f, 1);
                 yield return new WaitForSeconds(0.2f);
-                PlayerData.Instance.HealthDecrease(monster.GetComponent<ThisMonster>().damage);
+                Skills.Instance.AttackPlayer(monster.GetComponent<ThisMonster>().damage);
                 //Skills.Instance.Attack(monster.GetComponent<ThisMonster>().damage, player);
                 yield return new WaitForSeconds(0.2f);
             }
@@ -380,8 +380,8 @@ public class BattleField : MonoSingleton<BattleField>
                 yield return new WaitForSeconds(0.15f);
                 if(monster != null)
                 {
-                    monster.GetComponent<ThisMonster>().HealthDecrease(PlayerData.Instance.attacks);
-
+                    //monster.GetComponent<ThisMonster>().HealthDecrease(PlayerData.Instance.attacks);
+                    Skills.Instance.AttackMonster(PlayerData.Instance.attacks, monster);
                 }
                 monsterChange.Invoke();
             }

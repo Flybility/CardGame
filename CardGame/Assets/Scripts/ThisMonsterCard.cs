@@ -14,6 +14,7 @@ public class ThisMonsterCard : MonoBehaviour
     public int damage;
     public int summonTimes;
     public int health;
+    public int award;
     public string description;
     public string effect;
 
@@ -25,7 +26,8 @@ public class ThisMonsterCard : MonoBehaviour
     public MonsterCard card;
 
     public TextMeshProUGUI summonTimesText;
-    public TextMeshProUGUI healthText; 
+    public TextMeshProUGUI healthText;
+    public TextMeshProUGUI awardText;
     public TextMeshProUGUI cardNameText;
     public TextMeshProUGUI damageText;
     public TextMeshProUGUI descriptionText;
@@ -64,8 +66,10 @@ public class ThisMonsterCard : MonoBehaviour
         damage = monster.damage;
         summonTimes = monster.summonTimes;
         health = monster.health;
+        award = monster.award;
         damageText.text = "" + damage;
         healthText.text = "" + health;
+        awardText.text = "" + award;
         summonTimesText.text = "" + summonTimes;
     }
 }

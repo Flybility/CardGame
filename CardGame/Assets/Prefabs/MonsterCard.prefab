@@ -98,7 +98,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -232,7 +232,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.043137252, g: 0.6605307, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.85013294, b: 0.043137252, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -429,9 +429,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5089638972867463261}
   - component: {fileID: 5089638972867463263}
-  - component: {fileID: 5089638972867463260}
+  - component: {fileID: 4612780410718509694}
   m_Layer: 5
-  m_Name: costText
+  m_Name: Award
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -464,7 +464,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5089638972867463250}
   m_CullTransparentMesh: 1
---- !u!114 &5089638972867463260
+--- !u!114 &4612780410718509694
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -517,7 +517,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -641,7 +641,7 @@ GameObject:
   - component: {fileID: 5089638973264122671}
   - component: {fileID: 5089638973264122668}
   m_Layer: 5
-  m_Name: Cost
+  m_Name: Award
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -687,7 +687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.89509326, b: 0.04150939, a: 1}
+  m_Color: {r: 0.32452828, g: 0.7556055, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1235,7 +1235,7 @@ GameObject:
   - component: {fileID: 5089638974042299854}
   - component: {fileID: 5089638974042299855}
   m_Layer: 5
-  m_Name: Cost
+  m_Name: Award
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1398,7 +1398,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1511,10 +1511,10 @@ MonoBehaviour:
   thisId: 0
   id: 0
   cardName: 
-  cost: 0
   damage: 0
   summonTimes: 0
   health: 0
+  award: 0
   description: 
   effect: 
   thisSprite: {fileID: 0}
@@ -1522,8 +1522,8 @@ MonoBehaviour:
   thisBackground: {fileID: 0}
   thatBackground: {fileID: 5089638973774527308}
   summonTimesText: {fileID: 4975033752217385047}
-  costText: {fileID: 5089638972867463260}
   healthText: {fileID: 3784096716825547928}
+  awardText: {fileID: 4612780410718509694}
   cardNameText: {fileID: 5089638973811571256}
   damageText: {fileID: 5089638974467369451}
   descriptionText: {fileID: 5089638974922101672}
@@ -1593,7 +1593,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -76}
+  m_AnchoredPosition: {x: 0, y: -81}
   m_SizeDelta: {x: 160, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5089638974922101675
@@ -1633,8 +1633,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4279904874
+  m_fontColor: {r: 0.41509432, g: 0.16370593, b: 0.10338197, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1651,13 +1651,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 2
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535

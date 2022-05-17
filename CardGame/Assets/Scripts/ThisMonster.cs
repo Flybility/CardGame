@@ -16,10 +16,12 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     private int id;
     public  int health;
     private int maxHealth;
+    public int awardHealth;
     public int damage;
     public int dizzyCount;//眩晕层数
     public int burnsCount;//灼伤层数
     private Slider slider;
+    private TextMeshProUGUI healthValue; 
     public GameObject leftMonster, rightMonster;
 
 
@@ -44,19 +46,22 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     }
     public void OnStart()
     {
+        awardHealth = monsterCard.GetComponent<ThisMonsterCard>().card.award;
+        damage = monsterCard.GetComponent<ThisMonsterCard>().card.damage;
         slider = transform.GetChild(0).GetComponent<Slider>();
+        healthValue = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         monsterCard = GetComponentInParent<Blocks>().card;
         id = monsterCard.GetComponent<ThisMonsterCard>().id;
         maxHealth = monsterCard.GetComponent<ThisMonsterCard>().card.health;
         health = maxHealth;
         slider.value = (float)health / maxHealth;
         block = transform.parent;
-        //effect = gameObject.AddComponent(Type.GetType("Monster" + id));
+        //effect = gameObject.GetComponent(Type.GetType("Monster" + id));
         BattleField.Instance.MonsterRoundEnd.AddListener(PerRoundChange);
     }
     public void OnUpdate()
     {
-        damage = monsterCard.GetComponent<ThisMonsterCard>().card.damage;
+        healthValue.text = health + "/" + maxHealth;
     }
     public void HealthDecrease(int damage)
     {
@@ -65,7 +70,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         if (health <= 0)
         {
             monsterCard.GetComponent<ThisMonsterCard>().card.summonTimes--;
-            BattleField.Instance.MonsterDead(this.gameObject, monsterCard);
+            BattleField.Instance.StartMonsterDead(this.gameObject, monsterCard);
         }
         else
         {

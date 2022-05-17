@@ -552,11 +552,18 @@ public class BattleField : MonoSingleton<BattleField>
         Destroy(arrow);
     }
     //怪物死亡
-    public void MonsterDead(GameObject monster,GameObject monsterCard)
+    public void StartMonsterDead(GameObject monster, GameObject monsterCard)
+    {
+        StartCoroutine(MonsterDead(monster, monsterCard));
+    }
+
+    IEnumerator MonsterDead(GameObject monster,GameObject monsterCard)
     {
 
         monsterInBattle.Remove(monster);
-        
+        //击杀怪物回复生命值
+        PlayerData.Instance.currentHealth += monster.GetComponent<ThisMonster>().awardHealth;
+
         if (monsterCard.GetComponent<ThisMonsterCard>().card.summonTimes== 0)
         {
             Destroy(monsterCard);            
@@ -567,11 +574,13 @@ public class BattleField : MonoSingleton<BattleField>
         }
         Destroy(monster);
         Debug.Log("怪物死亡");
-
+        //monster.GetComponent<ThisMonster>().
+        //MonsterDeadEvent.Invoke();//怪物死亡事件（用于开启怪物死亡事件）
+        yield return new WaitForSeconds(0.3f);
+        
         monstersCounter--;
-        MonsterDeadEvent.Invoke();//怪物死亡事件（用于开启怪物死亡事件）
         monsterChange.Invoke();
-
+        
     }
 
 }

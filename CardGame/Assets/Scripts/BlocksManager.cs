@@ -5,6 +5,7 @@ using UnityEngine;
 public class BlocksManager : MonoSingleton<BlocksManager>
 {
     public GameObject[] monsters;
+    public List<GameObject> backMonsters = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
@@ -31,17 +32,19 @@ public class BlocksManager : MonoSingleton<BlocksManager>
             }
         }
     }
-    public List<GameObject> GetNeighbours(Transform thisBlock)
-    {
-        List<GameObject> neighbours = new List<GameObject>();
+    public void GetNeighbours(Transform thisBlock)
+    {        
+        //List<GameObject> neighbours = new List<GameObject>();
         int lowerNumber = thisBlock.GetSiblingIndex() - 1;
         int higherNumber= thisBlock.GetSiblingIndex() + 1;
 
         if (lowerNumber < 0) lowerNumber = 5;
         if (higherNumber > 5) higherNumber = 0;
-        neighbours.Add(monsters[lowerNumber].gameObject);
-        neighbours.Add(monsters[higherNumber].gameObject);
-        return neighbours;
+        if(monsters[lowerNumber]!=null)
+        backMonsters.Add(monsters[lowerNumber].gameObject);
+        if(monsters[higherNumber]!=null)
+        backMonsters.Add(monsters[higherNumber].gameObject);
+        //return neighbours;
     }
 
 }

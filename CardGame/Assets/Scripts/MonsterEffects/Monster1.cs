@@ -10,22 +10,18 @@ public class Monster1 :MonoBehaviour
     void Start()//怪物上场时调用技能函数
     {
         monster = GetComponent<ThisMonster>();
-        boomDamage = 5;
-        BattleField.Instance.MonsterDeadEvent.AddListener(OnDead);
+        boomDamage = 2;
        // Skills.Instance.AttackPlayer(1);
     }
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {        
+
     }
-    private void OnDead()
+    public void OnDestroy()//击杀怪物时调用技能函数
     {
-        foreach (var monster in BlocksManager.Instance.GetNeighbours(monster.block))
-        {
-            Debug.Log("爆炸");
-            Skills.Instance.AttackMonster(boomDamage, monster);
-        }
-    } 
+        Skills.Instance.StartBoom(monster.block, boomDamage);
+    }
+    
 }

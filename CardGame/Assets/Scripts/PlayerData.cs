@@ -11,6 +11,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     public CardDatabase cardData;
     public BattleField battleField;
     public TextMeshProUGUI attackText;
+    public TextMeshProUGUI healthText;
     public List<EquipmentCard> playerEquipmentCards = new List<EquipmentCard>();
     public List<MonsterCard> playerMonsterCards = new List<MonsterCard>();
 
@@ -37,11 +38,11 @@ public class PlayerData : MonoSingleton<PlayerData>
         currentHealth = maxHealth;
         HealthBarChange();
 
+        playerMonsterCards.Add(cardData.CopyMonsterCard(0));
         playerMonsterCards.Add(cardData.CopyMonsterCard(1));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(1));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(1));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(1));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(1));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(2));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(3));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(4));
 
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(0));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
@@ -54,6 +55,7 @@ public class PlayerData : MonoSingleton<PlayerData>
 
 
         attackText.text = attacks.ToString();
+
         BattleField.Instance.PlayerRoundEnd.AddListener(PerRoundChange);
     }
     //public MonsterCard PlayerRandomMonsterCard()
@@ -99,7 +101,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     // Update is called once per frame
     void Update()
     {
-        
+        healthText.text = currentHealth + "/" + maxHealth;
     }
 
     //public void loadPlayerData()

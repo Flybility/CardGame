@@ -67,6 +67,8 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     {
         health -= damage;
         slider.value = (float)health / maxHealth;
+        GameObject floatValue = Instantiate(PlayerData.Instance.floatPrefab, this.transform.parent);
+        floatValue.GetComponent<Text>().text ="-"+ damage.ToString();
         if (health <= 0)
         {
             monsterCard.GetComponent<ThisMonsterCard>().card.summonTimes--;

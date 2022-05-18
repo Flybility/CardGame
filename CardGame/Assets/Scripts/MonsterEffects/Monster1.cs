@@ -21,7 +21,7 @@ public class Monster1 :MonoBehaviour
     }
     public void OnDestroy()//击杀怪物时调用技能函数
     {
-        Skills.Instance.StartBoom(monster.block, boomDamage);
+        if (BattleField.Instance.isFinished==false) Skills.Instance.StartBoom(monster.block, boomDamage);
     }
     
 }

@@ -10,6 +10,7 @@ public class PlayerData : MonoSingleton<PlayerData>
 {
     public CardDatabase cardData;
     public BattleField battleField;
+    public GameObject floatPrefab;
     public TextMeshProUGUI attackText;
     public TextMeshProUGUI healthText;
     public List<EquipmentCard> playerEquipmentCards = new List<EquipmentCard>();
@@ -35,7 +36,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     // Start is called before the first frame update
     void Awake()
     {
-        attackTimes = 2;
+        attackTimes = 1;
         slider =transform.GetChild(0).GetComponent<Slider>();
         currentHealth = maxHealth;
         HealthBarChange();
@@ -93,12 +94,14 @@ public class PlayerData : MonoSingleton<PlayerData>
     public void HealthDecrease(int damage)
     {
         currentHealth -= damage;
+        GameObject floatValue= Instantiate(floatPrefab, this.transform);
+        floatValue.GetComponent<Text>().text = "-" + damage.ToString();
         HealthBarChange();
     }
     public void HealthBarChange()
     {
         Debug.Log("生命值改变");
-        slider.value = (float)PlayerData.Instance.currentHealth / PlayerData.Instance.maxHealth;
+        slider.value = (float)currentHealth / maxHealth;
     }
     public void AttackChange(int value)
     {

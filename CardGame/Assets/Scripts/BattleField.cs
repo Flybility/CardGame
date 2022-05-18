@@ -30,6 +30,7 @@ public class BattleField : MonoSingleton<BattleField>
     public int SelectingMonster;      //是否在玩家回合选择召唤怪物卡牌的伪bool类型，由于使用bool出了bug，改为了int，0代表false，1代表true
     public GameObject usingEquipment; //是否在玩家回合选择装备卡牌的bool类型
     public bool AttackSelecting;      //是否玩家选择怪物攻击
+    public bool isFinished;
 
     public GameState gameState;       //战斗回合状态  
 
@@ -76,6 +77,7 @@ public class BattleField : MonoSingleton<BattleField>
         {
             //执行战斗结束函数
             GameManager.Instance.BattleEnd();
+            isFinished = true;
         }
         else
         {
@@ -87,6 +89,7 @@ public class BattleField : MonoSingleton<BattleField>
     {
         gameState = GameState.游戏开始;
         stateChangeEvent.Invoke();
+        isFinished = false;
         currentRound = 1;
         PanelMask.SetActive(false);
         //读取玩家卡组
@@ -113,16 +116,16 @@ public class BattleField : MonoSingleton<BattleField>
     //战斗结束时调用，目前由面板上战斗结束按钮调用
     public void OnBattleEnd()
     {
+        isFinished = true;
         //BattleEnd.Invoke();
-        for(int i = 0; i < monsterInBattle.Count; i++)
+        for (int i = 0; i < monsterInBattle.Count; i++)
         {
             Destroy(monsterInBattle[i]);
         }
-       //for (int i = 0; i < blocks.Length; i++)
-       //{
-       //    if()
-       //    Destroy(blocks[i].transform.GetChild(1));
-       //}
+      //for (int i = 0; i < blocks.Length; i++)
+      //{
+      //     if (blocks[i].transform.childCount > 1) { Destroy(blocks[i].transform.GetChild(1)); }
+      //}
         //清空场上所有牌堆
         for (int i = 0; i < monsterArea.childCount; i++)
         {
@@ -349,11 +352,11 @@ public class BattleField : MonoSingleton<BattleField>
             {
                 Vector3 targetPos = target.transform.localPosition;
                 Vector3 monsterPos = monster.transform.parent.localPosition;
-                monster.transform.DOPunchPosition(targetPos - monsterPos, 0.4f, 1);
-                yield return new WaitForSeconds(0.2f);
+                monster.transform.DOPunchPosition(targetPos - monsterPos, 0.5f, 1);
+                yield return new WaitForSeconds(0.25f);
                 Skills.Instance.AttackPlayer(monster.GetComponent<ThisMonster>().damage);
                 //Skills.Instance.Attack(monster.GetComponent<ThisMonster>().damage, player);
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.5f);
             }
         }
         
@@ -378,18 +381,21 @@ public class BattleField : MonoSingleton<BattleField>
             {
                 player.transform.DOPunchPosition(monsterPos - playerPos, 0.3f, 1);
                 yield return new WaitForSeconds(0.15f);
-                if(monster != null)
-                {
-                    //monster.GetComponent<ThisMonster>().HealthDecrease(PlayerData.Instance.attacks);
-                    Skills.Instance.AttackMonster(PlayerData.Instance.attacks, monster);
-                }
+                
+                //monster.GetComponent<ThisMonster>().HealthDecrease(PlayerData.Instance.attacks);
+                Skills.Instance.AttackMonster(PlayerData.Instance.attacks, monster);
+                yield return new WaitForSeconds(0.1f);
                 monsterChange.Invoke();
+            }
+            else
+            {
+                break;
             }
                 
         }
         player.transform.DOLocalMove(playerPos, 0.3f);
-        yield return new WaitForSeconds(0.5f);
-                PlayerRoundEnd.Invoke();//玩家回合结束事件(结算buff)
+        yield return new WaitForSeconds(0.8f);
+        PlayerRoundEnd.Invoke();//玩家回合结束事件(结算buff)
 
         StartCoroutine(MonsterAttack(player));
 
@@ -592,6 +598,7 @@ public class BattleField : MonoSingleton<BattleField>
     IEnumerator MonsterDead(GameObject monster,GameObject monsterCard)
     {
 
+        //yield return new WaitForSeconds(0.2f);
         monsterInBattle.Remove(monster);
         //击杀怪物回复生命值
         PlayerData.Instance.currentHealth += monster.GetComponent<ThisMonster>().awardHealth;
@@ -608,10 +615,13 @@ public class BattleField : MonoSingleton<BattleField>
         Debug.Log("怪物死亡");
         //monster.GetComponent<ThisMonster>().
         //MonsterDeadEvent.Invoke();//怪物死亡事件（用于开启怪物死亡事件）
-        yield return new WaitForSeconds(0.3f);
-        
+        yield return new WaitForSeconds(0.1f);
+        //怪物死亡结算
         monstersCounter--;
         monsterChange.Invoke();
+
+        yield return new WaitForSeconds(0.5f);
+        //战斗胜利ui
         IsFinished();
         
     }

@@ -11,8 +11,8 @@ public class CardDatabase : MonoSingleton<CardDatabase>
         equipmentCardList.Add(new EquipmentCard( 0, "蓝宝石",     10, 10, "使相邻位置的心魔互换",                                                                  Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 1, "紫宝石",     10, 10, "使相间位置的心魔互换",                                                                  Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 2, "红宝石",     10, 10, "下次攻击对目标攻击2次",                                                                 Resources.Load<Sprite>("EquipmentImages/01")));
-        equipmentCardList.Add(new EquipmentCard( 3, "橙宝石",     10,  3, "装备描述4",                                                                             Resources.Load<Sprite>("EquipmentImages/01")));
-        equipmentCardList.Add(new EquipmentCard( 4, "黄宝石",     10,  3, "装备描述1",                                                                             Resources.Load<Sprite>("EquipmentImages/01")));
+        equipmentCardList.Add(new EquipmentCard( 3, "橙宝石",     10,  3, "间位获得与被攻击目标同样的伤害",                                                                             Resources.Load<Sprite>("EquipmentImages/01")));
+        equipmentCardList.Add(new EquipmentCard( 4, "黄宝石",     10,  3, "邻位获得与被攻击目标同样的伤害",                                                                             Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 5, "红水晶",     10,  2, "下次攻击对目标攻击3次",                                                                 Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 6, "橙水晶",     10,  3, "下次攻击间位获得与被攻击目标同样的伤害",                                                Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 7, "黄水晶",     10,  3, "下次攻击邻位获得与被攻击目标同样的伤害",                                                Resources.Load<Sprite>("EquipmentImages/01")));        

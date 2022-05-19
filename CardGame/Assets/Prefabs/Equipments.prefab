@@ -57,6 +57,22 @@ MonoBehaviour:
   recoverValue: 15
   mi: {fileID: 0}
   card: {fileID: 0}
+--- !u!114 &7989567969468184136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8345138649854480449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed2d0a087f7e82d4cb4c8062aa360109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInEquipment: 0
+  recoverValue: 0
+  mi: {fileID: 0}
+  card: {fileID: 0}
 --- !u!114 &6542408843086066980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -894,6 +910,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ade48c9b72179864da23306cdf3adce9, type: 3}
+--- !u!1 &8345138649854480449 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1547506657346540382, guid: ade48c9b72179864da23306cdf3adce9, type: 3}
+  m_PrefabInstance: {fileID: 7401167325493510943}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8345138649854480448 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1547506657346540383, guid: ade48c9b72179864da23306cdf3adce9, type: 3}

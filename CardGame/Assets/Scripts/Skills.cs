@@ -7,8 +7,10 @@ public class Skills : MonoSingleton<Skills>
     public GameObject boomEffect;
     public GameObject dizzyEffect;
     public GameObject burnsEffect;
-    public GameObject dizzyCount;
-    public GameObject burnsCount;
+    public GameObject dizzyCounter;
+    public GameObject burnsCounter;
+    public GameObject attackTimesCounter;
+
     // Start is called before the first frame update
     public void AttackPlayer(int damage)
     {
@@ -71,8 +73,14 @@ public class Skills : MonoSingleton<Skills>
     {       
         foreach(var monster in BlocksManager.Instance.GetNeighbours(block))
         {
-            monster.GetComponent<ThisMonster>().AddDizzy(count, dizzyCount);
+            monster.GetComponent<ThisMonster>().AddDizzy(count, dizzyCounter);
         }
+
+    }
+    public void AddAttackTimesCount(int times)
+    {
+        //层数1层双次攻击，持续一回合
+        PlayerData.Instance.AddAttackTimeCount(times, attackTimesCounter);
 
     }
     public void AttackImprovedBesides(Transform block,int count)

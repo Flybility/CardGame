@@ -11,6 +11,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     public CardDatabase cardData;
     public BattleField battleField;
     public GameObject floatPrefab;
+    public Transform playerStatesBar;//玩家属性条
     public TextMeshProUGUI attackText;
     public TextMeshProUGUI healthText;
     public List<EquipmentCard> playerEquipmentCards = new List<EquipmentCard>();
@@ -29,12 +30,14 @@ public class PlayerData : MonoSingleton<PlayerData>
     public int counterattackCount;//反击层数
     public int burnsCount;//灼伤层数
     public int bondageCount;//束缚层数
+    public int attackTimesCount;//攻击次数增加层数
     public int attacks;//攻击力
     public int monsterCardMaxCount;//初始最大怪物手牌数
     public int perRoundExtractCount;//每回合抽牌数
     public int awardMonsterCardAmount;
     public int awardEquipCardAmount;
 
+    private GameObject attackTimeBar;//攻击次数增加栏
 
     // Start is called before the first frame update
     void Awake()
@@ -67,7 +70,7 @@ public class PlayerData : MonoSingleton<PlayerData>
 
         attackText.text = attacks.ToString();
 
-        BattleField.Instance.PlayerRoundEnd.AddListener(PerRoundChange);
+        //BattleField.Instance.PlayerRoundEnd.AddListener(PerRoundChange);
     }
     //public MonsterCard PlayerRandomMonsterCard()
     //{
@@ -86,13 +89,50 @@ public class PlayerData : MonoSingleton<PlayerData>
     }
     public void PerRoundChange()
     {
+        
         HealthDecrease(perRoundHealthDecrease);
         if (armorCount >0)          armorCount--;
         if (scareCount > 0)         scareCount--;
         if (counterattackCount > 0) counterattackCount--;
         if (burnsCount > 0)         burnsCount--;
         if (bondageCount > 0)       bondageCount--;
+        if (attackTimesCount > 0)   DecreaseAttackTimeCount(1);
+        AttackTimeEffect();
         return;
+    }
+    public void AddAttackTimeCount(int Counts, GameObject prefab)
+    {
+        attackTimesCount += Counts;
+        if (attackTimeBar == null && attackTimesCount != 0)
+        {
+            attackTimeBar = Instantiate(prefab, playerStatesBar);
+            attackTimeBar.transform.GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
+        }
+        else if (attackTimeBar != null && attackTimesCount != 0)
+        {
+            attackTimeBar.transform.GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
+        }
+        else { return; }
+
+    }
+    public void DecreaseAttackTimeCount(int count)
+    {
+        attackTimesCount -= count;
+        if (attackTimeBar != null && attackTimesCount <= 0)
+        {
+            Destroy(attackTimeBar);
+        }
+        if (attackTimeBar != null && attackTimesCount > 0)
+        {
+            attackTimeBar.transform.GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
+        }
+        else { attackTimesCount = 0; }
+    }
+    public void AttackTimeEffect()
+    {
+        //决定每次攻击几次
+        if (attackTimesCount > 0) attackTimes = 2;
+        else { attackTimes = 1; }
     }
     public void HealthDecrease(int damage)
     {

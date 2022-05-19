@@ -30,6 +30,7 @@ public class BattleField : MonoSingleton<BattleField>
     public GameObject ArrowPrefab;    //箭头预制体
     public int SelectingMonster;      //是否在玩家回合选择召唤怪物卡牌的伪bool类型，由于使用bool出了bug，改为了int，0代表false，1代表true
     public GameObject usingEquipment; //是否在玩家回合选择装备卡牌的bool类型
+    public GameObject aimMonster;     //使用装备瞄准的怪物
     public bool AttackSelecting;      //是否玩家选择怪物攻击
     public bool isFinished;
 
@@ -57,6 +58,7 @@ public class BattleField : MonoSingleton<BattleField>
     public UnityEvent MonsterRoundEnd = new UnityEvent();     //怪物回合结束事件(结算buff)
     public UnityEvent MonsterDeadEvent = new UnityEvent();
     public UnityEvent ChangeParent = new UnityEvent();        //卡牌父物体改变事件，用于检测卡牌父物体是哪个牌堆
+    public MyGameObjectEvent useEquipmentEvent = new MyGameObjectEvent();
     // Start is called before the first frame update
 
     void Start()
@@ -123,10 +125,14 @@ public class BattleField : MonoSingleton<BattleField>
         {
             Destroy(monsterInBattle[i]);
         }
-      //for (int i = 0; i < blocks.Length; i++)
-      //{
-      //     if (blocks[i].transform.childCount > 1) { Destroy(blocks[i].transform.GetChild(1)); }
-      //}
+        for (int i = 0; i < blocks.Length; i++)
+        {
+           if (blocks[i].transform.childCount > 1) 
+            {
+                blocks[i].transform.GetChild(1).SetParent(usedArea);
+                Destroy(blocks[i].transform.GetChild(1)); 
+            }
+        }
         //清空场上所有牌堆
         for (int i = 0; i < monsterArea.childCount; i++)
         {
@@ -146,6 +152,7 @@ public class BattleField : MonoSingleton<BattleField>
         }
         cardsEquiptment.Clear();
         monsterDeck.Clear();
+        monsterInBattle.Clear();
         waitingMonster = null;
         usingEquipment = null;
         SelectingMonster=0;
@@ -540,29 +547,38 @@ public class BattleField : MonoSingleton<BattleField>
         monsterChange.Invoke();
     }
     //使用装备请求，传入使用的装备（其他脚本调用）
-    public void UseEquipmentRequest(GameObject equipment)
-    {
-        if (equipment.GetComponent<ThisEquiptmentCard>())
-        {
-            EquipmentCard card = equipment.GetComponent<ThisEquiptmentCard>().card;
-            if (card.summonTimes > 0)
-            {
-                CreateArrow(equipment.transform, ArrowPrefab);
-                usingEquipment = equipment;
-                
-                OpenHighlightWithinMonster();
-            }
-        }        
-    }
+    //public void UseEquipmentRequest(GameObject equipment)
+    //{
+    //    if (equipment.GetComponent<ThisEquiptmentCard>())
+    //    {
+    //        ThisEquiptmentCard card = equipment.GetComponent<ThisEquiptmentCard>();
+    //        if (card.summonTimes > 0&&card.isStatic==false)
+    //        {
+    //            if (card.needAim)
+    //            {
+    //                CreateArrow(equipment.transform, ArrowPrefab);
+    //                usingEquipment = equipment;
+    //                OpenHighlightWithinMonster();
+    //            }
+    //            else
+    //            {
+    //                card.
+    //                card.summonTimes--;
+    //            }
+    //        }
+    //        else
+    //        {
+    //
+    //        }
+    //    }        
+    //}
     //对怪物使用装备，（之后可以考虑使用协程加入一些发射投掷物的动画）
     public void UseEquipment(GameObject monster)
     {
         DestroyArrow();
-        CloseHighlightWithinMonster();
-        EquipmentCard card = usingEquipment.GetComponent<ThisEquiptmentCard>().card;        
-        int damage = card.damage;
-        monster.GetComponent<ThisMonster>().HealthDecrease(damage);
-        usingEquipment = null;
+        CloseHighlightWithinMonster();        
+        ThisEquiptmentCard card = usingEquipment.GetComponent<ThisEquiptmentCard>();
+        useEquipmentEvent.Invoke(monster);
         //其他装备效果
 
 
@@ -613,12 +629,12 @@ public class BattleField : MonoSingleton<BattleField>
         //击杀怪物回复生命值
         PlayerData.Instance.currentHealth += monster.GetComponent<ThisMonster>().awardHealth;
 
-        if (monsterCard.GetComponent<ThisMonsterCard>().summonTimeForDecrease<=0)
+        if (monsterCard.GetComponent<ThisMonsterCard>().summonTimes<=0)
         {
             monsterCard.transform.SetParent(usedArea);
             Destroy(monsterCard);            
         }
-        else if (monsterCard.GetComponent<ThisMonsterCard>().summonTimeForDecrease > 0)
+        else if (monsterCard.GetComponent<ThisMonsterCard>().summonTimes > 0)
         {
             monsterCard.transform.SetParent(discardArea);            
         }

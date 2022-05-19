@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor.EventSystems;
+using UnityEngine.Events;
 using TMPro;
 
 public class ThisEquiptmentCard : MonoBehaviour
@@ -15,6 +15,8 @@ public class ThisEquiptmentCard : MonoBehaviour
     public int summonTimes;
     public string description;
     public string effect;
+    public bool isStatic;
+    public bool needAim;
 
     public Sprite thisSprite;
     public Image thatImage;
@@ -28,6 +30,7 @@ public class ThisEquiptmentCard : MonoBehaviour
     //public TextMeshProUGUI damageText;
     //public TextMeshProUGUI descriptionText;
     // Start is called before the first frame update
+ 
     void Start()
     {
         ShowCardStaticStatus();
@@ -46,7 +49,8 @@ public class ThisEquiptmentCard : MonoBehaviour
         cardName = equipment.cardName;
         description = equipment.description;
         thisSprite = equipment.thisImage;
-
+        damage = equipment.damage;
+        summonTimes = equipment.summonTimes;
 
         //cardNameText.text = "" + cardName;
         //costText.text = "" + cost;
@@ -56,9 +60,7 @@ public class ThisEquiptmentCard : MonoBehaviour
     }
     public void ShowCardDynamicStatus()
     {
-        var equipment = card as EquipmentCard;
-        damage = equipment.damage;
-        summonTimes = equipment.summonTimes;
+        
         //damageText.text = "" + damage;
         summonTimesText.text = "" + summonTimes;
     }

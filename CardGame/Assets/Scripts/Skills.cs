@@ -18,6 +18,10 @@ public class Skills : MonoSingleton<Skills>
     {
         target.GetComponent<ThisMonster>().HealthDecrease(damage);
     }
+    public void RecoverHealth(int value)
+    {
+        PlayerData.Instance.HealthRecover(value);
+    }
     public void StartBoom(Transform block, int damage)
     {
         StartCoroutine(BoomBeside(block, damage));
@@ -78,4 +82,6 @@ public class Skills : MonoSingleton<Skills>
             monster.GetComponent<ThisMonster>().damage -= count;
         }
     }
+   
+
 }

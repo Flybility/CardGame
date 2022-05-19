@@ -57,7 +57,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         monsterCard = GetComponentInParent<Blocks>().card;
         id = monsterCard.GetComponent<ThisMonsterCard>().id;
         maxHealth = monsterCard.GetComponent<ThisMonsterCard>().card.health;
-        summonTime = monsterCard.GetComponent<ThisMonsterCard>().summonTimeForDecrease;
+        summonTime = monsterCard.GetComponent<ThisMonsterCard>().summonTimes;
         health = maxHealth;
         slider.value = (float)health / maxHealth;
         block = transform.parent;
@@ -105,7 +105,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         floatValue.GetComponent<Text>().text ="-"+ damage.ToString();
         if (health <= 0)
         {
-            monsterCard.GetComponent<ThisMonsterCard>().summonTimeForDecrease--;
+            monsterCard.GetComponent<ThisMonsterCard>().summonTimes--;
             BattleField.Instance.StartMonsterDead(this.gameObject, monsterCard);
         }
         else
@@ -124,7 +124,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         if(eventData.button == PointerEventData.InputButton.Left && BattleField.Instance.usingEquipment!=null)
         {
             BattleField.Instance.UseEquipment(this.gameObject);
-            BattleField.Instance.usingEquipment = null;
+            //BattleField.Instance.usingEquipment = null;
         }
     }
 

@@ -130,12 +130,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
             //开卡包界面消失
             transform.parent.parent.gameObject.SetActive(false);
         }
-        //此段代码加入可主动使用的装备效果脚本中
-        //if (isInEquipment && eventData.button == PointerEventData.InputButton.Left)
-        //{
-        //    transform.DOScale(1 / clickSize, 0.1f);
-        //    BattleField.Instance.UseEquipmentRequest(this.gameObject);
-        //}
+        
 
     }
     public void OnSummonOver()

@@ -96,6 +96,15 @@ public class PlayerData : MonoSingleton<PlayerData>
         currentHealth -= damage;
         GameObject floatValue= Instantiate(floatPrefab, this.transform);
         floatValue.GetComponent<Text>().text = "-" + damage.ToString();
+        floatValue.GetComponent<Text>().color = Color.red;
+        HealthBarChange();
+    }
+    public void HealthRecover(int value)
+    {
+        currentHealth += value;
+        GameObject floatValue = Instantiate(floatPrefab, this.transform);
+        floatValue.GetComponent<Text>().text = "+" + value.ToString();
+        floatValue.GetComponent<Text>().color = Color.green;
         HealthBarChange();
     }
     public void HealthBarChange()

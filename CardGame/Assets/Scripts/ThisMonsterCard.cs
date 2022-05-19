@@ -13,7 +13,6 @@ public class ThisMonsterCard : MonoBehaviour
     public string cardName;
     public int damage;
     public int summonTimes;
-    public int summonTimeForDecrease;
     public int health;
     public int award;
     public string description;
@@ -36,8 +35,6 @@ public class ThisMonsterCard : MonoBehaviour
     void Start()
     {
         ShowCardStaticStatus();
-        ShowCardDynamicStatus();
-        summonTimeForDecrease = summonTimes;
     }
 
     // Update is called once per frame
@@ -56,6 +53,11 @@ public class ThisMonsterCard : MonoBehaviour
         thisSprite = monster.thisImage;
         thisBackground = monster.thisBackground;
 
+        damage = monster.damage;
+        summonTimes = monster.summonTimes;
+        health = monster.health;
+        award = monster.award;
+
 
         cardNameText.text = "" + cardName;    
         descriptionText.text = "" + description;
@@ -65,14 +67,10 @@ public class ThisMonsterCard : MonoBehaviour
     }
     public void ShowCardDynamicStatus()
     {
-        var monster = card as MonsterCard;
-        damage = monster.damage;
-        summonTimes = monster.summonTimes;
-        health = monster.health;
-        award = monster.award;
+       
         damageText.text = "" + damage;
         healthText.text = "" + health;
         awardText.text = "" + award;
-        summonTimesText.text = "" + summonTimeForDecrease;
+        summonTimesText.text = "" + summonTimes;
     }
 }

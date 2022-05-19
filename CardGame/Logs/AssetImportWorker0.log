@@ -3862,3 +3862,4 @@ Received Import Request.
 Start importing Assets/Prefabs/FloatValue.prefab using Guid(7b3357c5ce34dcf429e13968f1559f62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b85e2fd9b686c2464f681f8ada9241dc') in 0.080010 seconds 
   Import took 0.086218 seconds .
 
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file

@@ -32,6 +32,9 @@ public class PlayerData : MonoSingleton<PlayerData>
     public int attacks;//攻击力
     public int monsterCardMaxCount;//初始最大怪物手牌数
     public int perRoundExtractCount;//每回合抽牌数
+    public int awardMonsterCardAmount;
+    public int awardEquipCardAmount;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -83,7 +86,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     }
     public void PerRoundChange()
     {
-        currentHealth -= perRoundHealthDecrease;
+        HealthDecrease(perRoundHealthDecrease);
         if (armorCount >0)          armorCount--;
         if (scareCount > 0)         scareCount--;
         if (counterattackCount > 0) counterattackCount--;
@@ -94,6 +97,10 @@ public class PlayerData : MonoSingleton<PlayerData>
     public void HealthDecrease(int damage)
     {
         currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+        }
         GameObject floatValue= Instantiate(floatPrefab, this.transform);
         floatValue.GetComponent<Text>().text = "-" + damage.ToString();
         floatValue.GetComponent<Text>().color = Color.red;
@@ -102,6 +109,10 @@ public class PlayerData : MonoSingleton<PlayerData>
     public void HealthRecover(int value)
     {
         currentHealth += value;
+        if (currentHealth >= 100)
+        {
+            currentHealth = 100;
+        }
         GameObject floatValue = Instantiate(floatPrefab, this.transform);
         floatValue.GetComponent<Text>().text = "+" + value.ToString();
         floatValue.GetComponent<Text>().color = Color.green;

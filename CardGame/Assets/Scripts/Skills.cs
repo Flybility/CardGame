@@ -82,6 +82,13 @@ public class Skills : MonoSingleton<Skills>
             monster.GetComponent<ThisMonster>().damage -= count;
         }
     }
+    public void AwardImprovedBesides(Transform block,int count)
+    {
+        foreach (var monster in BlocksManager.Instance.GetNeighbours(block))
+        {
+            monster.GetComponent<ThisMonster>().awardHealth += count;
+        }
+    }
    
 
 }

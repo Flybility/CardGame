@@ -15,10 +15,15 @@ public class FloatText : MonoBehaviour
     {
         value = GetComponent<Text>();
         color = value.color;
-        value.DOColor(new Color(1, 1, 1, 0), 2);
+        value.DOColor(new Color(color.r, color.g, color.b, 1), 1f);
         transform.DOLocalMove(transform.localPosition+distance, 1);
         transform.DOScale(Scale, 1);
-        Destroy(gameObject, 2);
+        Invoke("Fade", 1f);
+        Destroy(gameObject, 1.5f);
+    }
+    public void Fade()
+    {
+        value.DOColor(new Color(color.r, color.g, color.b, 0), 0.5f);
     }
 
     // Update is called once per frame

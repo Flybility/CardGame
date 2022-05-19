@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OpenPackage : MonoBehaviour
+public class OpenPackage : MonoSingleton<OpenPackage>
 {
     public GameObject eqiupmentCardPrefab;
     public GameObject monsterCardPrefab;
@@ -24,22 +24,23 @@ public class OpenPackage : MonoBehaviour
         
     }
     //开装备卡包
-    public void OpenEquiptmentCard()
+    public void OpenEquiptmentCard(int amount)
     {
         ClearPoolEquiptment();
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < amount; i++)
         {
-            GameObject newCard = GameObject.Instantiate(eqiupmentCardPrefab,cardPoolEquiptment.transform);
-            newCard.GetComponent<ThisEquiptmentCard>().card = cardData.RandomEquipmentCard();
+            int n = Random.Range(0, 10);
+            GameObject newCard = GameObject.Instantiate(eqiupmentCardPrefab.transform.GetChild(n).gameObject,cardPoolEquiptment.transform);
+            newCard.GetComponent<ThisEquiptmentCard>().card = cardData.CopyEquipmentCard(n);//卡牌库
             cardsEquiptment.Add(newCard);
         }
         //SaveCardData();
     }
     //开怪物卡包
-    public void OpenMonsterCard()
+    public void OpenMonsterCard(int amount)
     {
         ClearPoolMonster();
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < amount; i++)
         {
             GameObject newCard = GameObject.Instantiate(monsterCardPrefab, cardPoolMonster.transform);
             newCard.GetComponent<ThisMonsterCard>().card = cardData.RandomMonsterCard();

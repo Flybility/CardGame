@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CursorFollow : MonoSingleton<CursorFollow>
 {
@@ -25,6 +27,10 @@ public class CursorFollow : MonoSingleton<CursorFollow>
     void Update()
     {
         FollowMouseMove();
+        if (GetOverUI(canvas)==false)
+        {
+            description.SetActive(false);
+        }
     }
     public void FollowMouseMove()
     {
@@ -47,6 +53,20 @@ public class CursorFollow : MonoSingleton<CursorFollow>
         //或者
 
         //transform.localPosition = new Vector3(pos.x, pos.y, 0);
+    }
+    public GameObject GetOverUI(Canvas canvas)
+    {
+        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
+        pointerEventData.position = Input.mousePosition;
+        GraphicRaycaster gr = canvas.GetComponent<GraphicRaycaster>();
+        List<RaycastResult> results = new List<RaycastResult>();
+        gr.Raycast(pointerEventData, results);
+        if (results.Count != 0)
+        {
+            return results[0].gameObject;
+        }
+
+        return null;
     }
 }
 

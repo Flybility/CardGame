@@ -32,10 +32,11 @@ public class GameManager : MonoSingleton<GameManager>
         //isStart = true;
         gameStart.SetActive(false);
     }
-    public void OpenPackage()
+    public void ChoseCard()
     {
-        openEquipmentCard.SetActive(true);
+        //openEquipmentCard.SetActive(true);
         openMonsterCard.SetActive(true);
+        OpenPackage.Instance.OpenMonsterCard(PlayerData.Instance.awardMonsterCardAmount);
     }
     public void StartBattle()
     {

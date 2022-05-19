@@ -74,12 +74,13 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         if (GetComponent<ThisEquiptmentCard>() != null)
         {
             CursorFollow.Instance.description.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = thisCard1.description;
+            CursorFollow.Instance.description.SetActive(true);
         }
-        if (GetComponent<ThisMonsterCard>() != null)
-        {
-            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = thisCard2.description;
-        }
-        CursorFollow.Instance.description.SetActive(true);
+        //if (GetComponent<ThisMonsterCard>() != null)
+        //{
+        //    CursorFollow.Instance.description.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = thisCard2.description;
+        //}
+        
     }
     
     public virtual void OnPointerExit(PointerEventData eventData)
@@ -116,9 +117,17 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
             //向玩家怪物卡组加入选中的怪物牌
             PlayerData.Instance.playerMonsterCards.Add(thisCard2.card);
             //点击卡包里的卡之后其他卡牌消失
-            
+            foreach(var monster in OpenPackage.Instance.cardsMonster)
+            {
+                Destroy(monster);
+            }
+            OpenPackage.Instance.cardsMonster.Clear();
             //开卡包界面消失
-            transform.parent.parent.gameObject.SetActive(false);
+            GameManager.Instance.openMonsterCard.SetActive(false);
+            //选完怪物卡选装备卡
+            GameManager.Instance.openEquipmentCard.SetActive(true);
+            OpenPackage.Instance.OpenEquiptmentCard(PlayerData.Instance.awardEquipCardAmount);
+           
         }
         if (isInOpenEquipmentPool&&eventData.button == PointerEventData.InputButton.Left)
         {
@@ -126,9 +135,13 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
             //向玩家装备卡组加入选中的装备牌并实时显示在装备栏中
             PlayerData.Instance.playerEquipmentCards.Add(thisCard1.card);
             BattleField.Instance.AddEquipmentCard(thisCard1.card);
-            
+            foreach (var equip in OpenPackage.Instance.cardsEquiptment)
+            {
+                Destroy(equip);
+            }
+            OpenPackage.Instance.cardsEquiptment.Clear();
             //开卡包界面消失
-            transform.parent.parent.gameObject.SetActive(false);
+            GameManager.Instance.openEquipmentCard.SetActive(false);
         }
         
 

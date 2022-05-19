@@ -80,6 +80,7 @@ public class BattleField : MonoSingleton<BattleField>
         {
             //执行战斗结束函数
             GameManager.Instance.BattleEnd();
+            GameManager.Instance.ChoseCard();
             isFinished = true;
         }
         else
@@ -129,8 +130,9 @@ public class BattleField : MonoSingleton<BattleField>
         {
            if (blocks[i].transform.childCount > 1) 
             {
-                blocks[i].transform.GetChild(1).SetParent(usedArea);
-                Destroy(blocks[i].transform.GetChild(1)); 
+                GameObject card = blocks[i].transform.GetChild(1).gameObject;
+                card.transform.SetParent(usedArea);
+                Destroy(card); 
             }
         }
         //清空场上所有牌堆
@@ -185,11 +187,15 @@ public class BattleField : MonoSingleton<BattleField>
     //切换回合
     public void TurnEnd()
     {
-        if (gameState == GameState.玩家回合)
+        if (gameState == GameState.玩家回合&& monsterInBattle.Count>0)
         {
             CreateArrow(player.transform, ArrowPrefab);
             OpenHighlightWithinMonster();
             AttackSelecting = true;
+        }
+        else if (gameState == GameState.玩家回合 && monsterInBattle.Count<=0)
+        {
+            StartCoroutine(MonsterAttack(player));
         }
     }
     //玩家抽牌
@@ -351,7 +357,7 @@ public class BattleField : MonoSingleton<BattleField>
     //怪物攻击协程（包含动效）
     IEnumerator MonsterAttack(GameObject target)
     {
-        if (monsterInBattle != null)
+        if (monsterInBattle.Count > 0)
         {
             Debug.Log("敌人回合");
             gameState = GameState.敌方回合;
@@ -440,9 +446,9 @@ public class BattleField : MonoSingleton<BattleField>
     //战斗时动态加入装备牌
     public void AddEquipmentCard(EquipmentCard card)
     {
-        GameObject newCard = GameObject.Instantiate(eqiupmentCardPrefab, equipmentArea);
-        cardsEquiptment.Add(newCard);
+        GameObject newCard = GameObject.Instantiate(eqiupmentCardPrefab.transform.GetChild(card.id).gameObject, equipmentArea);        
         newCard.GetComponent<ThisEquiptmentCard>().card = card;
+        cardsEquiptment.Add(newCard);
         newCard.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), interval);
         ChangeParent.Invoke();
     }
@@ -627,7 +633,7 @@ public class BattleField : MonoSingleton<BattleField>
         //yield return new WaitForSeconds(0.2f);
         monsterInBattle.Remove(monster);
         //击杀怪物回复生命值
-        PlayerData.Instance.currentHealth += monster.GetComponent<ThisMonster>().awardHealth;
+        PlayerData.Instance.HealthRecover(monster.GetComponent<ThisMonster>().awardHealth);
 
         if (monsterCard.GetComponent<ThisMonsterCard>().summonTimes<=0)
         {

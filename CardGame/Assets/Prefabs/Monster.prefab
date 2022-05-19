@@ -576,6 +576,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -698,6 +699,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -1072,6 +1074,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -1716,6 +1719,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -3387,6 +3391,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -4197,6 +4202,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -4627,6 +4633,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -5396,6 +5403,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -5517,6 +5525,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -5728,6 +5737,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -5749,6 +5759,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monster: {fileID: 0}
   decreaseValue: 2
+  intervalMonsters: []
 --- !u!1 &4793281074128479770
 GameObject:
   m_ObjectHideFlags: 0
@@ -6207,6 +6218,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -6453,6 +6465,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -6708,6 +6721,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -7048,6 +7062,7 @@ GameObject:
   - component: {fileID: 3253002117735619116}
   - component: {fileID: 3623189009717060304}
   - component: {fileID: 4361557384074774547}
+  - component: {fileID: 155433589643144961}
   m_Layer: 5
   m_Name: Monster (9)
   m_TagString: Untagged
@@ -7149,6 +7164,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -7156,6 +7172,21 @@ MonoBehaviour:
   burnsCount: 0
   leftMonster: {fileID: 0}
   rightMonster: {fileID: 0}
+--- !u!114 &155433589643144961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5336973001661015372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e40bb65c2914ef42873b19d1131447d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monster: {fileID: 0}
+  value: 5
+  intervalMonsters: []
 --- !u!1 &5515217797699283125
 GameObject:
   m_ObjectHideFlags: 0
@@ -7471,6 +7502,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -8164,6 +8196,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -8623,6 +8656,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -8744,6 +8778,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -10274,6 +10309,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -10904,6 +10940,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0
@@ -12399,6 +12436,7 @@ MonoBehaviour:
   monsterCard: {fileID: 0}
   block: {fileID: 0}
   effect: {fileID: 0}
+  summonTime: 0
   health: 0
   awardHealth: 0
   damage: 0

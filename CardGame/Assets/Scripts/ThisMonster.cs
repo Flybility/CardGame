@@ -131,7 +131,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.DOScale(1.1f ,0.1f);
-        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = monsterCard.GetComponent<ThisMonsterCard>().card.description;
+        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = monsterCard.GetComponent<ThisMonsterCard>().card.description+"\n\n"+"击杀获得情绪量:"+awardHealth.ToString();
         CursorFollow.Instance.description.SetActive(true);
     }
 

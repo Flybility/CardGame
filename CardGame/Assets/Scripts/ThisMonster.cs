@@ -14,6 +14,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public Transform block;
     public Component effect;
     private int id;
+    public int summonTime;
     public  int health;
     private int maxHealth;
     public int awardHealth;
@@ -22,6 +23,8 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public int burnsCount;//灼伤层数
     private Slider slider;
     private TextMeshProUGUI healthValue; 
+    private Transform stateBlock;
+    private GameObject dizzy;
     public GameObject leftMonster, rightMonster;
 
 
@@ -41,11 +44,12 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
 
     public void PerRoundChange()
     {
-        if (dizzyCount > 0) dizzyCount--;
+        if (dizzyCount > 0) DecreaseDizzy(1);
         if (burnsCount > 0) burnsCount--;
     }
     public void OnStart()
     {
+        stateBlock = transform.GetChild(2);
         awardHealth = monsterCard.GetComponent<ThisMonsterCard>().card.award;
         damage = monsterCard.GetComponent<ThisMonsterCard>().card.damage;
         slider = transform.GetChild(0).GetComponent<Slider>();
@@ -53,6 +57,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         monsterCard = GetComponentInParent<Blocks>().card;
         id = monsterCard.GetComponent<ThisMonsterCard>().id;
         maxHealth = monsterCard.GetComponent<ThisMonsterCard>().card.health;
+        summonTime = monsterCard.GetComponent<ThisMonsterCard>().summonTimeForDecrease;
         health = maxHealth;
         slider.value = (float)health / maxHealth;
         block = transform.parent;
@@ -63,6 +68,35 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     {
         healthValue.text = health + "/" + maxHealth;
     }
+    public void AddDizzy(int Counts,GameObject dizzyPrefab)
+    {
+        dizzyCount += Counts;
+        if (dizzy == null&&dizzyCount!=0)
+        {
+            dizzy= Instantiate(dizzyPrefab, stateBlock);
+            dizzy.transform.GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
+        }
+        else if(dizzy != null && dizzyCount !=0)
+        {
+            dizzy.transform.GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
+        }
+        else { return; }
+       
+    }
+    public void DecreaseDizzy(int count)
+    {
+        dizzyCount -= count;
+         if (dizzy != null && dizzyCount <= 0)
+        {
+            Destroy(dizzy);
+        }
+        if (dizzy != null && dizzyCount > 0)
+        {
+            dizzy.transform.GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
+        }
+        else { dizzyCount = 0; }
+    }
+
     public void HealthDecrease(int damage)
     {
         health -= damage;
@@ -71,7 +105,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         floatValue.GetComponent<Text>().text ="-"+ damage.ToString();
         if (health <= 0)
         {
-            monsterCard.GetComponent<ThisMonsterCard>().card.summonTimes--;
+            monsterCard.GetComponent<ThisMonsterCard>().summonTimeForDecrease--;
             BattleField.Instance.StartMonsterDead(this.gameObject, monsterCard);
         }
         else

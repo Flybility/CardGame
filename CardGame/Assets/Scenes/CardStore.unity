@@ -156,6 +156,7 @@ RectTransform:
   - {fileID: 203043929}
   - {fileID: 1122177993}
   - {fileID: 266516586}
+  - {fileID: 1253153678}
   - {fileID: 687422826}
   - {fileID: 1203400926}
   - {fileID: 1817568169}
@@ -190,6 +191,7 @@ MonoBehaviour:
   discardArea: {fileID: 203043929}
   extractArea: {fileID: 1122177993}
   monsterArea: {fileID: 600954384}
+  usedArea: {fileID: 1253153678}
   interval: 0.12
   summonMax: 6
   monstersCounter: 0
@@ -2226,7 +2228,7 @@ RectTransform:
   - {fileID: 1030433131}
   - {fileID: 212419911}
   m_Father: {fileID: 82153614}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2281,7 +2283,7 @@ RectTransform:
   m_Children:
   - {fileID: 408954797}
   m_Father: {fileID: 82153614}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2869,7 +2871,7 @@ RectTransform:
   - {fileID: 2103266338}
   - {fileID: 1902385848}
   m_Father: {fileID: 82153614}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2961,7 +2963,7 @@ MonoBehaviour:
   counterattackCount: 0
   burnsCount: 0
   bondageCount: 0
-  attacks: 8
+  attacks: 20
   monsterCardMaxCount: 4
   perRoundExtractCount: 2
 --- !u!1 &925753599
@@ -3727,7 +3729,7 @@ RectTransform:
   - {fileID: 323813306}
   - {fileID: 1837497485}
   m_Father: {fileID: 82153614}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4021,7 +4023,7 @@ RectTransform:
   m_Children:
   - {fileID: 1304163098}
   m_Father: {fileID: 82153614}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4332,6 +4334,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1245215673}
   m_CullTransparentMesh: 1
+--- !u!1 &1253153677
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1253153678}
+  - component: {fileID: 1253153679}
+  m_Layer: 5
+  m_Name: UsedCardArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1253153678
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1253153677}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 82153614}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -861}
+  m_SizeDelta: {x: 1200, y: 200}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1253153679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1253153677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 200, y: 300}
+  m_Spacing: {x: -20, y: 0}
+  m_Constraint: 2
+  m_ConstraintCount: 1
 --- !u!1 &1279040711
 GameObject:
   m_ObjectHideFlags: 0
@@ -4991,6 +5053,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ea937de62b000d4c98504d33a20de30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boomEffect: {fileID: 0}
+  dizzyEffect: {fileID: 0}
+  burnsEffect: {fileID: 0}
+  dizzyCount: {fileID: 2190176559971026236, guid: 254b94dc52900b748b4e966f30fc65be, type: 3}
+  burnsCount: {fileID: 0}
 --- !u!4 &1590227582
 Transform:
   m_ObjectHideFlags: 0
@@ -5379,7 +5446,7 @@ RectTransform:
   m_Children:
   - {fileID: 1822592429}
   m_Father: {fileID: 82153614}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

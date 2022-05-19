@@ -19,6 +19,7 @@ public class BattleField : MonoSingleton<BattleField>
     public Transform discardArea;     //弃牌堆父物体
     public Transform extractArea;     //抽牌堆父物体
     public Transform monsterArea;     //怪物手牌堆父物体
+    public Transform usedArea;
     public float interval;            //抽取单张手牌动画时间间隔
     public int summonMax;             //最大召唤怪物数量（默认为6），可删除
     public int monstersCounter;
@@ -350,11 +351,20 @@ public class BattleField : MonoSingleton<BattleField>
             stateChangeEvent.Invoke();
             foreach (var monster in monsterInBattle)
             {
-                Vector3 targetPos = target.transform.localPosition;
-                Vector3 monsterPos = monster.transform.parent.localPosition;
-                monster.transform.DOPunchPosition(targetPos - monsterPos, 0.5f, 1);
-                yield return new WaitForSeconds(0.25f);
-                Skills.Instance.AttackPlayer(monster.GetComponent<ThisMonster>().damage);
+                if (monster.GetComponent<ThisMonster>().dizzyCount > 0)
+                {
+                    //眩晕动画
+                    yield return new WaitForSeconds(0.25f);
+                }
+                else
+                {
+                    Vector3 targetPos = target.transform.localPosition;
+                    Vector3 monsterPos = monster.transform.parent.localPosition;
+                    monster.transform.DOPunchPosition(targetPos - monsterPos, 0.5f, 1);
+                    yield return new WaitForSeconds(0.25f);
+                    Skills.Instance.AttackPlayer(monster.GetComponent<ThisMonster>().damage);
+                }
+                
                 //Skills.Instance.Attack(monster.GetComponent<ThisMonster>().damage, player);
                 yield return new WaitForSeconds(0.5f);
             }
@@ -603,11 +613,12 @@ public class BattleField : MonoSingleton<BattleField>
         //击杀怪物回复生命值
         PlayerData.Instance.currentHealth += monster.GetComponent<ThisMonster>().awardHealth;
 
-        if (monsterCard.GetComponent<ThisMonsterCard>().card.summonTimes== 0)
+        if (monsterCard.GetComponent<ThisMonsterCard>().summonTimeForDecrease<=0)
         {
+            monsterCard.transform.SetParent(usedArea);
             Destroy(monsterCard);            
         }
-        else if (monsterCard.GetComponent<ThisMonsterCard>().card.summonTimes> 0)
+        else if (monsterCard.GetComponent<ThisMonsterCard>().summonTimeForDecrease > 0)
         {
             monsterCard.transform.SetParent(discardArea);            
         }

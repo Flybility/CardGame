@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Skills : MonoSingleton<Skills>
 {
+    public GameObject boomEffect;
+    public GameObject dizzyEffect;
+    public GameObject burnsEffect;
+    public GameObject dizzyCount;
+    public GameObject burnsCount;
     // Start is called before the first frame update
-   public void AttackPlayer(int damage)
+    public void AttackPlayer(int damage)
     {
         PlayerData.Instance.HealthDecrease(damage);
     }
@@ -18,21 +23,21 @@ public class Skills : MonoSingleton<Skills>
         StartCoroutine(BoomBeside(block, damage));
     }
     IEnumerator BoomBeside(Transform block, int damage)
-    {
-        yield return new WaitForSeconds(0.1f);
-        BlocksManager.Instance.backMonsters.Clear();
+    {       
         if (BattleField.Instance.isFinished == false)
         {
-            BlocksManager.Instance.GetNeighbours(block);
             yield return new WaitForSeconds(0.3f);
             //播放爆炸动画
-
-            for (int i = 0; i < BlocksManager.Instance.backMonsters.Count; i++)
+            foreach(var monster in BlocksManager.Instance.GetNeighbours(block))
             {
-                //BlocksManager.Instance.backMonsters[i].GetComponent<ThisMonster>().HealthDecrease(damage);
-
-                AttackMonster(damage, BlocksManager.Instance.backMonsters[i]);
+                AttackMonster(damage, monster);
             }
+            //for (int i = 0; i < BlocksManager.Instance.backMonsters.Count; i++)
+            //{
+            //    //BlocksManager.Instance.backMonsters[i].GetComponent<ThisMonster>().HealthDecrease(damage);
+            //
+            //    AttackMonster(damage, BlocksManager.Instance.backMonsters[i]);
+            //}
         }
     }
     public void StartBoomAll(int damage)
@@ -41,9 +46,9 @@ public class Skills : MonoSingleton<Skills>
     }
     IEnumerator BoomAll(int damage)
     {
-        yield return new WaitForSeconds(0.2f);
         if (BattleField.Instance.isFinished == false)
         {
+            yield return new WaitForSeconds(0.2f);
             List<GameObject> monsters = new List<GameObject>();
             foreach (var monster in BlocksManager.Instance.monsters)
             {
@@ -57,5 +62,20 @@ public class Skills : MonoSingleton<Skills>
             }
         }
         
+    }
+    public void AddDizzyToBesides(Transform block, int count)
+    {       
+        foreach(var monster in BlocksManager.Instance.GetNeighbours(block))
+        {
+            monster.GetComponent<ThisMonster>().AddDizzy(count, dizzyCount);
+        }
+
+    }
+    public void AttackImprovedBesides(Transform block,int count)
+    {
+        foreach (var monster in BlocksManager.Instance.GetNeighbours(block))
+        {
+            monster.GetComponent<ThisMonster>().damage -= count;
+        }
     }
 }

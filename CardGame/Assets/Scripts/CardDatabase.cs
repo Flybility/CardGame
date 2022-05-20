@@ -34,7 +34,7 @@ public class CardDatabase : MonoSingleton<CardDatabase>
         equipmentCardList.Add(new EquipmentCard(23, "玩具盾牌",   10, 10, "获得60点护甲",                                                                          Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard(24, "    ",       10, 10, "回合末攻击伤害 + 8",                                                                    Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard(25, "    ",       10, 10, "该回合末攻击伤害 + 16",                                                                 Resources.Load<Sprite>("EquipmentImages/01")));
-        equipmentCardList.Add(new EquipmentCard(26, "    ",       10,  3, "情绪每下降5点，获得2层反击",                                                            Resources.Load<Sprite>("EquipmentImages/01")));
+        equipmentCardList.Add(new EquipmentCard(26, "叛逆",       10,  3, "每受到一次大于4点的伤害，增加一层反击",                                                 Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard(27, "烟花",       10,  3, "对一个目标造成13点伤害，邻位受到6点伤害",                                               Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard(28, "水枪",       10,  2, "对一个目标造成25点伤害",                                                                Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard(29, "英雄饼干",   10,  3, "增加2层反击",                                                                           Resources.Load<Sprite>("EquipmentImages/01")));

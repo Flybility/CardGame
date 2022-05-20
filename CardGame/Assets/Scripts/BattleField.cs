@@ -159,6 +159,8 @@ public class BattleField : MonoSingleton<BattleField>
         usingEquipment = null;
         SelectingMonster=0;
         monstersCounter = 0;
+        monsterChange.Invoke();
+        PlayerData.Instance.PerBattleRecover();
         PanelMask.SetActive(false);
     }
     private void Update()
@@ -208,7 +210,7 @@ public class BattleField : MonoSingleton<BattleField>
             FlyToDiscardArea();
 
             DrawHandMonster();
-            PlayerData.Instance.PerRoundChange();
+            PlayerData.Instance.ChangeRound();
         }
 
     }
@@ -406,9 +408,9 @@ public class BattleField : MonoSingleton<BattleField>
                 yield return new WaitForSeconds(0.15f);
                 
                 //monster.GetComponent<ThisMonster>().HealthDecrease(PlayerData.Instance.attacks);
-                Skills.Instance.AttackMonster(PlayerData.Instance.attacks, monster);
+                Skills.Instance.AttackMonster(PlayerData.Instance.currentAttacks, monster);
                 yield return new WaitForSeconds(0.1f);
-                monsterChange.Invoke();
+                //monsterChange.Invoke();
             }
             else
             {

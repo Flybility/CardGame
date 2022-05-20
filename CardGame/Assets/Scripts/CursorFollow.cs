@@ -12,6 +12,7 @@ public class CursorFollow : MonoSingleton<CursorFollow>
     Camera _camera;
     RectTransform canvasRectTransform;
     public GameObject description;
+    public bool isOnUI;
     void Start()
     {
         description = transform.GetChild(0).gameObject;
@@ -27,7 +28,8 @@ public class CursorFollow : MonoSingleton<CursorFollow>
     void Update()
     {
         FollowMouseMove();
-        if (GetOverUI(canvas)==false)
+        isOnUI = GetOverUI(canvas);
+        if (isOnUI==false)
         {
             description.SetActive(false);
         }

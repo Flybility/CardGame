@@ -74,11 +74,11 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         if (dizzy == null&&dizzyCount!=0)
         {
             dizzy= Instantiate(dizzyPrefab, stateBlock);
-            dizzy.transform.GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
+            dizzy.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = dizzyCount.ToString();
         }
         else if(dizzy != null && dizzyCount !=0)
         {
-            dizzy.transform.GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
+            dizzy.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = dizzyCount.ToString();
         }
         else { return; }
        
@@ -92,7 +92,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         }
         if (dizzy != null && dizzyCount > 0)
         {
-            dizzy.transform.GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
+            dizzy.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = dizzyCount.ToString();
         }
         else { dizzyCount = 0; }
     }

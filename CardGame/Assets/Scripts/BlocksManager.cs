@@ -24,7 +24,11 @@ public class BlocksManager : MonoSingleton<BlocksManager>
         {
             if (transform.GetChild(i).childCount > 2)
             {
-                monsters[i] = transform.GetChild(i).GetChild(2).gameObject;
+                if (transform.GetChild(i).GetChild(2).CompareTag("Monster"))
+                {
+                    monsters[i] = transform.GetChild(i).GetChild(2).gameObject;
+                }
+                else { monsters[i] = null; }
             }
             else
             {

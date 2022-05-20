@@ -10,7 +10,7 @@ public class Monster7 : MonoBehaviour
     void Start()//怪物上场时调用技能函数
     {
         monster = GetComponent<ThisMonster>();
-        dizzyDamage = 1;
+        dizzyDamage = 2;
     }
         // Update is called once per frame
      void Update()

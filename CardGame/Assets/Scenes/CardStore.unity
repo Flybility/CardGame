@@ -2967,11 +2967,14 @@ MonoBehaviour:
   burnsCount: 0
   bondageCount: 0
   attackTimesCount: 0
-  attacks: 6
+  initialAttacks: 8
+  currentAttacks: 0
   monsterCardMaxCount: 4
   perRoundExtractCount: 2
   awardMonsterCardAmount: 5
   awardEquipCardAmount: 3
+  isCounterattackOpen: 0
+  counterThreshold: 0
 --- !u!1 &925753599
 GameObject:
   m_ObjectHideFlags: 0
@@ -4860,6 +4863,7 @@ MonoBehaviour:
   dizzyCounter: {fileID: 2190176559971026236, guid: 254b94dc52900b748b4e966f30fc65be, type: 3}
   burnsCounter: {fileID: 0}
   attackTimesCounter: {fileID: 2190176559971026236, guid: 3ea5a5a0d5cf0c84790639c94f90a053, type: 3}
+  counterattackCounter: {fileID: 2190176559971026236, guid: 48d14ea70e983fe429a72f3f0aef936b, type: 3}
 --- !u!4 &1590227582
 Transform:
   m_ObjectHideFlags: 0

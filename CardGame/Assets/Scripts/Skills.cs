@@ -10,6 +10,7 @@ public class Skills : MonoSingleton<Skills>
     public GameObject dizzyCounter;
     public GameObject burnsCounter;
     public GameObject attackTimesCounter;
+    public GameObject counterattackCounter;
 
     // Start is called before the first frame update
     public void AttackPlayer(int damage)
@@ -81,7 +82,12 @@ public class Skills : MonoSingleton<Skills>
     {
         //层数1层双次攻击，持续一回合
         PlayerData.Instance.AddAttackTimeCount(times, attackTimesCounter);
-
+    }
+    //属性被动装备
+    public void StaticCounterattackCount(int times,int threshold)
+    {
+        PlayerData.Instance.AddCounterattackCount(times, counterattackCounter);
+        PlayerData.Instance.CounterattackEffect(threshold);
     }
     public void AttackImprovedBesides(Transform block,int count)
     {

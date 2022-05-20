@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using TMPro;
 
 public class ThisEquiptmentCard : MonoBehaviour
 {
@@ -24,7 +23,7 @@ public class ThisEquiptmentCard : MonoBehaviour
     public bool cardBack;
     public EquipmentCard card;
 
-    public TextMeshProUGUI summonTimesText;
+    public Text summonTimesText;
     //public TextMeshProUGUI costText;
     //public TextMeshProUGUI cardNameText;
     //public TextMeshProUGUI damageText;

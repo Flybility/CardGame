@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using TMPro;
+
 
 
 public class PlayerData : MonoSingleton<PlayerData>
@@ -12,8 +12,8 @@ public class PlayerData : MonoSingleton<PlayerData>
     public BattleField battleField;
     public GameObject floatPrefab;
     public Transform playerStatesBar;//玩家属性条
-    public TextMeshProUGUI attackText;
-    public TextMeshProUGUI healthText;
+    public Text attackText;
+    public Text healthText;
     public List<EquipmentCard> playerEquipmentCards = new List<EquipmentCard>();
     public List<MonsterCard> playerMonsterCards = new List<MonsterCard>();
 
@@ -117,11 +117,11 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (attackTimeBar == null && attackTimesCount != 0)
         {
             attackTimeBar = Instantiate(prefab, playerStatesBar);
-            attackTimeBar.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = attackTimesCount.ToString();
+            attackTimeBar.transform.GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
         }
         else if (attackTimeBar != null && attackTimesCount != 0)
         {
-            attackTimeBar.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = attackTimesCount.ToString();
+            attackTimeBar.transform.GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
         }
         else { return; }
 
@@ -135,7 +135,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         }
         if (attackTimeBar != null && attackTimesCount > 0)
         {
-            attackTimeBar.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = attackTimesCount.ToString();
+            attackTimeBar.transform.GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
         }
         else { attackTimesCount = 0; }
     }
@@ -152,11 +152,11 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (counterattackBar == null && counterattackCount != 0)
         {
             counterattackBar = Instantiate(prefab, playerStatesBar);
-            counterattackBar.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = counterattackCount.ToString();
+            counterattackBar.transform.GetChild(0).GetComponent<Text>().text = counterattackCount.ToString();
         }
         else if (counterattackBar != null && counterattackCount != 0)
         {
-            counterattackBar.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = counterattackCount.ToString();
+            counterattackBar.transform.GetChild(0).GetComponent<Text>().text = counterattackCount.ToString();
         }
         else { return; }
     }
@@ -170,7 +170,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         }
         if (counterattackBar != null && counterattackCount > 0)
         {
-            counterattackBar.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = counterattackCount.ToString();
+            counterattackBar.transform.GetChild(0).GetComponent<Text>().text = counterattackCount.ToString();
         }
         else { counterattackCount = 0; }
     }

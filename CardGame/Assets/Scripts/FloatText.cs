@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using TMPro;
 public class FloatText : MonoBehaviour
 {
     public Vector2 distance;
@@ -17,7 +16,6 @@ public class FloatText : MonoBehaviour
         value = GetComponent<Text>();
         color = value.color;
         rigid = GetComponent<Rigidbody2D>();
-        value.DOColor(new Color(color.r, color.g, color.b, 0), 2f);
         //transform.DOLocalMove(transform.localPosition+distance, 1);
         rigid.AddForce(distance);
         transform.DOScale(Scale, 1);
@@ -26,15 +24,15 @@ public class FloatText : MonoBehaviour
     }
     public void Fade()
     {
-        value.DOColor(new Color(color.r, color.g, color.b, 0), 0.5f);
+        float n = Mathf.Lerp(0, 1, 1);
+        Color newcolor = new Color(color.r, color.g, color.b, n);
+        value.color = newcolor;
+
     }
 
     // Update is called once per frame
     void Updated()
     {
-        if (color.a <= 0)
-        {
-            Destroy(gameObject);
-        }
+        Fade();
     }
 }

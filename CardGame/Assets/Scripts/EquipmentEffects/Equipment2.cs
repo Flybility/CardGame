@@ -35,6 +35,7 @@ public class Equipment2 : MonoBehaviour,IPointerClickHandler
                 //加层数
                 Skills.Instance.AddAttackTimesCount(1);
                 PlayerData.Instance.AttackTimeEffect();
+                card.summonTimes--;
             }
         }
     }

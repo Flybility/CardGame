@@ -93,7 +93,7 @@ public class Skills : MonoSingleton<Skills>
     {
         foreach (var monster in BlocksManager.Instance.GetNeighbours(block))
         {
-            monster.GetComponent<ThisMonster>().damage -= count;
+            monster.GetComponent<ThisMonster>().currentAttacks -= count;
         }
     }
     public void AwardImprovedBesides(Transform block,int count)

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using DG.Tweening;
-using TMPro;
 using System;
 
 public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerClickHandler
@@ -18,11 +17,13 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public  int health;
     private int maxHealth;
     public int awardHealth;
-    public int damage;
+    public int attacks;
+    public int currentAttacks;
     public int dizzyCount;//眩晕层数
     public int burnsCount;//灼伤层数
     private Slider slider;
-    private TextMeshProUGUI healthValue; 
+    private Text healthValue;
+    private Text attackText;
     private Transform stateBlock;
     private GameObject dizzy;
     public GameObject leftMonster, rightMonster;
@@ -49,11 +50,14 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     }
     public void OnStart()
     {
-        stateBlock = transform.GetChild(2);
+
         awardHealth = monsterCard.GetComponent<ThisMonsterCard>().card.award;
-        damage = monsterCard.GetComponent<ThisMonsterCard>().card.damage;
+        attacks = monsterCard.GetComponent<ThisMonsterCard>().card.damage;
+        currentAttacks = attacks;
         slider = transform.GetChild(0).GetComponent<Slider>();
-        healthValue = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        healthValue = transform.GetChild(1).GetComponent<Text>();
+        stateBlock = transform.GetChild(2);
+        attackText = transform.GetChild(3).GetComponent<Text>();
         monsterCard = GetComponentInParent<Blocks>().card;
         id = monsterCard.GetComponent<ThisMonsterCard>().id;
         maxHealth = monsterCard.GetComponent<ThisMonsterCard>().card.health;
@@ -67,6 +71,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public void OnUpdate()
     {
         healthValue.text = health + "/" + maxHealth;
+        attackText.text = currentAttacks.ToString();
     }
     public void AddDizzy(int Counts,GameObject dizzyPrefab)
     {
@@ -74,11 +79,11 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         if (dizzy == null&&dizzyCount!=0)
         {
             dizzy= Instantiate(dizzyPrefab, stateBlock);
-            dizzy.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = dizzyCount.ToString();
+            dizzy.transform.GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
         }
         else if(dizzy != null && dizzyCount !=0)
         {
-            dizzy.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = dizzyCount.ToString();
+            dizzy.transform.GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
         }
         else { return; }
        
@@ -92,7 +97,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         }
         if (dizzy != null && dizzyCount > 0)
         {
-            dizzy.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = dizzyCount.ToString();
+            dizzy.transform.GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
         }
         else { dizzyCount = 0; }
     }
@@ -100,6 +105,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public void HealthDecrease(int damage)
     {
         health -= damage;
+        Debug.Log("伤害=" + damage);
         slider.value = (float)health / maxHealth;
         GameObject floatValue = Instantiate(PlayerData.Instance.floatPrefab, this.transform.parent);
         floatValue.GetComponent<Text>().text ="-"+ damage.ToString();
@@ -131,7 +137,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.DOScale(1.1f ,0.1f);
-        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = monsterCard.GetComponent<ThisMonsterCard>().card.description+"\n\n"+"击杀获得情绪量:"+awardHealth.ToString();
+        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().card.description+"\n\n"+"击杀获得情绪量:"+awardHealth.ToString();
         CursorFollow.Instance.description.SetActive(true);
     }
 

@@ -45,7 +45,7 @@ public class BattleField : MonoSingleton<BattleField>
 
     List<MonsterCard> monsterDeck = new List<MonsterCard>();  //从playerData中的playerMonsterCards复制出来的怪物牌组
     [SerializeField]
-    List<GameObject> cardsEquiptment = new List<GameObject>();//装备牌堆中所有装备的list集合
+    public List<GameObject> cardsEquiptment = new List<GameObject>();//装备牌堆中所有装备的list集合
     [SerializeField]
     List<GameObject> monsterInBattle = new List<GameObject>();//存在于战场上的召唤兽的集合
 
@@ -377,7 +377,7 @@ public class BattleField : MonoSingleton<BattleField>
                     Vector3 monsterPos = monster.transform.parent.localPosition;
                     monster.transform.DOPunchPosition(targetPos - monsterPos, 0.5f, 1);
                     yield return new WaitForSeconds(0.25f);
-                    Skills.Instance.AttackPlayer(monster.GetComponent<ThisMonster>().damage);
+                    Skills.Instance.AttackPlayer(monster.GetComponent<ThisMonster>().currentAttacks);
                 }
                 
                 //Skills.Instance.Attack(monster.GetComponent<ThisMonster>().damage, player);

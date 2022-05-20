@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using DG.Tweening;
-using TMPro;
 
 public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerDownHandler, IPointerUpHandler
 {
@@ -73,7 +72,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         transform.DOScale (zoomSize,0.1f);
         if (GetComponent<ThisEquiptmentCard>() != null)
         {
-            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = thisCard1.description;
+            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = thisCard1.description;
             CursorFollow.Instance.description.SetActive(true);
         }
         //if (GetComponent<ThisMonsterCard>() != null)
@@ -98,7 +97,8 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     }
     public void OnPointerDown(PointerEventData eventData)
     {
-        transform.DOScale(clickSize, 0.1f);
+        if (eventData.button == PointerEventData.InputButton.Left)
+        { transform.DOScale(clickSize, 0.1f); }
 
     }
     public void OnPointerUp(PointerEventData eventData)
@@ -143,8 +143,22 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
             //开卡包界面消失
             GameManager.Instance.openEquipmentCard.SetActive(false);
         }
-        
+        if (isInEquipment && eventData.button == PointerEventData.InputButton.Right)
+        {
+            transform.GetChild(1).gameObject.SetActive(true);
+        }
 
+
+    }
+    public void DiscardEquipment()
+    {
+        BattleField.Instance.cardsEquiptment.Remove(this.gameObject);
+        PlayerData.Instance.playerEquipmentCards.Remove(this.GetComponent<ThisEquiptmentCard>().card);
+        Destroy(this.gameObject,0.2f);
+    }
+    public void Cancel()
+    {
+        transform.GetChild(1).gameObject.SetActive(false);
     }
     public void OnSummonOver()
     {

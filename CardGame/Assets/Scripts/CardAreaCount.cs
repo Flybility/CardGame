@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 public class CardAreaCount : MonoBehaviour
 {
-    public TextMeshProUGUI discardCount;
-    public TextMeshProUGUI extractCount;
+    public Text discardCount;
+    public Text extractCount;
     public Transform discardArea;
     public Transform extractArea;
     

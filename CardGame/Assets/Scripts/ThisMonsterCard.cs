@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor.EventSystems;
-using TMPro;
 
 public class ThisMonsterCard : MonoBehaviour
 {
@@ -25,12 +24,12 @@ public class ThisMonsterCard : MonoBehaviour
 
     public MonsterCard card;
 
-    public TextMeshProUGUI summonTimesText;
-    public TextMeshProUGUI healthText;
-    public TextMeshProUGUI awardText;
-    public TextMeshProUGUI cardNameText;
-    public TextMeshProUGUI damageText;
-    public TextMeshProUGUI descriptionText;
+    public Text summonTimesText;
+    public Text healthText;
+    public Text awardText;
+    public Text cardNameText;
+    public Text damageText;
+    public Text descriptionText;
     // Start is called before the first frame update
     void Start()
     {

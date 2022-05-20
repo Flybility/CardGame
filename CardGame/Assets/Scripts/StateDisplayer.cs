@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 public class StateDisplayer : MonoBehaviour
 {
-    public TextMeshProUGUI stateText;
+    public Text stateText;
     // Start is called before the first frame update
     void Start()
     {
+        stateText = transform.GetChild(0).GetComponent<Text>();
         BattleField.Instance.stateChangeEvent.AddListener(UpdateText);
     }
 

@@ -3,7 +3,7 @@ guid: 72fc4c06ef55cb84886d0fa5ab5dd579
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
-  fontSize: 30
+  fontSize: 100
   forceTextureCase: -1
   characterSpacing: 0
   characterPadding: 1
@@ -12,7 +12,7 @@ TrueTypeFontImporter:
   - FZCuHeiSongS-B-GB
   fallbackFontReferences: []
   customCharacters: 
-  fontRenderingMode: 2
+  fontRenderingMode: 1
   ascentCalculationMode: 1
   useLegacyBoundsCalculation: 0
   shouldRoundAdvanceValue: 1

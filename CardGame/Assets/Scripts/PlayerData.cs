@@ -24,6 +24,8 @@ public class PlayerData : MonoSingleton<PlayerData>
     public int maxHealth;
     public int currentHealth;//当前生命值
     public int perRoundHealthDecrease;//每回合固定降低生命值
+    public int extraPerRoundHealthDecrease;//额外每回合降低生命值
+    public int extraHurt;//额外受到伤害
 
     //Buff状态
     public int attackTimes;//攻击次数
@@ -48,6 +50,7 @@ public class PlayerData : MonoSingleton<PlayerData>
 
     private GameObject attackTimeBar;//攻击次数增加栏
     private GameObject angerBar;
+    private GameObject scareBar;
 
 
     // Start is called before the first frame update
@@ -71,6 +74,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerMonsterCards.Add(cardData.CopyMonsterCard(10));
         playerMonsterCards.Add(cardData.CopyMonsterCard(11));
         playerMonsterCards.Add(cardData.CopyMonsterCard(12));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(13));
 
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(0));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
@@ -104,6 +108,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         isAngerCountOpen = false;
         DecreaseCounterattackCount(angerCount);
         DecreaseAttackTimeCount(attackTimesCount);
+        DecreaseScareCount(scareCount);
         HealthBarChange();
     }
     public void ChangeRound()
@@ -115,15 +120,16 @@ public class PlayerData : MonoSingleton<PlayerData>
         
         
         if (armorCount >0)          armorCount--;
-        if (scareCount > 0)         scareCount--;
-        if (angerCount > 0)         DecreaseCounterattackCount(1);
+        if (scareCount > 0)         DecreaseScareCount(1);
+        if (angerCount > 0)         DecreaseCounterattackCount(angerCount/2);
         if (burnsCount > 0)         burnsCount--;
         if (bondageCount > 0)       bondageCount--;
         if (attackTimesCount > 0)   DecreaseAttackTimeCount(1);
         //确保在玩家抽入手牌之后
         yield return new WaitForSeconds(0.3f);
-        HealthDecrease(perRoundHealthDecrease);
+        HealthDecrease(perRoundHealthDecrease+ extraPerRoundHealthDecrease);
         AttackTimeEffect();
+        ScareEffect();
     }
     public void AddAttackTimeCount(int counts, GameObject prefab)
     {
@@ -159,6 +165,39 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (attackTimesCount > 0) attackTimes = 2;
         else { attackTimes = 1; }
     }
+    public void AddScareCount(int counts, GameObject prefab)
+    {
+        scareCount += counts;
+        if (scareBar == null && scareCount != 0)
+        {
+            scareBar = Instantiate(prefab, playerStatesBar);
+            scareBar.transform.GetChild(0).GetComponent<Text>().text = scareCount.ToString();
+        }
+        else if (scareBar != null && scareCount != 0)
+        {
+            scareBar.transform.GetChild(0).GetComponent<Text>().text = scareCount.ToString();
+        }
+        else { return; }
+
+    }
+    public void DecreaseScareCount(int counts)
+    {
+        scareCount -= counts;
+        if (scareBar != null && scareCount <= 0)
+        {
+            Destroy(scareBar);
+        }
+        if (scareBar != null && scareCount > 0)
+        {
+            scareBar.transform.GetChild(0).GetComponent<Text>().text = scareCount.ToString();
+        }
+        else { scareCount = 0; }
+    }
+    public void ScareEffect()
+    {
+        if (scareCount > 0) { extraHurt = scareCount; }
+        else { extraHurt = 0; }
+    }
 
     public void AddCounterattackCount(int counts,GameObject prefab)
     {
@@ -193,11 +232,15 @@ public class PlayerData : MonoSingleton<PlayerData>
         isAngerCountOpen = true;
         counterThreshold = threshold;
     }
+
+
+
     public void HealthDecrease(int damage)
     {
-        currentHealth -= damage;
-        perRoundHurt += damage;
-        if (isAngerCountOpen && damage > counterThreshold)
+        int plus= damage + extraHurt;
+        currentHealth -= plus;
+        perRoundHurt += plus;
+        if (isAngerCountOpen && plus > counterThreshold)
         {
             AddCounterattackCount(1,Skills.Instance.counterattackCounter);
             CheckAttacks();
@@ -206,9 +249,12 @@ public class PlayerData : MonoSingleton<PlayerData>
         {
             currentHealth = 0;
         }
-        GameObject floatValue= Instantiate(floatPrefab, this.transform);
-        floatValue.GetComponent<Text>().text = "-" + damage.ToString();
-        HealthBarChange();
+        if (damage > 0)
+        {
+            GameObject floatValue = Instantiate(floatPrefab, this.transform);
+            floatValue.GetComponent<Text>().text = "-" + plus.ToString();
+            HealthBarChange();
+        }    
     }
     public void HealthRecover(int value)
     {
@@ -217,9 +263,12 @@ public class PlayerData : MonoSingleton<PlayerData>
         {
             currentHealth = 100;
         }
-        GameObject floatValue = Instantiate(floatHealth, this.transform);
-        floatValue.GetComponent<Text>().text = "+" + value.ToString();
-        HealthBarChange();
+        if (value > 0)
+        {
+            GameObject floatValue = Instantiate(floatHealth, this.transform);
+            floatValue.GetComponent<Text>().text = "+" + value.ToString();
+            HealthBarChange();
+        }       
     }
     public void HealthBarChange()
     {
@@ -229,13 +278,8 @@ public class PlayerData : MonoSingleton<PlayerData>
     }
     public void StartAddTempAttacks(int value)
     {
-        StartCoroutine(AddTempAttacks(value));
-    }
-    IEnumerator AddTempAttacks(int value)
-    {
-        yield return new WaitForSeconds(0.6f);
         tempAttaks += value;
-        GameObject floatAttacks = Instantiate(floatAttack, transform);
+        GameObject floatAttacks = Instantiate(floatAttack, transform.position+Vector3.up*20,Quaternion.identity);
         floatAttacks.GetComponent<Text>().text = "+" + value.ToString();
     }
     public void AttackChange()

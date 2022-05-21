@@ -19,6 +19,11 @@ public class Monster7 : MonoBehaviour
     }
     private void OnDestroy()
     {
-        if (BattleField.Instance.isFinished == false) Skills.Instance.AddDizzyToBesides(monster.block, dizzyDamage);
+        if (BattleField.Instance.isFinished == false)
+        {
+            Skills.Instance.AddDizzyToBesides(monster.block, dizzyDamage);
+            Skills.Instance.AddScareCount(terrorValue);
+            PlayerData.Instance.ScareEffect();
+        }
     }
 }

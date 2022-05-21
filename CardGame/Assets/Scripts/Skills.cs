@@ -11,6 +11,7 @@ public class Skills : MonoSingleton<Skills>
     public GameObject burnsCounter;
     public GameObject attackTimesCounter;
     public GameObject counterattackCounter;
+    public GameObject scareCounter;
 
     // Start is called before the first frame update
     public void AttackPlayer(int damage)
@@ -83,6 +84,10 @@ public class Skills : MonoSingleton<Skills>
         //层数1层双次攻击，持续一回合
         PlayerData.Instance.AddAttackTimeCount(times, attackTimesCounter);
     }
+    public void AddScareCount(int times)
+    {
+        PlayerData.Instance.AddScareCount(times, scareCounter);
+    }
     //属性被动装备
     public void StaticAngerCount(int times,int threshold)
     {
@@ -97,7 +102,7 @@ public class Skills : MonoSingleton<Skills>
             Block.GetComponent<Blocks>().AddAttack(rate);
         }
     }
-    public void AwardImprovedBesides(Transform block,int count)
+    public void AwardImprovedBesides(Transform block,float count)
     {
         foreach (var Block in BlocksManager.Instance.GetNeighboursBlock(block))
         {

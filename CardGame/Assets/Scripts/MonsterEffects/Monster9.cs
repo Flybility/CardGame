@@ -5,16 +5,16 @@ using UnityEngine;
 public class Monster9:MonoBehaviour
 {
     public ThisMonster monster;
-    public int value;
+    public float multipleRate;
     // Start is called before the first frame update
     //加入时增加邻位怪兽获取的情绪量
     void Start()
     {
         monster = GetComponent<ThisMonster>();
-        Skills.Instance.AwardImprovedBesides(monster.block, value);
+        Skills.Instance.AwardImprovedBesides(monster.block, multipleRate);
         foreach (var monster in BlocksManager.Instance.GetNeighbours(monster.block))
         {
-            monster.GetComponent<ThisMonster>().awardHealth += value;
+            monster.GetComponent<ThisMonster>().multipleAwards = multipleRate;
         }
     }
 
@@ -29,10 +29,10 @@ public class Monster9:MonoBehaviour
    {
       if (BattleField.Instance.isFinished == false)
       {
-          Skills.Instance.AwardImprovedBesides(monster.block, 0);
+          Skills.Instance.AwardImprovedBesides(monster.block, 1);
           foreach (var monster in BlocksManager.Instance.GetNeighbours(monster.block))
           {
-              monster.GetComponent<ThisMonster>().awardHealth -= value;
+              monster.GetComponent<ThisMonster>().multipleAwards = 1;
           }
       }
            

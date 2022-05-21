@@ -6,7 +6,6 @@ public class Monster8:MonoBehaviour
 {
     public ThisMonster monster;
     public float multipleRate;
-    public List<GameObject> intervalMonsters = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {

@@ -18,7 +18,7 @@ public class CursorFollow : MonoSingleton<CursorFollow>
     public bool isOnUI;
 
     private string 反击 = "反击：回合末每次攻击伤害 = 初始伤害 + 反击层数*本回合受到伤害的30%";
-    private string 恐惧 = "恐惧：本回合每次所受伤害 = 初始伤害 + 恐惧层数*初始伤害的10%";
+    private string 恐惧 = "恐惧：本回合每次所受伤害 = 初始伤害 + 恐惧层数";
     private string 眩晕 = "眩晕：停止行动n回合，n为眩晕层数";
     void Start()
     {
@@ -39,28 +39,37 @@ public class CursorFollow : MonoSingleton<CursorFollow>
         isOnUI = GetOverUI(canvas);
         if (isOnUI==false)
         {
+            text.text = null;
             description.SetActive(false);
             extraDis.SetActive(false);
         }
+        if (isOnUI == true)
+        {
+            CheckText();
+        }
+        
+    }
+    public void CheckText()
+    {
         if (text.text.Contains("反击"))
         {
             extraDis.SetActive(true);
             extraText.text = 反击;
         }
-        if (text.text.Contains("反击")&& text.text.Contains("恐惧"))
+        if (text.text.Contains("眩晕") && !text.text.Contains("恐惧"))
         {
             extraDis.SetActive(true);
-            extraText.text = 反击+ "\n\n" + 恐惧;
+            extraText.text = 眩晕;
         }
-        if (text.text.Contains("恐惧"))
+        if (text.text.Contains("恐惧") && !text.text.Contains("眩晕"))
         {
             extraDis.SetActive(true);
             extraText.text = 恐惧;
         }
-        if (text.text.Contains("眩晕"))
+        if (text.text.Contains("眩晕") && text.text.Contains("恐惧"))
         {
             extraDis.SetActive(true);
-            extraText.text = 眩晕;
+            extraText.text = 眩晕 + "\n\n" + 恐惧;
         }
         if (!text.text.Contains("反击") && !text.text.Contains("恐惧") && !text.text.Contains("眩晕"))
         {

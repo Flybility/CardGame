@@ -9,13 +9,13 @@ public class Blocks : MonoBehaviour, IPointerClickHandler
     public GameObject highLightImage;
     public bool canAddAwards;
     public bool canAddAttacks;
-    public float multipleAttacks; 
-    public int extraAwards;
+    public float multipleAttacks;
+    public float multipleAwards;
 
     void Start()
     {
         multipleAttacks = 1;
-        extraAwards = 0;
+        multipleAwards = 1;
         highLightImage = transform.GetChild(0).gameObject;
         highLightImage.SetActive(false);
         BattleField.Instance.highlightClear.AddListener(HighlightClear);
@@ -25,7 +25,7 @@ public class Blocks : MonoBehaviour, IPointerClickHandler
     {
         if (highLightImage.activeInHierarchy&& eventData.button == PointerEventData.InputButton.Left)
         {
-            BattleField.Instance.SummonConfirm(transform, multipleAttacks, extraAwards);            
+            BattleField.Instance.SummonConfirm(transform, multipleAttacks, multipleAwards);            
         }
     }
 
@@ -34,9 +34,9 @@ public class Blocks : MonoBehaviour, IPointerClickHandler
     {
         multipleAttacks = count;
     }
-    public void AddAwards(int count)
+    public void AddAwards(float count)
     {
-        extraAwards = count;
+        multipleAwards = count;
     }
     public void HighlightClear()
     {

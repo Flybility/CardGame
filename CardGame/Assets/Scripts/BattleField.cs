@@ -420,14 +420,23 @@ public class BattleField : MonoSingleton<BattleField>
             }
                 
         }
-        PlayerData.Instance.perRoundHurt = 0;
         player.transform.DOLocalMove(playerPos, 0.3f);
+        PlayerData.Instance.perRoundHurt = 0;
+
         yield return new WaitForSeconds(0.8f);
         PlayerRoundEnd.Invoke();//玩家回合结束事件(结算buff)
 
         StartCoroutine(MonsterAttack(player));
 
         
+    }
+    public void JumpPlayerRound()
+    {
+        PlayerData.Instance.perRoundHurt = 0;
+
+        PlayerRoundEnd.Invoke();//玩家回合结束事件(结算buff)
+
+        StartCoroutine(MonsterAttack(player));
     }
     //将装备牌显示到装备牌堆（包含动效）
     IEnumerator DrawEquipmentDeck()
@@ -515,12 +524,12 @@ public class BattleField : MonoSingleton<BattleField>
         SelectingMonster = 1;
     }
     //召唤请求确认
-    public void SummonConfirm(Transform _block,float multipleAttacks,int extraAwards)
+    public void SummonConfirm(Transform _block,float multipleAttacks,float multipleAwards)
     {
         highlightClear.Invoke();
         if (waitingMonster != null)
         {
-            StartCoroutine(Summon(waitingMonster, _block, multipleAttacks, extraAwards));
+            StartCoroutine(Summon(waitingMonster, _block, multipleAttacks, multipleAwards));
         }
 
     }
@@ -534,7 +543,7 @@ public class BattleField : MonoSingleton<BattleField>
         PanelMask.SetActive(false);
     }
     //召唤开始
-    IEnumerator Summon(GameObject _monster,Transform _block, float multipleAttacks, int extraAwards)
+    IEnumerator Summon(GameObject _monster,Transform _block, float multipleAttacks, float multipleAwards)
     {  
         DestroyArrow();
         SelectingMonster = 0;
@@ -558,7 +567,7 @@ public class BattleField : MonoSingleton<BattleField>
 
         yield return new WaitForSeconds(0.2f);
         monster.GetComponent<ThisMonster>().multipleAttacks = multipleAttacks;
-        monster.GetComponent<ThisMonster>().awardHealth += extraAwards;
+        monster.GetComponent<ThisMonster>().multipleAwards = multipleAwards;
     }
     //使用装备请求，传入使用的装备（其他脚本调用）
     //public void UseEquipmentRequest(GameObject equipment)
@@ -641,7 +650,7 @@ public class BattleField : MonoSingleton<BattleField>
         //yield return new WaitForSeconds(0.2f);
         monsterInBattle.Remove(monster);
         //击杀怪物回复生命值
-        PlayerData.Instance.HealthRecover(monster.GetComponent<ThisMonster>().awardHealth);
+        PlayerData.Instance.HealthRecover(monster.GetComponent<ThisMonster>().currentAwards);
 
         if (monsterCard.GetComponent<ThisMonsterCard>().summonTimes<=0)
         {

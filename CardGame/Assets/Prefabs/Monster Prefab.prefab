@@ -172,7 +172,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 50}
-  m_SizeDelta: {x: 70, y: 50}
+  m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5473641659615164348
 CanvasRenderer:
@@ -334,7 +334,12 @@ MonoBehaviour:
   summonTime: 0
   health: 0
   awardHealth: 0
-  damage: 0
+  currentAwards: 0
+  multipleAwards: 1
+  attacks: 0
+  currentAttacks: 0
+  afterMultipleAttacks: 0
+  multipleAttacks: 1
   dizzyCount: 0
   burnsCount: 0
   leftMonster: {fileID: 0}

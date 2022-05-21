@@ -17,6 +17,9 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public  int health;
     private int maxHealth;
     public int awardHealth;
+    public int currentAwards;
+    public float multipleAwards;
+
     public int attacks;
     public int currentAttacks;
     public int afterMultipleAttacks;
@@ -53,6 +56,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public void OnStart()
     {
         multipleAttacks = 1;
+        multipleAwards = 1;
         awardHealth = monsterCard.GetComponent<ThisMonsterCard>().card.award;
         attacks = monsterCard.GetComponent<ThisMonsterCard>().card.damage;
         currentAttacks = attacks;
@@ -73,8 +77,9 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public void OnUpdate()
     {
         healthValue.text = health + "/" + maxHealth;
-        afterMultipleAttacks = ((int)(currentAttacks * multipleAttacks));
-        attackText.text = afterMultipleAttacks.ToString();
+        afterMultipleAttacks = (int)(currentAttacks * multipleAttacks);
+        currentAwards = (int)(awardHealth * multipleAwards);
+        attackText.text = (afterMultipleAttacks+ PlayerData.Instance.extraHurt).ToString();
     }
     public void AddDizzy(int Counts,GameObject dizzyPrefab)
     {
@@ -140,13 +145,18 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.DOScale(1.1f ,0.1f);
-        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().card.description+"\n\n"+"击杀获得情绪量:"+awardHealth.ToString();
+        Invoke("ShowDescription", 0.1f);
         CursorFollow.Instance.description.SetActive(true);
+    }
+    public void ShowDescription()
+    {
+        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n\n" + "击杀获得情绪量:" + currentAwards.ToString();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         transform.DOScale(1, 0.1f);
+        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = null;
         CursorFollow.Instance.description.SetActive(false);
     }
 

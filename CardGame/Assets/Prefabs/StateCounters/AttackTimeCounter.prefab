@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   discription1: "\u4E0B"
-  discription2: "\u56DE\u5408\u73A9\u5BB6\u653B2\u6B21"
+  discription2: "\u56DE\u5408\u73A9\u5BB6\u653B\u51FB2\u6B21"
   count: {fileID: 0}
 --- !u!1 &4318231377542300561
 GameObject:

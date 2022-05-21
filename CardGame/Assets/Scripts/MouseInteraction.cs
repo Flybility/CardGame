@@ -72,13 +72,14 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         transform.DOScale (zoomSize,0.1f);
         if (GetComponent<ThisEquiptmentCard>() != null)
         {
-            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = thisCard1.description;
+            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text =thisCard1.cardName+":"+ thisCard1.description;
             CursorFollow.Instance.description.SetActive(true);
         }
-        //if (GetComponent<ThisMonsterCard>() != null)
-        //{
-        //    CursorFollow.Instance.description.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = thisCard2.description;
-        //}
+        if (GetComponent<ThisMonsterCard>() != null)
+        {
+            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = thisCard2.description;
+            CursorFollow.Instance.description.SetActive(true);
+        }
         
     }
     

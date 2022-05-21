@@ -18,21 +18,16 @@ public class FloatText : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         //transform.DOLocalMove(transform.localPosition+distance, 1);
         rigid.AddForce(distance);
-        transform.DOScale(Scale, 1);
-        //Invoke("Fade", 1f);
-        Destroy(gameObject, 2f);
+        transform.DOScale(Scale, 0.2f);
+        Invoke("Fade", 0.2f);
+        Destroy(gameObject, 1.2f);
     }
     public void Fade()
     {
-        float n = Mathf.Lerp(0, 1, 1);
-        Color newcolor = new Color(color.r, color.g, color.b, n);
-        value.color = newcolor;
+        transform.DOScale(Scale/2, 1f);
 
     }
 
     // Update is called once per frame
-    void Updated()
-    {
-        Fade();
-    }
+   
 }

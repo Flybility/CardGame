@@ -12,11 +12,19 @@ public class CursorFollow : MonoSingleton<CursorFollow>
     Camera _camera;
     RectTransform canvasRectTransform;
     public GameObject description;
+    public GameObject extraDis;
+    public Text text;
+    public Text extraText;
     public bool isOnUI;
+
+    private string 反击 = "反击：回合末每次攻击伤害 = 初始伤害 + 反击层数*本回合受到伤害的30%";
+    private string 恐惧 = "恐惧：本回合每次所受伤害 = 初始伤害 + 恐惧层数*初始伤害的10%";
+    private string 眩晕 = "眩晕：停止行动n回合，n为眩晕层数";
     void Start()
     {
         description = transform.GetChild(0).gameObject;
         description.SetActive(false);
+        extraText = extraDis.transform.GetChild(0).GetComponent<Text>();
         transform.GetChild(0).gameObject.SetActive(false);
         Cursor.visible = false;
         rectTransform = transform as RectTransform;
@@ -32,6 +40,31 @@ public class CursorFollow : MonoSingleton<CursorFollow>
         if (isOnUI==false)
         {
             description.SetActive(false);
+            extraDis.SetActive(false);
+        }
+        if (text.text.Contains("反击"))
+        {
+            extraDis.SetActive(true);
+            extraText.text = 反击;
+        }
+        if (text.text.Contains("反击")&& text.text.Contains("恐惧"))
+        {
+            extraDis.SetActive(true);
+            extraText.text = 反击+ "\n\n" + 恐惧;
+        }
+        if (text.text.Contains("恐惧"))
+        {
+            extraDis.SetActive(true);
+            extraText.text = 恐惧;
+        }
+        if (text.text.Contains("眩晕"))
+        {
+            extraDis.SetActive(true);
+            extraText.text = 眩晕;
+        }
+        if (!text.text.Contains("反击") && !text.text.Contains("恐惧") && !text.text.Contains("眩晕"))
+        {
+            extraDis.SetActive(false);
         }
     }
     public void FollowMouseMove()

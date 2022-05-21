@@ -73,7 +73,7 @@ MonoBehaviour:
   mi: {fileID: 0}
   card: {fileID: 0}
   count: 0
-  threshold: 3
+  threshold: 4
 --- !u!114 &7989567969468184136
 MonoBehaviour:
   m_ObjectHideFlags: 0

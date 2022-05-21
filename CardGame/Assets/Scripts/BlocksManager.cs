@@ -36,6 +36,21 @@ public class BlocksManager : MonoSingleton<BlocksManager>
             }
         }
     }
+    public List<GameObject> GetNeighboursBlock(Transform thisBlock)
+    {
+        List<GameObject> neighbours = new List<GameObject>();
+        int lowerNumber = thisBlock.GetSiblingIndex() - 1;
+        int higherNumber = thisBlock.GetSiblingIndex() + 1;
+
+        if (lowerNumber < 0) lowerNumber = 5;
+        if (higherNumber > 5) higherNumber = 0;
+        if (BattleField.Instance.blocks[lowerNumber] != null)
+            neighbours.Add(BattleField.Instance.blocks[lowerNumber]);
+        if (BattleField.Instance.blocks[higherNumber] != null)
+            neighbours.Add(BattleField.Instance.blocks[higherNumber]);
+        return neighbours;
+
+    }
     public List<GameObject> GetNeighbours(Transform thisBlock)
     {        
         List<GameObject> neighbours = new List<GameObject>();
@@ -49,6 +64,22 @@ public class BlocksManager : MonoSingleton<BlocksManager>
         if(monsters[higherNumber]!=null)
         neighbours.Add(monsters[higherNumber].gameObject);
         return neighbours;
+    }
+    public List<GameObject> GetIntervalBlock(Transform thisBlock)
+    {
+        List<GameObject> interval = new List<GameObject>();
+        int lowerNumber = thisBlock.GetSiblingIndex() - 2;
+        int higherNumber = thisBlock.GetSiblingIndex() + 2;
+
+        if (lowerNumber == -1) lowerNumber = 5;
+        if (lowerNumber == -2) lowerNumber = 4;
+        if (higherNumber == 6) higherNumber = 0;
+        if (higherNumber == 7) higherNumber = 1;
+        if (BattleField.Instance.blocks[lowerNumber] != null)
+            interval.Add(BattleField.Instance.blocks[lowerNumber]);
+        if (BattleField.Instance.blocks[higherNumber] != null)
+            interval.Add(BattleField.Instance.blocks[higherNumber]);
+        return interval;
     }
     public List<GameObject> GetInterval(Transform thisBlock)
     {

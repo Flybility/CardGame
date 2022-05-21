@@ -84,23 +84,24 @@ public class Skills : MonoSingleton<Skills>
         PlayerData.Instance.AddAttackTimeCount(times, attackTimesCounter);
     }
     //属性被动装备
-    public void StaticCounterattackCount(int times,int threshold)
+    public void StaticAngerCount(int times,int threshold)
     {
         PlayerData.Instance.AddCounterattackCount(times, counterattackCounter);
-        PlayerData.Instance.CounterattackEffect(threshold);
+        PlayerData.Instance.AngerEffect(threshold);
     }
-    public void AttackImprovedBesides(Transform block,int count)
+    //间位攻击力改变
+    public void AttackImprovedInterval(Transform block,float rate)
     {
-        foreach (var monster in BlocksManager.Instance.GetNeighbours(block))
+        foreach (var Block in BlocksManager.Instance.GetIntervalBlock(block))
         {
-            monster.GetComponent<ThisMonster>().currentAttacks -= count;
+            Block.GetComponent<Blocks>().AddAttack(rate);
         }
     }
     public void AwardImprovedBesides(Transform block,int count)
     {
-        foreach (var monster in BlocksManager.Instance.GetNeighbours(block))
+        foreach (var Block in BlocksManager.Instance.GetNeighboursBlock(block))
         {
-            monster.GetComponent<ThisMonster>().awardHealth += count;
+            Block.GetComponent<Blocks>().AddAwards(count);
         }
     }
    

@@ -21,27 +21,32 @@ public class PlayerData : MonoSingleton<PlayerData>
     //基础状态
     public int maxHealth;
     public int currentHealth;//当前生命值
-    public int perRoundHealthDecrease;//每回合降低生命值
+    public int perRoundHealthDecrease;//每回合固定降低生命值
 
     //Buff状态
     public int attackTimes;//攻击次数
     public int armorCount;//护甲层数
     public int scareCount;//恐惧层数
-    public int counterattackCount;//反击层数
+    public int angerCount;//反击层数
     public int burnsCount;//灼伤层数
     public int bondageCount;//束缚层数
     public int attackTimesCount;//攻击次数增加层数
     public int initialAttacks;//初始攻击力
     public int currentAttacks;//目前攻击力
+    public int tempAttaks;//临时攻击力
     public int monsterCardMaxCount;//初始最大怪物手牌数
     public int perRoundExtractCount;//每回合抽牌数
+    public int tempExtraCardMax;//临时增加最大抽牌数
     public int awardMonsterCardAmount;
     public int awardEquipCardAmount;
-    public bool isCounterattackOpen;
+    public bool isAngerCountOpen;
     public int counterThreshold;
 
+    public int perRoundHurt;
+
     private GameObject attackTimeBar;//攻击次数增加栏
-    private GameObject counterattackBar;
+    private GameObject angerBar;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -61,6 +66,9 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerMonsterCards.Add(cardData.CopyMonsterCard(7));
         playerMonsterCards.Add(cardData.CopyMonsterCard(8));
         playerMonsterCards.Add(cardData.CopyMonsterCard(9));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(10));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(11));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(12));
 
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(0));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
@@ -89,7 +97,9 @@ public class PlayerData : MonoSingleton<PlayerData>
     public void PerBattleRecover()
     {
         currentHealth = maxHealth;
-        DecreaseCounterattackCount(counterattackCount);
+        tempAttaks = 0;
+        tempExtraCardMax = 0;
+        DecreaseCounterattackCount(angerCount);
         DecreaseAttackTimeCount(attackTimesCount);
         HealthBarChange();
     }
@@ -103,11 +113,12 @@ public class PlayerData : MonoSingleton<PlayerData>
         
         if (armorCount >0)          armorCount--;
         if (scareCount > 0)         scareCount--;
-        if (counterattackCount > 0) DecreaseCounterattackCount(1);
+        if (angerCount > 0)         DecreaseCounterattackCount(1);
         if (burnsCount > 0)         burnsCount--;
         if (bondageCount > 0)       bondageCount--;
         if (attackTimesCount > 0)   DecreaseAttackTimeCount(1);
-        yield return new WaitForSeconds(0.5f);
+        //确保在玩家抽入手牌之后
+        yield return new WaitForSeconds(0.3f);
         HealthDecrease(perRoundHealthDecrease);
         AttackTimeEffect();
     }
@@ -148,44 +159,44 @@ public class PlayerData : MonoSingleton<PlayerData>
 
     public void AddCounterattackCount(int counts,GameObject prefab)
     {
-        counterattackCount += counts;
-        if (counterattackBar == null && counterattackCount != 0)
+        angerCount += counts;
+        if (angerBar == null && angerCount != 0)
         {
-            counterattackBar = Instantiate(prefab, playerStatesBar);
-            counterattackBar.transform.GetChild(0).GetComponent<Text>().text = counterattackCount.ToString();
+            angerBar = Instantiate(prefab, playerStatesBar);
+            angerBar.transform.GetChild(0).GetComponent<Text>().text = angerCount.ToString();
         }
-        else if (counterattackBar != null && counterattackCount != 0)
+        else if (angerBar != null && angerCount != 0)
         {
-            counterattackBar.transform.GetChild(0).GetComponent<Text>().text = counterattackCount.ToString();
+            angerBar.transform.GetChild(0).GetComponent<Text>().text = angerCount.ToString();
         }
         else { return; }
     }
     public void DecreaseCounterattackCount(int counts)
     {
 
-        counterattackCount -= counts;
-        if (counterattackBar != null && counterattackCount <= 0)
+        angerCount -= counts;
+        if (angerBar != null && angerCount <= 0)
         {
-            Destroy(counterattackBar);
+            Destroy(angerBar);
         }
-        if (counterattackBar != null && counterattackCount > 0)
+        if (angerBar != null && angerCount > 0)
         {
-            counterattackBar.transform.GetChild(0).GetComponent<Text>().text = counterattackCount.ToString();
+            angerBar.transform.GetChild(0).GetComponent<Text>().text = angerCount.ToString();
         }
-        else { counterattackCount = 0; }
+        else { angerCount = 0; }
     }
-    public void CounterattackEffect(int threshold)
+    public void AngerEffect(int threshold)
     {
-        isCounterattackOpen = true;
         counterThreshold = threshold;
     }
     public void HealthDecrease(int damage)
     {
         currentHealth -= damage;
-        if (isCounterattackOpen && damage > counterThreshold)
+        perRoundHurt += damage;
+        if (isAngerCountOpen && damage > counterThreshold)
         {
             AddCounterattackCount(1,Skills.Instance.counterattackCounter);
-            CheckCounterattacks();
+            CheckAttacks();
         }
         if (currentHealth <= 0)
         {
@@ -214,20 +225,22 @@ public class PlayerData : MonoSingleton<PlayerData>
         slider.value = (float)currentHealth / maxHealth;
         healthText.text = currentHealth + "/" + maxHealth;
     }
-    public void AttackChange(int value)
+    public void AttackChange()
     {
-        currentAttacks =initialAttacks+value;
+        int n= perRoundHurt * angerCount * 3 / 10;
+        if (n < 1) n = 0;       
+        currentAttacks = initialAttacks + n+tempAttaks;
         attackText.text = currentAttacks.ToString();
     }
     // Update is called once per frame
     void Update()
     {
         
-        CheckCounterattacks();
+        CheckAttacks();
     }
-    public void CheckCounterattacks()
+    public void CheckAttacks()
     {
-        AttackChange(counterattackCount);
+        AttackChange();
     }
 
     //public void loadPlayerData()

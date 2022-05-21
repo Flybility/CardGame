@@ -230,7 +230,7 @@ public class BattleField : MonoSingleton<BattleField>
     public void DrawHandMonster()
     {
         PanelMask.SetActive(true);
-        if (extractArea.childCount >= PlayerData.Instance.monsterCardMaxCount)
+        if (extractArea.childCount >= PlayerData.Instance.monsterCardMaxCount+ PlayerData.Instance.tempExtraCardMax)
         {
             StartFlyToHand();
         }
@@ -246,7 +246,7 @@ public class BattleField : MonoSingleton<BattleField>
     //开启FlyToHand协程
     public void StartFlyToHand()
     {
-        StartCoroutine(FlyToHand(PlayerData.Instance.monsterCardMaxCount));
+        StartCoroutine(FlyToHand(PlayerData.Instance.monsterCardMaxCount + PlayerData.Instance.tempExtraCardMax));
     }
     //玩家开始攻击
     public void StartPlayerAttack(GameObject monster)
@@ -292,7 +292,8 @@ public class BattleField : MonoSingleton<BattleField>
             Debug.Log("飞入手牌");
             yield return new WaitForSeconds(interval);
         }
-        
+        //额外抽取手牌数量变为0
+        PlayerData.Instance.tempExtraCardMax = 0;
         PanelMask.SetActive(false);
         //手牌结束抽牌后改变为玩家回合开始
         gameState = GameState.玩家回合;
@@ -377,7 +378,8 @@ public class BattleField : MonoSingleton<BattleField>
                     Vector3 monsterPos = monster.transform.parent.localPosition;
                     monster.transform.DOPunchPosition(targetPos - monsterPos, 0.5f, 1);
                     yield return new WaitForSeconds(0.25f);
-                    Skills.Instance.AttackPlayer(monster.GetComponent<ThisMonster>().currentAttacks);
+                    Skills.Instance.AttackPlayer(monster.GetComponent<ThisMonster>().afterMultipleAttacks);
+                    yield return new WaitForSeconds(0.25f);
                 }
                 
                 //Skills.Instance.Attack(monster.GetComponent<ThisMonster>().damage, player);
@@ -389,7 +391,7 @@ public class BattleField : MonoSingleton<BattleField>
         stateChangeEvent.Invoke();
 
         MonsterRoundEnd.Invoke();//怪物回合结束事件（结算buff）
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
         PlayerExtractCard();
         currentRound++;
         yield break;
@@ -404,12 +406,12 @@ public class BattleField : MonoSingleton<BattleField>
         {
             if (monster != null)
             {
-                player.transform.DOPunchPosition(monsterPos - playerPos, 0.3f, 1);
-                yield return new WaitForSeconds(0.15f);
+                player.transform.DOPunchPosition(monsterPos - playerPos, 0.4f, 1);
+                yield return new WaitForSeconds(0.2f);
                 
                 //monster.GetComponent<ThisMonster>().HealthDecrease(PlayerData.Instance.attacks);
                 Skills.Instance.AttackMonster(PlayerData.Instance.currentAttacks, monster);
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.3f);
                 //monsterChange.Invoke();
             }
             else
@@ -418,6 +420,8 @@ public class BattleField : MonoSingleton<BattleField>
             }
                 
         }
+        PlayerData.Instance.tempAttaks =0;
+        PlayerData.Instance.perRoundHurt = 0;
         player.transform.DOLocalMove(playerPos, 0.3f);
         yield return new WaitForSeconds(0.8f);
         PlayerRoundEnd.Invoke();//玩家回合结束事件(结算buff)
@@ -512,12 +516,12 @@ public class BattleField : MonoSingleton<BattleField>
         SelectingMonster = 1;
     }
     //召唤请求确认
-    public void SummonConfirm(Transform _block)
+    public void SummonConfirm(Transform _block,float multipleAttacks,int extraAwards)
     {
         highlightClear.Invoke();
         if (waitingMonster != null)
         {
-            Summon(waitingMonster, _block);
+            StartCoroutine(Summon(waitingMonster, _block, multipleAttacks, extraAwards));
         }
 
     }
@@ -531,7 +535,7 @@ public class BattleField : MonoSingleton<BattleField>
         PanelMask.SetActive(false);
     }
     //召唤开始
-    public void Summon(GameObject _monster,Transform _block)
+    IEnumerator Summon(GameObject _monster,Transform _block, float multipleAttacks, int extraAwards)
     {  
         DestroyArrow();
         SelectingMonster = 0;
@@ -547,12 +551,15 @@ public class BattleField : MonoSingleton<BattleField>
         GameObject monster=Instantiate(monstersPrefab.transform.GetChild(monsterId), _block).gameObject;
         monsterInBattle.Add(monster);
         monster.GetComponent<ThisMonster>().monsterCard = _monster;
-
-
+        
         waitingMonster = null;
         monstersCounter++;
         summonEvent.Invoke();
         monsterChange.Invoke();
+
+        yield return new WaitForSeconds(0.2f);
+        monster.GetComponent<ThisMonster>().multipleAttacks = multipleAttacks;
+        monster.GetComponent<ThisMonster>().awardHealth += extraAwards;
     }
     //使用装备请求，传入使用的装备（其他脚本调用）
     //public void UseEquipmentRequest(GameObject equipment)

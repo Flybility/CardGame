@@ -19,6 +19,8 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public int awardHealth;
     public int attacks;
     public int currentAttacks;
+    public int afterMultipleAttacks;
+    public float multipleAttacks;//攻击力倍数
     public int dizzyCount;//眩晕层数
     public int burnsCount;//灼伤层数
     private Slider slider;
@@ -50,7 +52,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     }
     public void OnStart()
     {
-
+        multipleAttacks = 1;
         awardHealth = monsterCard.GetComponent<ThisMonsterCard>().card.award;
         attacks = monsterCard.GetComponent<ThisMonsterCard>().card.damage;
         currentAttacks = attacks;
@@ -71,7 +73,8 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public void OnUpdate()
     {
         healthValue.text = health + "/" + maxHealth;
-        attackText.text = currentAttacks.ToString();
+        afterMultipleAttacks = ((int)(currentAttacks * multipleAttacks));
+        attackText.text = afterMultipleAttacks.ToString();
     }
     public void AddDizzy(int Counts,GameObject dizzyPrefab)
     {

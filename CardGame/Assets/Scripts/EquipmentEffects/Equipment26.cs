@@ -19,11 +19,18 @@ public class Equipment26 : MonoBehaviour
         card = GetComponent<ThisEquiptmentCard>();
         if (isInEquipment)
         {
-           Skills.Instance.StaticCounterattackCount(0,4);//传入层数，临界值，大于4点增加一层反击
+           Skills.Instance.StaticAngerCount(0,4);//传入层数，临界值，大于4点增加一层愤怒
+            PlayerData.Instance.isAngerCountOpen = true; ;
         }
     }
     private void Update()
     {
         
+    }
+    private void OnDestroy()
+    {
+ 
+        PlayerData.Instance.isAngerCountOpen = false;
+
     }
 }

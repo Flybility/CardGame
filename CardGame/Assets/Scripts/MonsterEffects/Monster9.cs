@@ -12,6 +12,10 @@ public class Monster9:MonoBehaviour
     {
         monster = GetComponent<ThisMonster>();
         Skills.Instance.AwardImprovedBesides(monster.block, value);
+        foreach (var monster in BlocksManager.Instance.GetNeighbours(monster.block))
+        {
+            monster.GetComponent<ThisMonster>().awardHealth += value;
+        }
     }
 
     // Update is called once per frame
@@ -21,19 +25,16 @@ public class Monster9:MonoBehaviour
         
 
     }
-   //private void Detected()
-   //{
-   //    bool n = false;
-   //    intervalMonsters = BlocksManager.Instance.GetInterval(monster.block);        
-   //    int a= intervalMonsters[1].GetComponent<ThisMonster>().damage - decreaseValue;
-   //
-   //    foreach (var monster in intervalMonsters)
-   //    {
-   //        monster.GetComponent<ThisMonster>().damage = intervalMonsters[i].GetComponent<ThisMonster>().damage - decreaseValue;
-   //    }   
-   //}
-   //private void OnDestroy()
-   //{
-   //    //Skills.Instance.AttackImprovedBesides(monster.block, -decreaseValue);
-   //}
+   private void OnDestroy()
+   {
+      if (BattleField.Instance.isFinished == false)
+      {
+          Skills.Instance.AwardImprovedBesides(monster.block, 0);
+          foreach (var monster in BlocksManager.Instance.GetNeighbours(monster.block))
+          {
+              monster.GetComponent<ThisMonster>().awardHealth -= value;
+          }
+      }
+           
+   }
 }

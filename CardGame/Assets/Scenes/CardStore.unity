@@ -192,7 +192,7 @@ MonoBehaviour:
   extractArea: {fileID: 1122177993}
   monsterArea: {fileID: 600954384}
   usedArea: {fileID: 1253153678}
-  interval: 0.12
+  interval: 0.14
   summonMax: 6
   monstersCounter: 0
   chosenCardNumber: 0
@@ -2749,6 +2749,8 @@ MonoBehaviour:
   cardData: {fileID: 238117719}
   battleField: {fileID: 82153615}
   floatPrefab: {fileID: 1411142313581732612, guid: c80302f3ede1fd94694a6c47af4c334e, type: 3}
+  floatHealth: {fileID: 1411142313581732612, guid: bf6fad77b8a8d5641a1d849f643be42a, type: 3}
+  floatAttack: {fileID: 1411142313581732612, guid: 25f111c6496d9144992801dc68be77bb, type: 3}
   playerStatesBar: {fileID: 1843555320}
   attackText: {fileID: 2103266339}
   healthText: {fileID: 1902385849}
@@ -2766,6 +2768,7 @@ MonoBehaviour:
   attackTimesCount: 0
   initialAttacks: 8
   currentAttacks: 0
+  tempAttaks: 0
   monsterCardMaxCount: 4
   perRoundExtractCount: 2
   tempExtraCardMax: 0
@@ -5542,7 +5545,7 @@ GameObject:
   - component: {fileID: 1883093110}
   m_Layer: 5
   m_Name: BagBackground
-  m_TagString: Untagged
+  m_TagString: Bag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

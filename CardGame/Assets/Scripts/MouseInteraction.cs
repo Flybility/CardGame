@@ -16,6 +16,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     public bool isInDiscard;
     public bool isInExtract;
     public bool isInEquipment;
+    public bool isInBag;
     private bool clicked;
     public int number;
     ThisEquiptmentCard thisCard1;
@@ -34,6 +35,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         isInOpenEquipmentPool = transform.parent.CompareTag("OpenEquipmentPool");
         isInBattle= transform.parent.CompareTag("BattleMonsterPanel");
         isInEquipment = transform.parent.CompareTag("BattleEquipmentPanel");
+        isInBag= transform.parent.CompareTag("Bag");
         if (GetComponent<ThisEquiptmentCard>() != null)
         {
             thisCard1 = GetComponent<ThisEquiptmentCard>();
@@ -94,6 +96,10 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         {
             transform.DOScale(Vector3.one, 0.1f);
         }
+        if (isInBag)
+        {
+            Cancel();
+        }
 
     }
     public void OnPointerDown(PointerEventData eventData)
@@ -144,7 +150,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
             //开卡包界面消失
             GameManager.Instance.openEquipmentCard.SetActive(false);
         }
-        if (isInEquipment && eventData.button == PointerEventData.InputButton.Right)
+        if (isInBag && eventData.button == PointerEventData.InputButton.Right)
         {
             transform.GetChild(1).gameObject.SetActive(true);
         }
@@ -153,7 +159,10 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     }
     public void DiscardEquipment()
     {
-        BattleField.Instance.cardsEquiptment.Remove(this.gameObject);
+        if (BattleField.Instance.isFinished == false)
+        {
+            BattleField.Instance.cardsEquiptment.Remove(this.gameObject);
+        }
         PlayerData.Instance.playerEquipmentCards.Remove(this.GetComponent<ThisEquiptmentCard>().card);
         Destroy(this.gameObject,0.2f);
     }

@@ -11,6 +11,8 @@ public class PlayerData : MonoSingleton<PlayerData>
     public CardDatabase cardData;
     public BattleField battleField;
     public GameObject floatPrefab;
+    public GameObject floatHealth;
+    public GameObject floatAttack;
     public Transform playerStatesBar;//玩家属性条
     public Text attackText;
     public Text healthText;
@@ -99,6 +101,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         currentHealth = maxHealth;
         tempAttaks = 0;
         tempExtraCardMax = 0;
+        isAngerCountOpen = false;
         DecreaseCounterattackCount(angerCount);
         DecreaseAttackTimeCount(attackTimesCount);
         HealthBarChange();
@@ -187,6 +190,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     }
     public void AngerEffect(int threshold)
     {
+        isAngerCountOpen = true;
         counterThreshold = threshold;
     }
     public void HealthDecrease(int damage)
@@ -204,7 +208,6 @@ public class PlayerData : MonoSingleton<PlayerData>
         }
         GameObject floatValue= Instantiate(floatPrefab, this.transform);
         floatValue.GetComponent<Text>().text = "-" + damage.ToString();
-        floatValue.GetComponent<Text>().color = Color.red;
         HealthBarChange();
     }
     public void HealthRecover(int value)
@@ -214,9 +217,8 @@ public class PlayerData : MonoSingleton<PlayerData>
         {
             currentHealth = 100;
         }
-        GameObject floatValue = Instantiate(floatPrefab, this.transform);
+        GameObject floatValue = Instantiate(floatHealth, this.transform);
         floatValue.GetComponent<Text>().text = "+" + value.ToString();
-        floatValue.GetComponent<Text>().color = Color.green;
         HealthBarChange();
     }
     public void HealthBarChange()
@@ -224,6 +226,17 @@ public class PlayerData : MonoSingleton<PlayerData>
         Debug.Log("生命值改变");
         slider.value = (float)currentHealth / maxHealth;
         healthText.text = currentHealth + "/" + maxHealth;
+    }
+    public void StartAddTempAttacks(int value)
+    {
+        StartCoroutine(AddTempAttacks(value));
+    }
+    IEnumerator AddTempAttacks(int value)
+    {
+        yield return new WaitForSeconds(0.6f);
+        tempAttaks += value;
+        GameObject floatAttacks = Instantiate(floatAttack, transform);
+        floatAttacks.GetComponent<Text>().text = "+" + value.ToString();
     }
     public void AttackChange()
     {

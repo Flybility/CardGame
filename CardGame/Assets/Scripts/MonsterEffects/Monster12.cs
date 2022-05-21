@@ -20,6 +20,6 @@ public class Monster12 : MonoBehaviour
     }
     private void OnDestroy()
     {
-        PlayerData.Instance.tempAttaks += value;
+        PlayerData.Instance.StartAddTempAttacks(value);
     }
 }

@@ -18,6 +18,7 @@ TagManager:
   - BattleEquipmentPanel
   - MonsterCard
   - Monster
+  - Bag
   layers:
   - Default
   - TransparentFX

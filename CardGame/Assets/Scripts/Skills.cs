@@ -33,7 +33,7 @@ public class Skills : MonoSingleton<Skills>
     {       
         if (BattleField.Instance.isFinished == false)
         {
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
             //播放爆炸动画
             foreach(var monster in BlocksManager.Instance.GetNeighbours(block))
             {

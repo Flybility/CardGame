@@ -420,7 +420,6 @@ public class BattleField : MonoSingleton<BattleField>
             }
                 
         }
-        PlayerData.Instance.tempAttaks =0;
         PlayerData.Instance.perRoundHurt = 0;
         player.transform.DOLocalMove(playerPos, 0.3f);
         yield return new WaitForSeconds(0.8f);

@@ -11,6 +11,7 @@ public class Monster9:MonoBehaviour
     void Start()
     {
         monster = GetComponent<ThisMonster>();
+        Skills.Instance.AddAttackCount(monster);
         Skills.Instance.AwardImprovedBesides(monster.block, multipleRate);
         foreach (var monster in BlocksManager.Instance.GetNeighbours(monster.block))
         {

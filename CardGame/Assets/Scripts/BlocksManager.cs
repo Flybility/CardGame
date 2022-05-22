@@ -71,10 +71,12 @@ public class BlocksManager : MonoSingleton<BlocksManager>
         int lowerNumber = thisBlock.GetSiblingIndex() - 2;
         int higherNumber = thisBlock.GetSiblingIndex() + 2;
 
-        if (lowerNumber == -1) lowerNumber = 5;
-        if (lowerNumber == -2) lowerNumber = 4;
-        if (higherNumber == 6) higherNumber = 0;
-        if (higherNumber == 7) higherNumber = 1;
+        if (lowerNumber < 0) lowerNumber += 6;
+        if (higherNumber > 5) higherNumber -= 6;
+        //if (lowerNumber == -1) lowerNumber = 5;
+        //if (lowerNumber == -2) lowerNumber = 4;
+        //if (higherNumber == 6) higherNumber = 0;
+        //if (higherNumber == 7) higherNumber = 1;
         if (BattleField.Instance.blocks[lowerNumber] != null)
             interval.Add(BattleField.Instance.blocks[lowerNumber]);
         if (BattleField.Instance.blocks[higherNumber] != null)
@@ -87,15 +89,26 @@ public class BlocksManager : MonoSingleton<BlocksManager>
         int lowerNumber = thisBlock.GetSiblingIndex() - 2;
         int higherNumber = thisBlock.GetSiblingIndex() + 2;
 
-        if (lowerNumber ==-1) lowerNumber = 5;
-        if (lowerNumber == -2) lowerNumber = 4;
-        if (higherNumber == 6) higherNumber = 0;
-        if (higherNumber == 7) higherNumber = 1;
+        if (lowerNumber < 0) lowerNumber += 6;
+        if (higherNumber > 5) higherNumber -= 6;
+        //if (lowerNumber ==-1) lowerNumber = 5;
+        //if (lowerNumber == -2) lowerNumber = 4;
+
+        //if (higherNumber == 6) higherNumber = 0;
+        //if (higherNumber == 7) higherNumber = 1;
         if (monsters[lowerNumber] != null)
             interval.Add(monsters[lowerNumber].gameObject);
         if (monsters[higherNumber] != null)
             interval.Add(monsters[higherNumber].gameObject);
         return interval;
+    }
+    public GameObject GetOpposite(Transform thisBlock)
+    {
+        GameObject opposite;
+        int n = thisBlock.GetSiblingIndex() + 3;
+        if (n > 5) { n-=6;}
+        opposite = monsters[n].gameObject;
+        return opposite;
     }
 
 }

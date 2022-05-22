@@ -11,6 +11,7 @@ public class CursorFollow : MonoSingleton<CursorFollow>
     Vector2 pos;
     Camera _camera;
     RectTransform canvasRectTransform;
+    Color initialColor;
     public GameObject description;
     public GameObject extraDis;
     public Text text;
@@ -22,7 +23,9 @@ public class CursorFollow : MonoSingleton<CursorFollow>
     private string 眩晕 = "眩晕：停止行动n回合，n为眩晕层数";
     void Start()
     {
+        
         description = transform.GetChild(0).gameObject;
+        initialColor = description.GetComponent<Image>().color;
         description.SetActive(false);
         extraText = extraDis.transform.GetChild(0).GetComponent<Text>();
         transform.GetChild(0).gameObject.SetActive(false);
@@ -40,6 +43,7 @@ public class CursorFollow : MonoSingleton<CursorFollow>
         if (isOnUI==false)
         {
             text.text = null;
+            description.GetComponent<Image>().color = initialColor;
             description.SetActive(false);
             extraDis.SetActive(false);
         }

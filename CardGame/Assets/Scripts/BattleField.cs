@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using DG.Tweening;
 
 public enum GameState
@@ -25,6 +26,8 @@ public class BattleField : MonoSingleton<BattleField>
     public int monstersCounter;
     public int chosenCardNumber;      //选取的怪物牌在手牌父物体中的子物体序号
     public int currentRound;          //当前回合数
+    public Text roundText;
+
     public GameObject _block;         //所有场上位格父物体
     public GameObject[] blocks;       //所有位格的数组集合
     public GameObject ArrowPrefab;    //箭头预制体
@@ -39,7 +42,7 @@ public class BattleField : MonoSingleton<BattleField>
     public CardDatabase cardData;     //卡牌库
 
 
-    private GameObject waitingMonster;//召唤时选择的等待召唤的怪物牌
+    public  GameObject waitingMonster;//召唤时选择的等待召唤的怪物牌
     private GameObject arrow;         //生成的箭头物体
     private GameObject player;        //左边的玩家角色（包含了playerdata脚本）
 
@@ -165,6 +168,7 @@ public class BattleField : MonoSingleton<BattleField>
     }
     private void Update()
     {
+        roundText.text = "回合"+currentRound.ToString();
         if (SelectingMonster == 1 && Input.GetMouseButtonUp(1))
         {
             DestroyArrow();
@@ -208,7 +212,7 @@ public class BattleField : MonoSingleton<BattleField>
         {
             PanelMask.SetActive(true);
             FlyToDiscardArea();
-
+            currentRound++;
             DrawHandMonster();
             PlayerData.Instance.ChangeRound();
         }
@@ -393,7 +397,6 @@ public class BattleField : MonoSingleton<BattleField>
         MonsterRoundEnd.Invoke();//怪物回合结束事件（结算buff）
         yield return new WaitForSeconds(0.3f);
         PlayerExtractCard();
-        currentRound++;
         yield break;
     }
     //玩家攻击协程（包含动效）

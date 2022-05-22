@@ -26,11 +26,16 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public float multipleAttacks;//攻击力倍数
     public int dizzyCount;//眩晕层数
     public int burnsCount;//灼伤层数
+    public int absorbCount;//吸收回合数
+    public int absorbDamages;//吸收总伤害数
+    public int attackCount;//增加伤害回合数
+
     private Slider slider;
     private Text healthValue;
     private Text attackText;
     private Transform stateBlock;
-    private GameObject dizzy;
+    private GameObject dizzy, absorb,attack;
+    private bool isAddAttack;
     public GameObject leftMonster, rightMonster;
 
 
@@ -52,6 +57,8 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     {
         if (dizzyCount > 0) DecreaseDizzy(1);
         if (burnsCount > 0) burnsCount--;
+        if (absorbCount > 0) DecreaseAbsorb(1);
+        if (isAddAttack) AddAttackPerRound(1);
     }
     public void OnStart()
     {
@@ -77,7 +84,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public void OnUpdate()
     {
         healthValue.text = health + "/" + maxHealth;
-        afterMultipleAttacks = (int)(currentAttacks * multipleAttacks);
+        afterMultipleAttacks = (int)(currentAttacks * multipleAttacks*(attackCount+1));
         currentAwards = (int)(awardHealth * multipleAwards);
         attackText.text = (afterMultipleAttacks+ PlayerData.Instance.extraHurt).ToString();
     }
@@ -109,14 +116,65 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         }
         else { dizzyCount = 0; }
     }
+    public void AddAbsorb(int Counts, GameObject absorbPrefab)
+    {
+        absorbCount += Counts;
+        if (absorb == null && absorbCount != 0)
+        {
+            absorb = Instantiate(absorbPrefab, stateBlock);
+            absorb.transform.GetChild(0).GetComponent<Text>().text = absorbCount.ToString();
+        }
+        else if (absorb != null && absorbCount != 0)
+        {
+            absorb.transform.GetChild(0).GetComponent<Text>().text = absorbCount.ToString();
+        }
+        else { return; }
 
+    }
+    public void DecreaseAbsorb(int count)
+    {
+        absorbCount -= count;
+        if (absorb != null && absorbCount <= 0)
+        {
+            Skills.Instance.StartBoom(block, absorbDamages);
+            absorbDamages = 0;
+            Destroy(absorb);
+        }
+        if (absorb != null && absorbCount > 0)
+        {
+            absorb.transform.GetChild(0).GetComponent<Text>().text = absorbCount.ToString();
+        }
+        else { absorbCount = 0; }
+    }
+    public void AddAttack(int count,GameObject prefab)
+    {
+        isAddAttack = true;
+        attackCount = count;
+        attack = Instantiate(prefab, stateBlock);
+        attack.transform.GetChild(0).GetComponent<Text>().text = attackCount.ToString();
+    }
+    public void AddAttackPerRound(int n)
+    {
+        if (attack != null&& isAddAttack)
+        {
+            attackCount += n;
+            attack.transform.GetChild(0).GetComponent<Text>().text = attackCount.ToString();
+        }
+        else return;
+    }
     public void HealthDecrease(int damage)
     {
+        if (absorbCount > 0)
+        {
+            absorbDamages += damage;
+            damage = 0;
+        }
         health -= damage;
-        Debug.Log("伤害=" + damage);
+        //Debug.Log("伤害=" + damage);
         slider.value = (float)health / maxHealth;
         GameObject floatValue = Instantiate(PlayerData.Instance.floatPrefab, this.transform.parent);
-        floatValue.GetComponent<Text>().text ="-"+ damage.ToString();
+        floatValue.GetComponent<Text>().text = "-" + damage.ToString();
+       
         if (health <= 0)
         {
             monsterCard.GetComponent<ThisMonsterCard>().summonTimes--;
@@ -147,10 +205,25 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         transform.DOScale(1.1f ,0.1f);
         Invoke("ShowDescription", 0.1f);
         CursorFollow.Instance.description.SetActive(true);
+        Color color = CursorFollow.Instance.description.GetComponent<Image>().color;
+        CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 1), 0.4f);
     }
     public void ShowDescription()
     {
-        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n\n" + "击杀获得情绪量:" + currentAwards.ToString();
+        if (absorbCount > 0)
+        {
+            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n" + "击杀获得情绪量:" + "<b>"+"<color=blue>"+currentAwards+ "</color>" +"</b>" + "\n"
+                + "已储蓄爆炸伤害:" + "<b>" + "<color=red>" + absorbDamages + "</color>" + "</b>";
+        }
+        else if (isAddAttack)
+        {
+            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n" + "击杀获得情绪量:" + "<b>" + "<color=blue>" + currentAwards + "</color>" + "</b>" + "\n"
+               + "伤害增加:" + "<b>" + "<color=red>" + attackCount + "</color>" + "</b>"+"倍";
+        }
+        else
+        {
+            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n\n" + "击杀获得情绪量:" + "<b>" + "<color=blue>" + currentAwards + "</color>" + "</b>";
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)

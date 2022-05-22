@@ -75,15 +75,17 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerMonsterCards.Add(cardData.CopyMonsterCard(11));
         playerMonsterCards.Add(cardData.CopyMonsterCard(12));
         playerMonsterCards.Add(cardData.CopyMonsterCard(13));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(14));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(15));
 
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(0));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(2));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(3));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(4));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(5));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(6));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(7));
+        //playerEquipmentCards.Add(cardData.CopyEquipmentCard(4));
+        //playerEquipmentCards.Add(cardData.CopyEquipmentCard(5));
+        //playerEquipmentCards.Add(cardData.CopyEquipmentCard(6));
+        //playerEquipmentCards.Add(cardData.CopyEquipmentCard(7));
 
         currentAttacks = initialAttacks;
         attackText.text = currentAttacks.ToString();
@@ -117,8 +119,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     }
     IEnumerator PerRoundChange()
     {
-        
-        
+
         if (armorCount >0)          armorCount--;
         if (scareCount > 0)         DecreaseScareCount(1);
         if (angerCount > 0)         DecreaseCounterattackCount(angerCount/2);

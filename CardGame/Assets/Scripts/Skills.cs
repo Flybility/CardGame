@@ -12,6 +12,8 @@ public class Skills : MonoSingleton<Skills>
     public GameObject attackTimesCounter;
     public GameObject counterattackCounter;
     public GameObject scareCounter;
+    public GameObject absorbCounter;
+    public GameObject attackCounter;//攻击随回合增长计数器
 
     // Start is called before the first frame update
     public void AttackPlayer(int damage)
@@ -77,7 +79,6 @@ public class Skills : MonoSingleton<Skills>
         {
             monster.GetComponent<ThisMonster>().AddDizzy(count, dizzyCounter);
         }
-
     }
     public void AddAttackTimesCount(int times)
     {
@@ -87,6 +88,14 @@ public class Skills : MonoSingleton<Skills>
     public void AddScareCount(int times)
     {
         PlayerData.Instance.AddScareCount(times, scareCounter);
+    }
+    public void AddAbsorbCount(int rounds, ThisMonster monster)
+    {
+        monster.AddAbsorb(rounds, absorbCounter);
+    }
+    public void AddAttackCount(ThisMonster monster)
+    {
+        monster.AddAttack(0, attackCounter);
     }
     //属性被动装备
     public void StaticAngerCount(int times,int threshold)
@@ -109,6 +118,8 @@ public class Skills : MonoSingleton<Skills>
             Block.GetComponent<Blocks>().AddAwards(count);
         }
     }
+
+
    
 
 }

@@ -10,6 +10,7 @@ public class Monster8:MonoBehaviour
     void Start()
     {
         monster = GetComponent<ThisMonster>();
+        Skills.Instance.AddAttackCount(monster);
         Skills.Instance.AttackImprovedInterval(monster.block, multipleRate);
         foreach(var monster in BlocksManager.Instance.GetInterval(monster.block))
         {

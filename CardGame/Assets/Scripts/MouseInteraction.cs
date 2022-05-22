@@ -74,17 +74,29 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         transform.DOScale (zoomSize,0.1f);
         if (GetComponent<ThisEquiptmentCard>() != null)
         {
-            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text =thisCard1.cardName+":"+ thisCard1.description;
             CursorFollow.Instance.description.SetActive(true);
+            Color color = CursorFollow.Instance.description.GetComponent<Image>().color;
+            CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 1), 0.5f);
+            Invoke("ShowDescriptionEquipment", 0.1f);
         }
         if (GetComponent<ThisMonsterCard>() != null)
         {
-            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = thisCard2.description;
             CursorFollow.Instance.description.SetActive(true);
+            Color color = CursorFollow.Instance.description.GetComponent<Image>().color;
+            CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 1), 0.5f);
+            Invoke("ShowDescriptionMonster", 0.1f);
         }
         
     }
-    
+    public void ShowDescriptionEquipment()
+    {
+        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = thisCard1.cardName + ":" + thisCard1.description;       
+    }
+    public void ShowDescriptionMonster()
+    {
+        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = thisCard2.cardName+":"+thisCard2.description;
+    }
+
     public virtual void OnPointerExit(PointerEventData eventData)
     {
         CursorFollow.Instance.description.SetActive(false);

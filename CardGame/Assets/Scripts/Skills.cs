@@ -16,9 +16,15 @@ public class Skills : MonoSingleton<Skills>
     public GameObject attackCounter;//攻击随回合增长计数器
 
     // Start is called before the first frame update
-    public void AttackPlayer(int damage)
+    public void AttackPlayer(int damage,ThisMonster monster)
     {
         PlayerData.Instance.HealthDecrease(damage);
+        if (monster.isAddScareCount)
+        {
+            PlayerData.Instance.AddScareCount(BattleField.Instance.monsterInBattle.Count, scareCounter);
+        }
+        else { PlayerData.Instance.AddScareCount(monster.attackAttachedScare, scareCounter); }
+
     }
     public void AttackMonster(int damage, GameObject target)
     {
@@ -37,9 +43,11 @@ public class Skills : MonoSingleton<Skills>
         if (BattleField.Instance.isFinished == false)
         {
             yield return new WaitForSeconds(0.2f);
-            //播放爆炸动画
-            foreach(var monster in BlocksManager.Instance.GetNeighbours(block))
+            List<GameObject> monsters = BlocksManager.Instance.GetNeighbours(block);
+                //播放爆炸动画
+            foreach (var monster in BlocksManager.Instance.GetNeighbours(block))
             {
+                yield return new WaitForSeconds(0.12f);
                 AttackMonster(damage, monster);
             }
             //for (int i = 0; i < BlocksManager.Instance.backMonsters.Count; i++)
@@ -58,16 +66,26 @@ public class Skills : MonoSingleton<Skills>
     {
         if (BattleField.Instance.isFinished == false)
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             List<GameObject> monsters = new List<GameObject>();
             foreach (var monster in BlocksManager.Instance.monsters)
             {
                 if (monster != null) monsters.Add(monster);
             }
-            Debug.Log("Boom");
-            yield return new WaitForSeconds(0.3f);
             for (int i = 0; i < monsters.Count; i++)
             {
+                if (monsters[i].GetComponent<ThisMonster>().isAddAward)
+                {
+                    //将带有增加isAddAward属性的monster放到链表尾部，使其最后结算
+                    monsters.Add(monsters[i]);
+                    monsters.RemoveAt(i);
+                }
+            }
+            Debug.Log("Boom");
+            yield return new WaitForSeconds(0.1f);
+            for (int i = 0; i < monsters.Count; i++)
+            {
+                yield return new WaitForSeconds(0.12f);
                 AttackMonster(damage, monsters[i]);
             }
         }

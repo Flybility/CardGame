@@ -63,6 +63,16 @@ public class BlocksManager : MonoSingleton<BlocksManager>
         neighbours.Add(monsters[lowerNumber].gameObject);
         if(monsters[higherNumber]!=null)
         neighbours.Add(monsters[higherNumber].gameObject);
+
+        for (int i = 0; i < neighbours.Count; i++)
+        {
+            if (neighbours[i].GetComponent<ThisMonster>().isAddAward)
+            {
+                //将带有增加isAddAward属性的monster放到链表尾部，使其最后结算
+                neighbours.Add(neighbours[i]);
+                neighbours.RemoveAt(i);
+            }
+        }
         return neighbours;
     }
     public List<GameObject> GetIntervalBlock(Transform thisBlock)
@@ -81,6 +91,7 @@ public class BlocksManager : MonoSingleton<BlocksManager>
             interval.Add(BattleField.Instance.blocks[lowerNumber]);
         if (BattleField.Instance.blocks[higherNumber] != null)
             interval.Add(BattleField.Instance.blocks[higherNumber]);
+       
         return interval;
     }
     public List<GameObject> GetInterval(Transform thisBlock)
@@ -100,6 +111,16 @@ public class BlocksManager : MonoSingleton<BlocksManager>
             interval.Add(monsters[lowerNumber].gameObject);
         if (monsters[higherNumber] != null)
             interval.Add(monsters[higherNumber].gameObject);
+
+        for (int i = 0; i < interval.Count; i++)
+        {
+            if (interval[i].GetComponent<ThisMonster>().isAddAward)
+            {
+                //将带有增加isAddAward属性的monster放到链表尾部，使其最后结算
+                interval.Add(interval[i]);
+                interval.RemoveAt(i);
+            }
+        }
         return interval;
     }
     public GameObject GetOpposite(Transform thisBlock)

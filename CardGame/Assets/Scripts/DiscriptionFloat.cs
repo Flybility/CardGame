@@ -11,6 +11,8 @@ public class DiscriptionFloat : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     public Text count;//层数
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Color color = CursorFollow.Instance.description.GetComponent<Image>().color;
+        CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 1), 0.5f);
         CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = discription1+count.text+discription2;
         CursorFollow.Instance.description.SetActive(true);
     }

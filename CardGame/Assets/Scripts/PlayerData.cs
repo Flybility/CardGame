@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using DG.Tweening;
 
 
 
@@ -77,6 +78,8 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerMonsterCards.Add(cardData.CopyMonsterCard(13));
         playerMonsterCards.Add(cardData.CopyMonsterCard(14));
         playerMonsterCards.Add(cardData.CopyMonsterCard(15));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(16));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(17));
 
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(0));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
@@ -130,7 +133,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         yield return new WaitForSeconds(0.3f);
         HealthDecrease(perRoundHealthDecrease+ extraPerRoundHealthDecrease);
         AttackTimeEffect();
-        ScareEffect();
+        
     }
     public void AddAttackTimeCount(int counts, GameObject prefab)
     {
@@ -143,6 +146,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         else if (attackTimeBar != null && attackTimesCount != 0)
         {
             attackTimeBar.transform.GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
+            attackTimeBar.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { return; }
 
@@ -157,6 +161,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (attackTimeBar != null && attackTimesCount > 0)
         {
             attackTimeBar.transform.GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
+            attackTimeBar.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { attackTimesCount = 0; }
     }
@@ -177,6 +182,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         else if (scareBar != null && scareCount != 0)
         {
             scareBar.transform.GetChild(0).GetComponent<Text>().text = scareCount.ToString();
+            scareBar.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { return; }
 
@@ -191,6 +197,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (scareBar != null && scareCount > 0)
         {
             scareBar.transform.GetChild(0).GetComponent<Text>().text = scareCount.ToString();
+            scareBar.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { scareCount = 0; }
     }
@@ -211,6 +218,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         else if (angerBar != null && angerCount != 0)
         {
             angerBar.transform.GetChild(0).GetComponent<Text>().text = angerCount.ToString();
+            angerBar.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { return; }
     }
@@ -225,6 +233,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (angerBar != null && angerCount > 0)
         {
             angerBar.transform.GetChild(0).GetComponent<Text>().text = angerCount.ToString();
+            angerBar.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { angerCount = 0; }
     }
@@ -289,11 +298,12 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (n < 1) n = 0;       
         currentAttacks = initialAttacks + n+tempAttaks;
         attackText.text = currentAttacks.ToString();
+        ScareEffect();
     }
     // Update is called once per frame
     void Update()
     {
-        
+
         CheckAttacks();
     }
     public void CheckAttacks()

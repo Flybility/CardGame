@@ -26,6 +26,7 @@ public class BattleField : MonoSingleton<BattleField>
     public int monstersCounter;
     public int chosenCardNumber;      //选取的怪物牌在手牌父物体中的子物体序号
     public int currentRound;          //当前回合数
+    public int perRoundDead;          //每回合当前消灭怪物数
     public Text roundText;
 
     public GameObject _block;         //所有场上位格父物体
@@ -50,7 +51,7 @@ public class BattleField : MonoSingleton<BattleField>
     [SerializeField]
     public List<GameObject> cardsEquiptment = new List<GameObject>();//装备牌堆中所有装备的list集合
     [SerializeField]
-    List<GameObject> monsterInBattle = new List<GameObject>();//存在于战场上的召唤兽的集合
+    public List<GameObject> monsterInBattle = new List<GameObject>();//存在于战场上的召唤兽的集合
 
     public UnityEvent stateChangeEvent = new UnityEvent();    //战斗状态切换事件，用于屏幕中央战斗状态文字的切换
     public UnityEvent highlightClear = new UnityEvent();      //战场位格高亮清除事件，用于解除战场上所有位格的高亮状态
@@ -213,6 +214,7 @@ public class BattleField : MonoSingleton<BattleField>
             PanelMask.SetActive(true);
             FlyToDiscardArea();
             currentRound++;
+            perRoundDead = 0;
             DrawHandMonster();
             PlayerData.Instance.ChangeRound();
         }
@@ -382,7 +384,7 @@ public class BattleField : MonoSingleton<BattleField>
                     Vector3 monsterPos = monster.transform.parent.localPosition;
                     monster.transform.DOPunchPosition(targetPos - monsterPos, 0.5f, 1);
                     yield return new WaitForSeconds(0.25f);
-                    Skills.Instance.AttackPlayer(monster.GetComponent<ThisMonster>().afterMultipleAttacks);
+                    Skills.Instance.AttackPlayer(monster.GetComponent<ThisMonster>().afterMultipleAttacks, monster.GetComponent<ThisMonster>());
                     yield return new WaitForSeconds(0.25f);
                 }
                 
@@ -426,7 +428,7 @@ public class BattleField : MonoSingleton<BattleField>
         player.transform.DOLocalMove(playerPos, 0.3f);
         PlayerData.Instance.perRoundHurt = 0;
 
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(1.2f);
         PlayerRoundEnd.Invoke();//玩家回合结束事件(结算buff)
 
         StartCoroutine(MonsterAttack(player));
@@ -652,8 +654,8 @@ public class BattleField : MonoSingleton<BattleField>
 
         //yield return new WaitForSeconds(0.2f);
         monsterInBattle.Remove(monster);
-        //击杀怪物回复生命值
-        PlayerData.Instance.HealthRecover(monster.GetComponent<ThisMonster>().currentAwards);
+
+        perRoundDead++;
 
         if (monsterCard.GetComponent<ThisMonsterCard>().summonTimes<=0)
         {

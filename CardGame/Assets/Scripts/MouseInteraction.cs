@@ -72,6 +72,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.DOScale (zoomSize,0.1f);
+        AudioManager.Instance.choseCard.Play();
         if (GetComponent<ThisEquiptmentCard>() != null)
         {
             CursorFollow.Instance.description.SetActive(true);
@@ -90,11 +91,11 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     }
     public void ShowDescriptionEquipment()
     {
-        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = thisCard1.cardName + ":" + thisCard1.description;       
+        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = thisCard1.cardName + ":" + "\n" + thisCard1.description;       
     }
     public void ShowDescriptionMonster()
     {
-        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = thisCard2.cardName+":"+thisCard2.description;
+        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = thisCard2.cardName+":"+ "\n" + thisCard2.description;
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
@@ -108,7 +109,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         {
             transform.DOScale(Vector3.one, 0.1f);
         }
-        if (isInBag)
+        if (isInBag&&thisCard1!=null)
         {
             Cancel();
         }
@@ -117,7 +118,10 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     public void OnPointerDown(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
-        { transform.DOScale(clickSize, 0.1f); }
+        { 
+            transform.DOScale(clickSize, 0.1f);
+            AudioManager.Instance.click.Play();
+        }
 
     }
     public void OnPointerUp(PointerEventData eventData)
@@ -162,7 +166,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
             //开卡包界面消失
             GameManager.Instance.openEquipmentCard.SetActive(false);
         }
-        if (isInBag && eventData.button == PointerEventData.InputButton.Right)
+        if (isInBag && eventData.button == PointerEventData.InputButton.Right && thisCard1 != null)
         {
             transform.GetChild(1).gameObject.SetActive(true);
         }

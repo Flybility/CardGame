@@ -42,12 +42,14 @@ public class GameManager : MonoSingleton<GameManager>
     {
         battleFieldPanel.SetActive(true);
         //延迟0.2秒开始战斗，期间可以加入一些角色独白
-
+        AudioManager.Instance.startMusic.Stop();
+        AudioManager.Instance.battleMusic.Play();
         Invoke("BattleStart", 0.2f);
     }
     public void BattleEnd()
     {
         BattleField.Instance.OnBattleEnd();
+        AudioManager.Instance.battleMusic.Stop();
         battleFieldPanel.SetActive(false);
     }
     private  void BattleStart()

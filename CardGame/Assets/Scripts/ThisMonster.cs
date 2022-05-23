@@ -17,6 +17,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public  int health;
     private int maxHealth;
     public int awardHealth;
+
     public int currentAwards;
     public float multipleAwards;
 
@@ -39,6 +40,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     private bool isAddAttack;
     public bool isAddAward;
     public bool isAddScareCount;//附加恐惧是否随怪物数增长
+    public bool isIntangible;//是否无形（可直接攻击）
     public GameObject leftMonster, rightMonster;
 
 
@@ -97,7 +99,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
             currentAwards = (int)((awardHealth) * multipleAwards);
         }
 
-        attackText.text = (afterMultipleAttacks+ PlayerData.Instance.extraHurt).ToString();
+        attackText.text = ((int)(afterMultipleAttacks*(1+ PlayerData.Instance.extraHurt))).ToString();
     }
     public void AddDizzy(int Counts,GameObject dizzyPrefab)
     {
@@ -179,11 +181,15 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         }
         else return;
     }
-    public void HealthDecrease(int damage)
+    public void HealthDecrease(int damage,bool isStraight)
     {
         if (absorbCount > 0)
         {
             absorbDamages += damage;
+            damage = 0;
+        }
+        if (isIntangible && isStraight)
+        {
             damage = 0;
         }
         health -= damage;
@@ -230,25 +236,25 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     }
     public void ShowDescription()
     {
+        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().cardName + ":" + "\n" + monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n\n" + "击杀获得情绪量:" + "<b>" + "<color=blue>" + currentAwards + "</color>" + "</b>";
         if (absorbCount > 0)
         {
-            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().cardName + ":"+monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n" + "击杀获得情绪量:" + "<b>"+"<color=blue>"+currentAwards+ "</color>" +"</b>" + "\n"
+            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().cardName + ":"+ "\n" + monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n" + "击杀获得情绪量:" + "<b>"+"<color=blue>"+currentAwards+ "</color>" +"</b>" + "\n"
                 + "已储蓄爆炸伤害:" + "<b>" + "<color=red>" + absorbDamages + "</color>" + "</b>";
         }
         else if (isAddAttack)
         {
-            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().cardName + ":" + monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n" + "击杀获得情绪量:" + "<b>" + "<color=blue>" + currentAwards + "</color>" + "</b>" + "\n"
+            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().cardName + ":" + "\n" + monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n" + "击杀获得情绪量:" + "<b>" + "<color=blue>" + currentAwards + "</color>" + "</b>" + "\n"
                + "伤害增加:" + "<b>" + "<color=red>" + attackCount + "</color>" + "</b>"+"倍";
         }
         else if (isAddAward)
         {
-            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().cardName + ":" + monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n" + "击杀获得情绪量:" + "<b>" + "<color=blue>" + currentAwards + "</color>" + "</b>" + 
+            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().cardName + ":" + "\n" + monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n" + "击杀获得情绪量:" + "<b>" + "<color=blue>" + currentAwards + "</color>" + "</b>" + 
               "*本回合击杀怪物数("+"<b>" + "<color=red>" + BattleField.Instance.perRoundDead + "</color>" + "</b>"+")";
         }
-        else
-        {
-            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().cardName + ":" + monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n\n" + "击杀获得情绪量:" + "<b>" + "<color=blue>" + currentAwards + "</color>" + "</b>";
-        }
+        
+           
+ 
     }
 
     public void OnPointerExit(PointerEventData eventData)

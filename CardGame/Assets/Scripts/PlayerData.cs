@@ -26,7 +26,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     public int currentHealth;//当前生命值
     public int perRoundHealthDecrease;//每回合固定降低生命值
     public int extraPerRoundHealthDecrease;//额外每回合降低生命值
-    public int extraHurt;//额外受到伤害
+    public float  extraHurt;//额外受到伤害比例
 
     //Buff状态
     public int attackTimes;//攻击次数
@@ -80,6 +80,8 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerMonsterCards.Add(cardData.CopyMonsterCard(15));
         playerMonsterCards.Add(cardData.CopyMonsterCard(16));
         playerMonsterCards.Add(cardData.CopyMonsterCard(17));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(18));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(18));
 
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(0));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
@@ -203,7 +205,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     }
     public void ScareEffect()
     {
-        if (scareCount > 0) { extraHurt = scareCount; }
+        if (scareCount > 0) { extraHurt = 0.4f; }
         else { extraHurt = 0; }
     }
 
@@ -247,7 +249,7 @@ public class PlayerData : MonoSingleton<PlayerData>
 
     public void HealthDecrease(int damage)
     {
-        int plus= damage + extraHurt;
+        int plus= (int)(damage*(1+ extraHurt));
         currentHealth -= plus;
         perRoundHurt += plus;
         if (isAngerCountOpen && plus > counterThreshold)

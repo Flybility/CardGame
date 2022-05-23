@@ -10,7 +10,7 @@ public class CardDatabase : MonoSingleton<CardDatabase>
     {
         equipmentCardList.Add(new EquipmentCard( 0, "水枪",       10,  2, "对一个目标造成10点伤害",                                                                Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 1, "蛋糕",       10,  2, "情绪回复15点",                                                                          Resources.Load<Sprite>("EquipmentImages/01")));
-        equipmentCardList.Add(new EquipmentCard( 2, "红宝石",     10, 10, "下次攻击对目标攻击2次",                                                                 Resources.Load<Sprite>("EquipmentImages/01")));
+        equipmentCardList.Add(new EquipmentCard( 2, "红宝石",     10, 10, "使用后本回合内每次攻击对目标攻击2次",                                                                 Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 3, "橙宝石",     10,  3, "间位获得与被攻击目标同样的伤害",                                                        Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 4, "黄宝石",     10,  3, "每受到一次大于4点的伤害，增加一层反击",                                                 Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 5, "红水晶",     10,  2, "下次攻击对目标攻击3次",                                                                 Resources.Load<Sprite>("EquipmentImages/01")));

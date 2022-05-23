@@ -49,7 +49,7 @@ public class Equipment : MonoBehaviour,IPointerUpHandler
     {
         if (BattleField.Instance.usingEquipment == this.gameObject)
         {
-            Skills.Instance.AttackMonster(damage, monster);
+            Skills.Instance.AttackMonster(damage, monster,true);
             BattleField.Instance.usingEquipment = null;
         }
     }

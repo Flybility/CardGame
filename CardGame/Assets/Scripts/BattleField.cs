@@ -27,6 +27,8 @@ public class BattleField : MonoSingleton<BattleField>
     public int chosenCardNumber;      //选取的怪物牌在手牌父物体中的子物体序号
     public int currentRound;          //当前回合数
     public int perRoundDead;          //每回合当前消灭怪物数
+    public int playerAttackTime;       //玩家攻击次数
+    public int currentPlayerAttackTime;//当前玩家攻击次数
     public Text roundText;
 
     public GameObject _block;         //所有场上位格父物体
@@ -67,6 +69,7 @@ public class BattleField : MonoSingleton<BattleField>
 
     void Start()
     {
+        currentPlayerAttackTime = playerAttackTime;
         //PlayerData设置为单例，其所在物体同时也是主角角色物体
         player = PlayerData.Instance.gameObject;    
         //提前为blocks数组申请空间为战场上格子数量的数组空间
@@ -192,18 +195,18 @@ public class BattleField : MonoSingleton<BattleField>
     //游戏开始
    
     //切换回合
-    public void TurnEnd()
+    public void StartPlayerChoose()
     {
-        if (gameState == GameState.玩家回合&& monsterInBattle.Count>0)
+        if (gameState == GameState.玩家回合&& monsterInBattle.Count>0&&currentPlayerAttackTime>0)
         {
             CreateArrow(player.transform, ArrowPrefab);
             OpenHighlightWithinMonster();
             AttackSelecting = true;
         }
-        else if (gameState == GameState.玩家回合 && monsterInBattle.Count<=0)
-        {
-            StartCoroutine(MonsterAttack(player));
-        }
+        //else if (gameState == GameState.玩家回合 && monsterInBattle.Count<=0)
+        //{
+        //    StartCoroutine(MonsterAttack(player));
+        //}
     }
     //玩家抽牌
     public void PlayerExtractCard()
@@ -215,6 +218,7 @@ public class BattleField : MonoSingleton<BattleField>
             FlyToDiscardArea();
             currentRound++;
             perRoundDead = 0;
+            currentPlayerAttackTime = playerAttackTime;
             DrawHandMonster();
             PlayerData.Instance.ChangeRound();
         }
@@ -293,6 +297,7 @@ public class BattleField : MonoSingleton<BattleField>
             //extractArea.GetChild(i).DOMove(monsterArea.position, 0.5f);
             card.SetActive(true);
             card.transform.SetParent(monsterArea);
+            AudioManager.Instance.cardEnter.Play();
             ChangeParent.Invoke();
             card.transform.DOPunchScale(new Vector3(0.2f,0.2f,0.2f), interval);
             Debug.Log("飞入手牌");
@@ -368,6 +373,7 @@ public class BattleField : MonoSingleton<BattleField>
     {
         if (monsterInBattle.Count > 0)
         {
+            PlayerRoundEnd.Invoke();//玩家回合结束事件(结算buff)
             Debug.Log("敌人回合");
             gameState = GameState.敌方回合;
             stateChangeEvent.Invoke();
@@ -383,7 +389,9 @@ public class BattleField : MonoSingleton<BattleField>
                     Vector3 targetPos = target.transform.localPosition;
                     Vector3 monsterPos = monster.transform.parent.localPosition;
                     monster.transform.DOPunchPosition(targetPos - monsterPos, 0.5f, 1);
-                    yield return new WaitForSeconds(0.25f);
+                    yield return new WaitForSeconds(0.20f);
+                    AudioManager.Instance.monsterAttack.Play();
+                    yield return new WaitForSeconds(0.05f);
                     Skills.Instance.AttackPlayer(monster.GetComponent<ThisMonster>().afterMultipleAttacks, monster.GetComponent<ThisMonster>());
                     yield return new WaitForSeconds(0.25f);
                 }
@@ -406,16 +414,17 @@ public class BattleField : MonoSingleton<BattleField>
     {
         Vector3 monsterPos = monster.transform.parent.localPosition;
         Vector3 playerPos = player.transform.localPosition;
-        
+        currentPlayerAttackTime--;
         for(int i = 0; i < PlayerData.Instance.attackTimes;i++)
         {
             if (monster != null)
             {
                 player.transform.DOPunchPosition(monsterPos - playerPos, 0.4f, 1);
-                yield return new WaitForSeconds(0.2f);
-                
+                yield return new WaitForSeconds(0.15f);
+                AudioManager.Instance.playerAttack.Play();
+                yield return new WaitForSeconds(0.05f);
                 //monster.GetComponent<ThisMonster>().HealthDecrease(PlayerData.Instance.attacks);
-                Skills.Instance.AttackMonster(PlayerData.Instance.currentAttacks, monster);
+                Skills.Instance.AttackMonster(PlayerData.Instance.currentAttacks, monster,true);
                 yield return new WaitForSeconds(0.3f);
                 //monsterChange.Invoke();
             }
@@ -428,10 +437,9 @@ public class BattleField : MonoSingleton<BattleField>
         player.transform.DOLocalMove(playerPos, 0.3f);
         PlayerData.Instance.perRoundHurt = 0;
 
-        yield return new WaitForSeconds(1.2f);
-        PlayerRoundEnd.Invoke();//玩家回合结束事件(结算buff)
+        
 
-        StartCoroutine(MonsterAttack(player));
+        //StartCoroutine(MonsterAttack(player));
 
         
     }
@@ -552,6 +560,7 @@ public class BattleField : MonoSingleton<BattleField>
     {  
         DestroyArrow();
         SelectingMonster = 0;
+        AudioManager.Instance.summonMonster.Play();
         int monsterId = _monster.GetComponent<ThisMonsterCard>().id;
 
         
@@ -652,7 +661,7 @@ public class BattleField : MonoSingleton<BattleField>
     IEnumerator MonsterDead(GameObject monster,GameObject monsterCard)
     {
 
-        //yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.2f);
         monsterInBattle.Remove(monster);
 
         perRoundDead++;
@@ -668,6 +677,7 @@ public class BattleField : MonoSingleton<BattleField>
         }
         Destroy(monster);
         Debug.Log("怪物死亡");
+        AudioManager.Instance.monsterDead1.Play();
         //monster.GetComponent<ThisMonster>().
         //MonsterDeadEvent.Invoke();//怪物死亡事件（用于开启怪物死亡事件）
         yield return new WaitForSeconds(0.1f);

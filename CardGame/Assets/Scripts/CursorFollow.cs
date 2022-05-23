@@ -19,8 +19,9 @@ public class CursorFollow : MonoSingleton<CursorFollow>
     public bool isOnUI;
 
     private string 反击 = "反击：回合末每次攻击伤害 = 初始伤害 + 反击层数*本回合受到伤害的30%";
-    private string 恐惧 = "恐惧：本回合每次所受伤害 = 初始伤害 + 恐惧层数";
-    private string 眩晕 = "眩晕：停止行动n回合，n为眩晕层数";
+    private string 恐惧 = "恐惧：受到的伤害增加40%";
+    private string 眩晕 = "眩晕：停止行动";
+    private string 灼伤 = "灼伤：每回合受到5点伤害，无视护甲";
     void Start()
     {
         
@@ -51,11 +52,17 @@ public class CursorFollow : MonoSingleton<CursorFollow>
         {
             CheckText();
         }
+        transform.SetAsLastSibling();
         
     }
     public void CheckText()
     {
         if (text.text.Contains("反击"))
+        {
+            extraDis.SetActive(true);
+            extraText.text = 反击;
+        }
+        if (text.text.Contains("灼伤"))
         {
             extraDis.SetActive(true);
             extraText.text = 反击;

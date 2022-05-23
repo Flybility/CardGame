@@ -26,9 +26,9 @@ public class Skills : MonoSingleton<Skills>
         else { PlayerData.Instance.AddScareCount(monster.attackAttachedScare, scareCounter); }
 
     }
-    public void AttackMonster(int damage, GameObject target)
+    public void AttackMonster(int damage, GameObject target,bool isStraight)
     {
-        target.GetComponent<ThisMonster>().HealthDecrease(damage);
+        target.GetComponent<ThisMonster>().HealthDecrease(damage,isStraight);
     }
     public void RecoverHealth(int value)
     {
@@ -42,13 +42,15 @@ public class Skills : MonoSingleton<Skills>
     {       
         if (BattleField.Instance.isFinished == false)
         {
-            yield return new WaitForSeconds(0.2f);
+
+            yield return new WaitForSeconds(0.3f);
+            AudioManager.Instance.boom1.Play();
             List<GameObject> monsters = BlocksManager.Instance.GetNeighbours(block);
                 //播放爆炸动画
             foreach (var monster in BlocksManager.Instance.GetNeighbours(block))
             {
-                yield return new WaitForSeconds(0.12f);
-                AttackMonster(damage, monster);
+                yield return new WaitForSeconds(0.06f);
+                AttackMonster(damage, monster,false);
             }
             //for (int i = 0; i < BlocksManager.Instance.backMonsters.Count; i++)
             //{
@@ -66,7 +68,8 @@ public class Skills : MonoSingleton<Skills>
     {
         if (BattleField.Instance.isFinished == false)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.3f);
+            AudioManager.Instance.boom1.Play();
             List<GameObject> monsters = new List<GameObject>();
             foreach (var monster in BlocksManager.Instance.monsters)
             {
@@ -85,8 +88,8 @@ public class Skills : MonoSingleton<Skills>
             yield return new WaitForSeconds(0.1f);
             for (int i = 0; i < monsters.Count; i++)
             {
-                yield return new WaitForSeconds(0.12f);
-                AttackMonster(damage, monsters[i]);
+                yield return new WaitForSeconds(0.06f);
+                AttackMonster(damage, monsters[i],false);
             }
         }
         

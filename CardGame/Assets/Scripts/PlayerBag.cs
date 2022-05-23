@@ -44,7 +44,8 @@ public class PlayerBag : MonoBehaviour
             newCard.GetComponent<ThisMonsterCard>().card = monsterDeck[i];
             objects.Add(newCard);
             newCard.transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 0.2f);
-            yield return new WaitForSeconds(0.1f);
+            AudioManager.Instance.cardEnter.Play();
+            yield return new WaitForSeconds(0.15f);
         }
     }
     public void ReadMonsterDeck()
@@ -77,7 +78,8 @@ public class PlayerBag : MonoBehaviour
             objects.Add(newCard);
             newCard.GetComponent<ThisEquiptmentCard>().card = PlayerData.Instance.playerEquipmentCards[i];
             newCard.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), 0.2f);
-            yield return new WaitForSeconds(0.1f);
+            AudioManager.Instance.cardEnter.Play();
+            yield return new WaitForSeconds(0.15f);
         }
     }
 

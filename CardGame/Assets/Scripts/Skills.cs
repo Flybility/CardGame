@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Skills : MonoSingleton<Skills>
 {
@@ -131,6 +132,10 @@ public class Skills : MonoSingleton<Skills>
         {
             Block.GetComponent<Blocks>().AddAttack(rate);
         }
+        foreach(var monster in BlocksManager.Instance.GetInterval(block))
+        {
+            monster.GetComponent<ThisMonster>().multipleAttacks = rate;
+        }
     }
     public void AwardImprovedBesides(Transform block,float count)
     {
@@ -138,9 +143,73 @@ public class Skills : MonoSingleton<Skills>
         {
             Block.GetComponent<Blocks>().AddAwards(count);
         }
+        foreach (var monster in BlocksManager.Instance.GetInterval(block))
+        {
+            monster.GetComponent<ThisMonster>().multipleAwards = count;
+        }
+    }
+    public void StartExchangePosition(GameObject monster,int way)
+    {
+        if (way == 0) { StartCoroutine(ExchangeBesidePosition(monster)); }
+        if (way == 1) { StartCoroutine(ExchangeIntervalPosition(monster)); }
+    }
+    IEnumerator ExchangeBesidePosition(GameObject monster)
+    {
+        Transform block = monster.GetComponent<ThisMonster>().block;
+        if (BlocksManager.Instance.GetNeighbourNext(block) != null)
+        {
+            GameObject nextMonster = BlocksManager.Instance.GetNeighbourNext(block);
+            Transform nextblock = nextMonster.GetComponent<ThisMonster>().block;
+            GameObject monsterCard = monster.GetComponent<ThisMonster>().monsterCard;
+            GameObject nextMonsterCard = nextMonster.GetComponent<ThisMonster>().monsterCard;
+            //
+            yield return new WaitForSeconds(0.3f);
+
+            nextMonsterCard.transform.SetParent(block);
+            nextMonster.transform.SetParent(block);
+            nextMonster.GetComponent<ThisMonster>().block = block;
+
+            monsterCard.transform.SetParent(nextblock);
+            monster.transform.SetParent(nextblock);
+            monster.GetComponent<ThisMonster>().block = nextblock;
+
+            nextMonster.transform.DOLocalMove(Vector3.zero, 0.3f);
+            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+
+            BlocksManager.Instance.MonsterChange();
+        }
+        else { yield return null; }
+
+    }
+    IEnumerator ExchangeIntervalPosition(GameObject monster)
+    {
+        Transform block = monster.GetComponent<ThisMonster>().block;
+        if (BlocksManager.Instance.GetIntervalNext(block) != null)
+        {
+            GameObject nextMonster = BlocksManager.Instance.GetIntervalNext(block);
+            Transform nextblock = nextMonster.GetComponent<ThisMonster>().block;
+            GameObject monsterCard = monster.GetComponent<ThisMonster>().monsterCard;
+            GameObject nextMonsterCard = nextMonster.GetComponent<ThisMonster>().monsterCard;
+            //
+            yield return new WaitForSeconds(0.3f);
+
+            nextMonsterCard.transform.SetParent(block);
+            nextMonster.transform.SetParent(block);
+            nextMonster.GetComponent<ThisMonster>().block = block;
+
+            monsterCard.transform.SetParent(nextblock);
+            monster.transform.SetParent(nextblock);
+            monster.GetComponent<ThisMonster>().block = nextblock;
+
+            nextMonster.transform.DOLocalMove(Vector3.zero, 0.3f);
+            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+
+            BlocksManager.Instance.MonsterChange();
+        }
+        else { yield return null; }
+
     }
 
 
-   
 
 }

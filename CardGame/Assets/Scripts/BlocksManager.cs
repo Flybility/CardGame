@@ -36,6 +36,38 @@ public class BlocksManager : MonoSingleton<BlocksManager>
             }
         }
     }
+    public GameObject GetNeighbourNext(Transform block)
+    {
+        int higherNumber = block.GetSiblingIndex() + 1;
+
+        if (higherNumber > 5) higherNumber = 0;
+        if (monsters[higherNumber] != null )
+        {
+            return monsters[higherNumber].gameObject;
+        }
+        else
+        {
+            return null;
+        }
+
+       
+    }
+    public GameObject GetIntervalNext(Transform block)
+    {
+        int higherNumber = block.GetSiblingIndex() + 2;
+
+        if (higherNumber > 5) higherNumber -= 6;
+        if (monsters[higherNumber] != null)
+        {
+            return monsters[higherNumber].gameObject;
+        }
+        else
+        {
+            return null;
+        }
+
+
+    }
     public List<GameObject> GetNeighboursBlock(Transform thisBlock)
     {
         List<GameObject> neighbours = new List<GameObject>();

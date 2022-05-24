@@ -11,19 +11,20 @@ public class Monster9:MonoBehaviour
     void Start()
     {
         monster = GetComponent<ThisMonster>();
+        monster.isNeighbourAwardMultiple = true;
         Skills.Instance.AddAttackCount(monster);
-        Skills.Instance.AwardImprovedBesides(monster.block, multipleRate);
-        foreach (var monster in BlocksManager.Instance.GetNeighbours(monster.block))
-        {
-            monster.GetComponent<ThisMonster>().multipleAwards = multipleRate;
-        }
+        
+       // foreach (var monster in BlocksManager.Instance.GetNeighbours(monster.block))
+       // {
+       //     monster.GetComponent<ThisMonster>().multipleAwards = multipleRate;
+       // }
     }
 
     // Update is called once per frame
     void Update()
     {
-       // Detected();
-        
+        // Detected();
+        Skills.Instance.AwardImprovedBesides(monster.block, multipleRate);
 
     }
    private void OnDestroy()
@@ -31,10 +32,10 @@ public class Monster9:MonoBehaviour
       if (BattleField.Instance.isFinished == false)
       {
           Skills.Instance.AwardImprovedBesides(monster.block, 1);
-          foreach (var monster in BlocksManager.Instance.GetNeighbours(monster.block))
-          {
-              monster.GetComponent<ThisMonster>().multipleAwards = 1;
-          }
+          //foreach (var monster in BlocksManager.Instance.GetNeighbours(monster.block))
+          //{
+          //    monster.GetComponent<ThisMonster>().multipleAwards = 1;
+          //}
       }
            
    }

@@ -88,7 +88,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(2));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(3));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(4));
-        //playerEquipmentCards.Add(cardData.CopyEquipmentCard(5));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(11));
         //playerEquipmentCards.Add(cardData.CopyEquipmentCard(6));
         //playerEquipmentCards.Add(cardData.CopyEquipmentCard(7));
 
@@ -205,7 +205,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     }
     public void ScareEffect()
     {
-        if (scareCount > 0) { extraHurt = 0.4f; }
+        if (scareCount > 0) { extraHurt = 0.3f; }
         else { extraHurt = 0; }
     }
 

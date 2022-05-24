@@ -821,6 +821,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Maskable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

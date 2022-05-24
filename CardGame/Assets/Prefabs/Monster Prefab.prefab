@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -340,8 +340,15 @@ MonoBehaviour:
   currentAttacks: 0
   afterMultipleAttacks: 0
   multipleAttacks: 1
+  attackAttachedScare: 0
   dizzyCount: 0
   burnsCount: 0
+  absorbCount: 0
+  absorbDamages: 0
+  attackCount: 0
+  isAddAward: 0
+  isAddScareCount: 0
+  isIntangible: 0
   leftMonster: {fileID: 0}
   rightMonster: {fileID: 0}
 --- !u!1 &3336817174295435958

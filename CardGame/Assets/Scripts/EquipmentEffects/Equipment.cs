@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using DG.Tweening;
 
-public class Equipment : MonoBehaviour,IPointerUpHandler
+public class Equipment : MonoBehaviour,IPointerClickHandler
 {
     public bool isInEquipment;
     public int damage;
@@ -13,7 +13,7 @@ public class Equipment : MonoBehaviour,IPointerUpHandler
     public ThisEquiptmentCard card;
 
     
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
         if (isInEquipment && eventData.button == PointerEventData.InputButton.Left)
         {
@@ -47,9 +47,9 @@ public class Equipment : MonoBehaviour,IPointerUpHandler
     }
     public void ToMonster(GameObject monster)
     {
-        if (BattleField.Instance.usingEquipment == this.gameObject)
+        if (card.id == BattleField.Instance.usingEquipment.GetComponent<ThisEquiptmentCard>().id)
         {
-            Skills.Instance.AttackMonster(damage, monster,true);
+            Skills.Instance.StartExchangePosition(monster,0);
             BattleField.Instance.usingEquipment = null;
         }
     }

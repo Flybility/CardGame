@@ -404,8 +404,10 @@ public class BattleField : MonoSingleton<BattleField>
         gameState = GameState.玩家抽牌;
         stateChangeEvent.Invoke();
 
+        yield return new WaitForSeconds(0.5f);
         MonsterRoundEnd.Invoke();//怪物回合结束事件（结算buff）
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(1f);
+
         PlayerExtractCard();
         yield break;
     }
@@ -610,7 +612,7 @@ public class BattleField : MonoSingleton<BattleField>
     //    }        
     //}
     //对怪物使用装备，（之后可以考虑使用协程加入一些发射投掷物的动画）
-    public void UseEquipment(GameObject monster)
+    public void UseEquipment(GameObject monster,GameObject equipment)
     {
         DestroyArrow();
         CloseHighlightWithinMonster();        

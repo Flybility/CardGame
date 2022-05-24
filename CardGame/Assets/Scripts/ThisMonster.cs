@@ -41,9 +41,12 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public bool isAddAward;
     public bool isAddScareCount;//附加恐惧是否随怪物数增长
     public bool isIntangible;//是否无形（可直接攻击）
+    public bool isNeighbourAwardMultiple;
+    public bool isIntervalAttackMultiple;
     public GameObject leftMonster, rightMonster;
 
-
+    public List<GameObject> neighbours;
+    public List<GameObject> intervals;
     void Start()
     {
         OnStart();
@@ -86,8 +89,47 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         //effect = gameObject.GetComponent(Type.GetType("Monster" + id));
         BattleField.Instance.MonsterRoundEnd.AddListener(PerRoundChange);
     }
+
     public void OnUpdate()
     {
+        neighbours = BlocksManager.Instance.GetNeighbours(block.transform);
+        intervals = BlocksManager.Instance.GetInterval(block.transform);
+        if(neighbours.Count==2)
+        {
+            if (neighbours[0].GetComponent<ThisMonster>().isNeighbourAwardMultiple == false && neighbours[1].GetComponent<ThisMonster>().isNeighbourAwardMultiple == false)
+            {
+                multipleAwards = 1;  
+            }
+            else { multipleAwards = 2; }
+        }
+        else if (neighbours.Count == 1)
+        {
+            if(neighbours[0].GetComponent<ThisMonster>().isNeighbourAwardMultiple == false)
+            {
+                multipleAwards = 1;
+            }
+            else { multipleAwards = 2; }
+        }
+        
+
+        if (intervals.Count > 1)
+        {
+            if (intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == false && intervals[1].GetComponent<ThisMonster>().isIntervalAttackMultiple == false)
+            {
+                multipleAttacks = 1;
+            }
+        }
+        else if(intervals.Count == 1)
+        {
+            if (intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == false)
+            {
+                multipleAttacks = 1;
+            }
+        }
+      
+
+
+
         healthValue.text = health + "/" + maxHealth;
         afterMultipleAttacks = (int)(currentAttacks * multipleAttacks*(attackCount+1));
         if (isAddAward)
@@ -221,7 +263,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         }
         if(eventData.button == PointerEventData.InputButton.Left && BattleField.Instance.usingEquipment!=null)
         {
-            BattleField.Instance.UseEquipment(this.gameObject);
+            BattleField.Instance.UseEquipment(this.gameObject, BattleField.Instance.usingEquipment);
             //BattleField.Instance.usingEquipment = null;
         }
     }

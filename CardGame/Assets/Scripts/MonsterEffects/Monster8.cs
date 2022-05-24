@@ -5,35 +5,39 @@ using UnityEngine;
 public class Monster8:MonoBehaviour
 {
     public ThisMonster monster;
+    public Blocks block;
     public float multipleRate;
     // Start is called before the first frame update
     void Start()
     {
         monster = GetComponent<ThisMonster>();
+        block = monster.block.GetComponent<Blocks>();
+        monster.isIntervalAttackMultiple = true;
         Skills.Instance.AddAttackCount(monster);
-        Skills.Instance.AttackImprovedInterval(monster.block, multipleRate);
-        foreach(var monster in BlocksManager.Instance.GetInterval(monster.block))
-        {
-            monster.GetComponent<ThisMonster>().multipleAttacks = multipleRate;
-        }
+        
+        //foreach(var monster in BlocksManager.Instance.GetInterval(monster.block))
+        //{
+        //    monster.GetComponent<ThisMonster>().multipleAttacks = multipleRate;
+        //}
     }
 
     // Update is called once per frame
     void Update()
     {
-       // Detected();
-        
+        // Detected();
+        Skills.Instance.AttackImprovedInterval(monster.block, multipleRate);
 
     }
+    
     private void OnDestroy()
     {
         if (BattleField.Instance.isFinished == false)
         {
             Skills.Instance.AttackImprovedInterval(monster.block, 1);
-            foreach (var monster in BlocksManager.Instance.GetInterval(monster.block))
-            {
-                monster.GetComponent<ThisMonster>().multipleAttacks = 1;
-            }
+           // foreach (var monster in BlocksManager.Instance.GetInterval(monster.block))
+           // {
+           //     monster.GetComponent<ThisMonster>().multipleAttacks = 1;
+           // }
         }
     }
     //private void Detected()

@@ -8,9 +8,9 @@ public class CardDatabase : MonoSingleton<CardDatabase>
     public  List<MonsterCard> monsterCardList = new List<MonsterCard>();
     private void Awake()
     {
-        equipmentCardList.Add(new EquipmentCard( 0, "水枪",       10,  2, "对一个目标造成10点伤害",                                                                Resources.Load<Sprite>("EquipmentImages/01")));
-        equipmentCardList.Add(new EquipmentCard( 1, "蛋糕",       10,  2, "情绪回复15点",                                                                          Resources.Load<Sprite>("EquipmentImages/01")));
-        equipmentCardList.Add(new EquipmentCard( 2, "红宝石",     10, 10, "使用后本回合内每次攻击对目标攻击2次",                                                                 Resources.Load<Sprite>("EquipmentImages/01")));
+        equipmentCardList.Add(new EquipmentCard( 0, "蓝宝石",     10, 10, "使指定的心魔顺时针与下一个心魔互换位置",                                                Resources.Load<Sprite>("EquipmentImages/01")));
+        equipmentCardList.Add(new EquipmentCard( 1, "紫宝石",     10, 10, "使指定的心魔顺时针与下一个相间的心魔互换位置",                                          Resources.Load<Sprite>("EquipmentImages/01")));
+        equipmentCardList.Add(new EquipmentCard( 2, "红宝石",     10, 10, "使用后本回合内每次攻击对目标攻击2次",                                                   Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 3, "橙宝石",     10,  3, "间位获得与被攻击目标同样的伤害",                                                        Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 4, "黄宝石",     10,  3, "每受到一次大于4点的伤害，增加一层反击",                                                 Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 5, "红水晶",     10,  2, "下次攻击对目标攻击3次",                                                                 Resources.Load<Sprite>("EquipmentImages/01")));

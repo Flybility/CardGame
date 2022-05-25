@@ -10,6 +10,7 @@ public class Skills : MonoSingleton<Skills>
     public GameObject burnsEffect;
     public GameObject dizzyCounter;
     public GameObject burnsCounter;
+    public GameObject bondageCounter;
     public GameObject attackTimesCounter;
     public GameObject counterattackCounter;
     public GameObject scareCounter;
@@ -25,6 +26,12 @@ public class Skills : MonoSingleton<Skills>
             PlayerData.Instance.AddScareCount(BattleField.Instance.monsterInBattle.Count, scareCounter);
         }
         else { PlayerData.Instance.AddScareCount(monster.attackAttachedScare, scareCounter); }
+        if (monster.isAddBurnsCount)
+        {
+            PlayerData.Instance.AddBurns(BattleField.Instance.monsterInBattle.Count, burnsCounter);
+        }
+        else { PlayerData.Instance.AddBurns(monster.attackAttachedBurns, scareCounter); }
+        PlayerData.Instance.AddBondages(monster.attackAttachedBondages, bondageCounter);
 
     }
     public void AttackMonster(int damage, GameObject target,bool isStraight)
@@ -111,6 +118,10 @@ public class Skills : MonoSingleton<Skills>
     {
         PlayerData.Instance.AddScareCount(times, scareCounter);
     }
+    public void AddBurnsToPlayer(int times)
+    {
+        PlayerData.Instance.AddBurns(times, burnsCounter);
+    }
     public void AddAbsorbCount(int rounds, ThisMonster monster)
     {
         monster.AddAbsorb(rounds, absorbCounter);
@@ -148,10 +159,13 @@ public class Skills : MonoSingleton<Skills>
             monster.GetComponent<ThisMonster>().multipleAwards = count;
         }
     }
-    public void StartExchangePosition(GameObject monster,int way)
+    public void StartExchangeBesidePosition(GameObject monster)
     {
-        if (way == 0) { StartCoroutine(ExchangeBesidePosition(monster)); }
-        if (way == 1) { StartCoroutine(ExchangeIntervalPosition(monster)); }
+        StartCoroutine(ExchangeBesidePosition(monster)); 
+    }
+    public void StartExchangeIntervalPosition(GameObject monster)
+    {
+        StartCoroutine(ExchangeIntervalPosition(monster));
     }
     IEnumerator ExchangeBesidePosition(GameObject monster)
     {
@@ -167,10 +181,13 @@ public class Skills : MonoSingleton<Skills>
 
             nextMonsterCard.transform.SetParent(block);
             nextMonster.transform.SetParent(block);
+            nextMonster.GetComponent<ThisMonster>().stateBlock.SetParent(block);
             nextMonster.GetComponent<ThisMonster>().block = block;
+            
 
             monsterCard.transform.SetParent(nextblock);
             monster.transform.SetParent(nextblock);
+            monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextblock);
             monster.GetComponent<ThisMonster>().block = nextblock;
 
             nextMonster.transform.DOLocalMove(Vector3.zero, 0.3f);
@@ -195,10 +212,13 @@ public class Skills : MonoSingleton<Skills>
 
             nextMonsterCard.transform.SetParent(block);
             nextMonster.transform.SetParent(block);
+            nextMonster.GetComponent<ThisMonster>().stateBlock.SetParent(block);
             nextMonster.GetComponent<ThisMonster>().block = block;
+
 
             monsterCard.transform.SetParent(nextblock);
             monster.transform.SetParent(nextblock);
+            monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextblock);
             monster.GetComponent<ThisMonster>().block = nextblock;
 
             nextMonster.transform.DOLocalMove(Vector3.zero, 0.3f);

@@ -8,7 +8,6 @@ public class Monster15 : MonoBehaviour
     public ThisMonster monster;
     public int rounds;
     // Start is called before the first frame update
-    //死亡时增加下次攻击力
     void Start()
     {
         monster = GetComponent<ThisMonster>();

@@ -12,6 +12,7 @@ public class Monster18 : MonoBehaviour
         monster = GetComponent<ThisMonster>();
         monster.attackAttachedScare = attackAttachedScareCount;
         monster.isIntangible = true;
+        monster.isAddAward = true;
     }
 
     // Update is called once per frame

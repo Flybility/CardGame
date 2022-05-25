@@ -59,7 +59,9 @@ public class BlocksManager : MonoSingleton<BlocksManager>
         if (higherNumber > 5) higherNumber -= 6;
         if (monsters[higherNumber] != null)
         {
+            Debug.Log(monsters[higherNumber].gameObject);
             return monsters[higherNumber].gameObject;
+
         }
         else
         {

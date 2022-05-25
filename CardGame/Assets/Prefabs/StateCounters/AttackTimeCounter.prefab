@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4bcb22041fbadd468e2fee418ff8fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  discription1: 
+  discription1: "\u53CC\u91CD\u6253\u51FB\uFF1A"
   discription2: "\u56DE\u5408\u5185\u6BCF\u6B21\u653B\u51FB\u4E3A\u53CC\u91CD\u6253\u51FB"
   count: {fileID: 0}
 --- !u!1 &4318231377542300561

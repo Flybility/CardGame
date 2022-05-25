@@ -25,7 +25,10 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public int currentAttacks;
     public int afterMultipleAttacks;
     public float multipleAttacks;//攻击力倍数
-    public int attackAttachedScare;
+    public int attackAttachedScare;//攻击附加恐惧层数
+    public int attackAttachedBurns;//攻击附加灼伤层数
+    public int attackAttachedBondages;//攻击附加束缚层数
+
     public int dizzyCount;//眩晕层数
     public int burnsCount;//灼伤层数
     public int absorbCount;//吸收回合数
@@ -35,11 +38,12 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     private Slider slider;
     private Text healthValue;
     private Text attackText;
-    private Transform stateBlock;
-    private GameObject dizzy, absorb,attack;
+    public Transform stateBlock;
+    private GameObject dizzy, absorb, attack, burns;
     private bool isAddAttack;
     public bool isAddAward;
     public bool isAddScareCount;//附加恐惧是否随怪物数增长
+    public bool isAddBurnsCount;//附加灼伤是否随怪物数增长
     public bool isIntangible;//是否无形（可直接攻击）
     public bool isNeighbourAwardMultiple;
     public bool isIntervalAttackMultiple;
@@ -64,7 +68,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public void PerRoundChange()
     {
         if (dizzyCount > 0) DecreaseDizzy(1);
-        if (burnsCount > 0) burnsCount--;
+        if (burnsCount > 0) DecreaseBurns(1);
         if (absorbCount > 0) DecreaseAbsorb(1);
         if (isAddAttack) AddAttackPerRound(1);
     }
@@ -79,6 +83,8 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         healthValue = transform.GetChild(1).GetComponent<Text>();
         stateBlock = transform.GetChild(2);
         attackText = transform.GetChild(3).GetComponent<Text>();
+
+        stateBlock.transform.SetParent(transform.parent);
         monsterCard = GetComponentInParent<Blocks>().card;
         id = monsterCard.GetComponent<ThisMonsterCard>().id;
         maxHealth = monsterCard.GetComponent<ThisMonsterCard>().card.health;
@@ -205,6 +211,36 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         }
         else { absorbCount = 0; }
     }
+    public void AddBurns(int Counts, GameObject burnsPrefab)
+    {
+        burnsCount += Counts;
+        if (burns == null && burnsCount != 0)
+        {
+            burns = Instantiate(burnsPrefab, stateBlock);
+            burns.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
+        }
+        else if (burns != null && burnsCount != 0)
+        {
+            burns.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
+            burns.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+        }
+        else { return; }
+
+    }
+    public void DecreaseBurns(int count)
+    {
+        burnsCount -= count;
+        if (burns != null && burnsCount <= 0)
+        {
+            Destroy(burns);
+        }
+        if (burns != null && burnsCount > 0)
+        {
+            burns.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
+            burns.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+        }
+        else { burnsCount = 0; }
+    }
     public void AddAttack(int count,GameObject prefab)
     {
         isAddAttack = true;
@@ -270,7 +306,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        transform.DOScale(1.1f ,0.1f);
+        //transform.DOScale(1.1f ,0.1f);
         Invoke("ShowDescription", 0.1f);
         CursorFollow.Instance.description.SetActive(true);
         Color color = CursorFollow.Instance.description.GetComponent<Image>().color;
@@ -301,11 +337,15 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        transform.DOScale(1, 0.1f);
+        //transform.DOScale(1, 0.1f);
         CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = null;
         CursorFollow.Instance.description.SetActive(false);
     }
 
+    private void OnDestroy()
+    {
+        Destroy(stateBlock.gameObject);
+    }
     // Start is called before the first frame update
 
 

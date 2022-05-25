@@ -240,7 +240,7 @@ public class BattleField : MonoSingleton<BattleField>
     public void DrawHandMonster()
     {
         PanelMask.SetActive(true);
-        if (extractArea.childCount >= PlayerData.Instance.monsterCardMaxCount+ PlayerData.Instance.tempExtraCardMax)
+        if (extractArea.childCount >= PlayerData.Instance.currentCardMax+ PlayerData.Instance.tempExtraCardMax)
         {
             StartFlyToHand();
         }
@@ -256,7 +256,7 @@ public class BattleField : MonoSingleton<BattleField>
     //开启FlyToHand协程
     public void StartFlyToHand()
     {
-        StartCoroutine(FlyToHand(PlayerData.Instance.monsterCardMaxCount + PlayerData.Instance.tempExtraCardMax));
+        StartCoroutine(FlyToHand(PlayerData.Instance.currentCardMax + PlayerData.Instance.tempExtraCardMax));
     }
     //玩家开始攻击
     public void StartPlayerAttack(GameObject monster)
@@ -406,7 +406,7 @@ public class BattleField : MonoSingleton<BattleField>
 
         yield return new WaitForSeconds(0.5f);
         MonsterRoundEnd.Invoke();//怪物回合结束事件（结算buff）
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
         PlayerExtractCard();
         yield break;
@@ -445,7 +445,7 @@ public class BattleField : MonoSingleton<BattleField>
 
         
     }
-    public void JumpPlayerRound()
+    public void JumpPlayerRound()//跳过玩家回合，由跳过回合按钮调用
     {
         PlayerData.Instance.perRoundHurt = 0;
 
@@ -519,7 +519,7 @@ public class BattleField : MonoSingleton<BattleField>
             chosenCardNumber = _monsterCard.transform.GetSiblingIndex();
             foreach (var block in blocks)
             {
-                if (block.transform.childCount==1)
+                if (block.transform.childCount<=3)
                 {
                     //等待召唤显示高亮图片
                     block.GetComponent<Blocks>().highLightImage.SetActive(true);

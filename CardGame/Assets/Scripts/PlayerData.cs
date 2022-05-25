@@ -34,14 +34,17 @@ public class PlayerData : MonoSingleton<PlayerData>
     public int scareCount;//恐惧层数
     public int angerCount;//反击层数
     public int burnsCount;//灼伤层数
+    public int burnsDamage;
     public int bondageCount;//束缚层数
     public int attackTimesCount;//攻击次数增加层数
     public int initialAttacks;//初始攻击力
     public int currentAttacks;//目前攻击力
     public int tempAttaks;//临时攻击力
     public int monsterCardMaxCount;//初始最大怪物手牌数
-    public int perRoundExtractCount;//每回合抽牌数
+    public int currentCardMax;
+    //public int perRoundExtractCount;//每回合抽牌数
     public int tempExtraCardMax;//临时增加最大抽牌数
+
     public int awardMonsterCardAmount;
     public int awardEquipCardAmount;
     public bool isAngerCountOpen;
@@ -52,7 +55,8 @@ public class PlayerData : MonoSingleton<PlayerData>
     private GameObject attackTimeBar;//攻击次数增加栏
     private GameObject angerBar;
     private GameObject scareBar;
-
+    private GameObject burnsBar;
+    private GameObject bondageBar;
 
     // Start is called before the first frame update
     void Awake()
@@ -78,10 +82,10 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerMonsterCards.Add(cardData.CopyMonsterCard(13));
         playerMonsterCards.Add(cardData.CopyMonsterCard(14));
         playerMonsterCards.Add(cardData.CopyMonsterCard(15));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(16));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(17));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(18));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(18));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(21));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(21));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(21));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(21));
 
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(0));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
@@ -116,6 +120,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         DecreaseCounterattackCount(angerCount);
         DecreaseAttackTimeCount(attackTimesCount);
         DecreaseScareCount(scareCount);
+        DecreaseBurns(burnsCount);
         HealthBarChange();
     }
     public void ChangeRound()
@@ -124,18 +129,22 @@ public class PlayerData : MonoSingleton<PlayerData>
     }
     IEnumerator PerRoundChange()
     {
-
+        HealthDecrease(perRoundHealthDecrease + extraPerRoundHealthDecrease);
+        yield return new WaitForSeconds(0.5f);
         if (armorCount >0)          armorCount--;
         if (scareCount > 0)         DecreaseScareCount(1);
         if (angerCount > 0)         DecreaseCounterattackCount(angerCount/2);
-        if (burnsCount > 0)         burnsCount--;
-        if (bondageCount > 0)       bondageCount--;
+        if (burnsCount > 0)         DecreaseBurns(1);
+        if (bondageCount > 0)       DecreaseBondage(1);
         if (attackTimesCount > 0)   DecreaseAttackTimeCount(1);
         //确保在玩家抽入手牌之后
-        yield return new WaitForSeconds(0.3f);
-        HealthDecrease(perRoundHealthDecrease+ extraPerRoundHealthDecrease);
+
+
         AttackTimeEffect();
-        
+
+        BurnsEffect();
+
+
     }
     public void AddAttackTimeCount(int counts, GameObject prefab)
     {
@@ -245,8 +254,81 @@ public class PlayerData : MonoSingleton<PlayerData>
         counterThreshold = threshold;
     }
 
+    public void AddBurns(int Counts, GameObject burnsPrefab)
+    {
+        burnsCount += Counts;
+        if (burnsBar == null && burnsCount != 0)
+        {
+            burnsBar = Instantiate(burnsPrefab, playerStatesBar);
+            burnsBar.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
+        }
+        else if (burnsBar != null && burnsCount != 0)
+        {
+            burnsBar.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
+            burnsBar.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+        }
+        else { return; }
 
+    }
+    public void DecreaseBurns(int count)
+    {
+        burnsCount -= count;
+        if (burnsBar != null && burnsCount <= 0)
+        {
+            Destroy(burnsBar);
+        }
+        if (burnsBar != null && burnsCount > 0)
+        {
+            burnsBar.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
+            burnsBar.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+        }
+        else { burnsCount = 0; }
+    }
+    public void BurnsEffect()
+    {
+        if (burnsCount > 0) { HealthDecrease(burnsDamage); }
 
+    }
+
+    public void AddBondages(int Counts, GameObject burnsPrefab)
+    {
+        bondageCount += Counts;
+        if (bondageBar == null && bondageCount != 0)
+        {
+            bondageBar = Instantiate(burnsPrefab, playerStatesBar);
+            bondageBar.transform.GetChild(0).GetComponent<Text>().text = bondageCount.ToString();
+        }
+        else if (bondageBar != null && burnsCount != 0)
+        {
+            bondageBar.transform.GetChild(0).GetComponent<Text>().text = bondageCount.ToString();
+            bondageBar.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+        }
+        else { return; }
+
+    }
+    public void DecreaseBondage(int count)
+    {
+        bondageCount -= count;
+        if (bondageBar != null && bondageCount <= 0)
+        {
+            Destroy(bondageBar);
+        }
+        if (bondageBar != null && bondageCount > 0)
+        {
+            bondageBar.transform.GetChild(0).GetComponent<Text>().text = bondageCount.ToString();
+            bondageBar.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+        }
+        else { bondageCount = 0; }
+    }
+    public void BondageEffect()
+    {
+        if (bondageCount > 0)
+        {
+            currentCardMax = monsterCardMaxCount - 1;
+        }
+        else { currentCardMax = monsterCardMaxCount; }
+
+    }
     public void HealthDecrease(int damage)
     {
         int plus= (int)(damage*(1+ extraHurt));
@@ -296,11 +378,12 @@ public class PlayerData : MonoSingleton<PlayerData>
     }
     public void AttackChange()
     {
-        int n= perRoundHurt * angerCount * 3 / 10;
+        int n= perRoundHurt * angerCount * 2/ 10;
         if (n < 1) n = 0;       
         currentAttacks = initialAttacks + n+tempAttaks;
         attackText.text = currentAttacks.ToString();
         ScareEffect();
+        BondageEffect();
     }
     // Update is called once per frame
     void Update()

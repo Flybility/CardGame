@@ -89,8 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4bcb22041fbadd468e2fee418ff8fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  discription1: "\u4E0B"
-  discription2: "3\u56DE\u5408\u514D\u75AB\u6240\u6709\u4F24\u5BB3"
+  discription1: "\u5438\u6536\u6240\u6709\u4F24\u5BB3\uFF0C\u5E76\u4E8E"
+  discription2: "\u56DE\u5408\u540E\u5BF9\u9644\u8FD1\u9020\u6210\u6240\u53D7\u7684\u6240\u6709\u4F24\u5BB3"
   count: {fileID: 0}
 --- !u!1 &4445641527424305221
 GameObject:

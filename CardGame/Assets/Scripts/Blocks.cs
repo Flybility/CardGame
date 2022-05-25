@@ -56,12 +56,12 @@ public class Blocks : MonoBehaviour, IPointerClickHandler
     // Update is called once per frame
     void Update()
     {
-        if (transform.childCount > 1)
-        {
-            if (transform.GetChild(1).CompareTag("Monster"))
-            {
-                Destroy(transform.GetChild(1).gameObject);
-            }
-        }        
+        //if (transform.childCount > 1)
+        //{
+        //    if (transform.GetChild(1).CompareTag("Monster"))
+        //    {
+        //        Destroy(transform.GetChild(1).gameObject);
+        //    }
+        //}        
     }
 }

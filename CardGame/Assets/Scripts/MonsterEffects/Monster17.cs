@@ -12,7 +12,7 @@ public class Monster17 : MonoBehaviour
     {
         monster = GetComponent<ThisMonster>();
         monster.attackAttachedScare = attackAttachedScareCount;
-        AddAwards();
+        monster.isAddAward = true;
     }
 
     // Update is called once per frame
@@ -20,8 +20,5 @@ public class Monster17 : MonoBehaviour
     {
 
     }
-    public void AddAwards()
-    {
-        monster.isAddAward = true;
-    }
+    
 }

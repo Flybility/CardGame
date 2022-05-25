@@ -47,11 +47,15 @@ public class Equipment1 : MonoBehaviour,IPointerClickHandler
     }
     public void ToMonster(GameObject monster)
     {
-        if (card.id == BattleField.Instance.usingEquipment.GetComponent<ThisEquiptmentCard>().id)
+        if (BattleField.Instance.usingEquipment != null)
         {
-            Skills.Instance.StartExchangePosition(monster,1);
-            BattleField.Instance.usingEquipment = null;
+            if (card.id == BattleField.Instance.usingEquipment.GetComponent<ThisEquiptmentCard>().id)
+            {
+                Skills.Instance.StartExchangeIntervalPosition(monster);
+                BattleField.Instance.usingEquipment = null;
+            }
         }
+        
     }
     // Update is called once per frame
     void Update()

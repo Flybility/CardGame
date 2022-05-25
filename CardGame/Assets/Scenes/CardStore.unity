@@ -3254,7 +3254,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -445, y: 0}
+  m_AnchoredPosition: {x: -445, y: 84}
   m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.2384212}
 --- !u!95 &896810259
@@ -3338,7 +3338,7 @@ MonoBehaviour:
   slider: {fileID: 0}
   maxHealth: 100
   currentHealth: 0
-  perRoundHealthDecrease: 10
+  perRoundHealthDecrease: 5
   extraPerRoundHealthDecrease: 0
   extraHurt: 0
   attackTimes: 0
@@ -3346,13 +3346,14 @@ MonoBehaviour:
   scareCount: 0
   angerCount: 0
   burnsCount: 0
+  burnsDamage: 5
   bondageCount: 0
   attackTimesCount: 0
   initialAttacks: 8
   currentAttacks: 0
   tempAttaks: 0
   monsterCardMaxCount: 4
-  perRoundExtractCount: 2
+  currentCardMax: 0
   tempExtraCardMax: 0
   awardMonsterCardAmount: 5
   awardEquipCardAmount: 3
@@ -4401,7 +4402,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 343, y: 7}
+  m_AnchoredPosition: {x: 343, y: 91}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1117331356
@@ -5711,7 +5712,8 @@ MonoBehaviour:
   dizzyEffect: {fileID: 0}
   burnsEffect: {fileID: 0}
   dizzyCounter: {fileID: 2190176559971026236, guid: 254b94dc52900b748b4e966f30fc65be, type: 3}
-  burnsCounter: {fileID: 0}
+  burnsCounter: {fileID: 2190176559971026236, guid: 6bfe7aa4ea8a1284a9f12e5a4a6859ba, type: 3}
+  bondageCounter: {fileID: 2190176559971026236, guid: 0a1f94b70c638184da194fdbe8cbe5bb, type: 3}
   attackTimesCounter: {fileID: 2190176559971026236, guid: 3ea5a5a0d5cf0c84790639c94f90a053, type: 3}
   counterattackCounter: {fileID: 2190176559971026236, guid: 48d14ea70e983fe429a72f3f0aef936b, type: 3}
   scareCounter: {fileID: 2190176559971026236, guid: 0be4b4fd37d7f0e468fc5cdf4a5df32d, type: 3}

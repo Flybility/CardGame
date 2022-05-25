@@ -49,7 +49,7 @@ public class Equipment : MonoBehaviour,IPointerClickHandler
     {
         if (card.id == BattleField.Instance.usingEquipment.GetComponent<ThisEquiptmentCard>().id)
         {
-            Skills.Instance.StartExchangePosition(monster,0);
+            Skills.Instance.StartExchangeBesidePosition(monster);
             BattleField.Instance.usingEquipment = null;
         }
     }

@@ -25,21 +25,21 @@ public class Monster8:MonoBehaviour
     void Update()
     {
         // Detected();
-        Skills.Instance.AttackImprovedInterval(monster.block, multipleRate);
+        //Skills.Instance.AttackImprovedInterval(monster.block, multipleRate);
 
     }
     
-    private void OnDestroy()
-    {
-        if (BattleField.Instance.isFinished == false)
-        {
-            Skills.Instance.AttackImprovedInterval(monster.block, 1);
-           // foreach (var monster in BlocksManager.Instance.GetInterval(monster.block))
-           // {
-           //     monster.GetComponent<ThisMonster>().multipleAttacks = 1;
-           // }
-        }
-    }
+    //private void OnDestroy()
+    //{
+    //    if (BattleField.Instance.isFinished == false)
+    //    {
+    //        Skills.Instance.AttackImprovedInterval(monster.block, 1);
+    //       // foreach (var monster in BlocksManager.Instance.GetInterval(monster.block))
+    //       // {
+    //       //     monster.GetComponent<ThisMonster>().multipleAttacks = 1;
+    //       // }
+    //    }
+    //}
     //private void Detected()
     //{
     //    bool n = false;

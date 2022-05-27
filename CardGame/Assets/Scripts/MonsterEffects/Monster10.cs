@@ -11,7 +11,7 @@ public class Monster10:MonoBehaviour
     void Start()
     {
         monster = GetComponent<ThisMonster>();
-        Skills.Instance.AwardImprovedBesides(monster.block, value);
+        //Skills.Instance.AwardImprovedBesides(monster.block, value);
     }
 
     // Update is called once per frame

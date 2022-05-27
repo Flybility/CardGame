@@ -582,8 +582,8 @@ public class BattleField : MonoSingleton<BattleField>
         monsterChange.Invoke();
 
         yield return new WaitForSeconds(0.2f);
-        monster.GetComponent<ThisMonster>().multipleAttacks = multipleAttacks;
-        monster.GetComponent<ThisMonster>().multipleAwards = multipleAwards;
+        //monster.GetComponent<ThisMonster>().multipleAttacks = multipleAttacks;
+        //monster.GetComponent<ThisMonster>().multipleAwards = multipleAwards;
     }
     //使用装备请求，传入使用的装备（其他脚本调用）
     //public void UseEquipmentRequest(GameObject equipment)

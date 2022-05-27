@@ -139,21 +139,32 @@ public class Skills : MonoSingleton<Skills>
     //间位攻击力改变
     public void AttackImprovedInterval(Transform block,float rate)
     {
-        foreach (var Block in BlocksManager.Instance.GetIntervalBlock(block))
-        {
-            Block.GetComponent<Blocks>().AddAttack(rate);
-        }
+       // foreach (var Block in BlocksManager.Instance.GetIntervalBlock(block))
+       // {
+       //     Block.GetComponent<Blocks>().AddAttack(rate);
+       // }
         foreach(var monster in BlocksManager.Instance.GetInterval(block))
+        {
+            monster.GetComponent<ThisMonster>().multipleAttacks = rate;
+        }
+    }
+    public void AttackImprovedBesides(Transform block, float rate)
+    {
+       // foreach (var Block in BlocksManager.Instance.GetNeighboursBlock(block))
+       // {
+       //     Block.GetComponent<Blocks>().AddAttack(rate);
+       // }
+        foreach (var monster in BlocksManager.Instance.GetNeighbours(block))
         {
             monster.GetComponent<ThisMonster>().multipleAttacks = rate;
         }
     }
     public void AwardImprovedBesides(Transform block,float count)
     {
-        foreach (var Block in BlocksManager.Instance.GetNeighboursBlock(block))
-        {
-            Block.GetComponent<Blocks>().AddAwards(count);
-        }
+       //foreach (var Block in BlocksManager.Instance.GetNeighboursBlock(block))
+       //{
+       //    Block.GetComponent<Blocks>().AddAwards(count);
+       //}
         foreach (var monster in BlocksManager.Instance.GetInterval(block))
         {
             monster.GetComponent<ThisMonster>().multipleAwards = count;

@@ -83,9 +83,9 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerMonsterCards.Add(cardData.CopyMonsterCard(14));
         playerMonsterCards.Add(cardData.CopyMonsterCard(15));
         playerMonsterCards.Add(cardData.CopyMonsterCard(21));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(21));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(21));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(21));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(22));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(22));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(22));
 
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(0));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));

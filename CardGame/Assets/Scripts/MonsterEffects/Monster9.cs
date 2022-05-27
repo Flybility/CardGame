@@ -24,19 +24,19 @@ public class Monster9:MonoBehaviour
     void Update()
     {
         // Detected();
-        Skills.Instance.AwardImprovedBesides(monster.block, multipleRate);
+        //Skills.Instance.AwardImprovedBesides(monster.block, multipleRate);
 
     }
-   private void OnDestroy()
-   {
-      if (BattleField.Instance.isFinished == false)
-      {
-          Skills.Instance.AwardImprovedBesides(monster.block, 1);
-          //foreach (var monster in BlocksManager.Instance.GetNeighbours(monster.block))
-          //{
-          //    monster.GetComponent<ThisMonster>().multipleAwards = 1;
-          //}
-      }
+   //private void OnDestroy()
+   //{
+   //   if (BattleField.Instance.isFinished == false)
+   //   {
+   //       Skills.Instance.AwardImprovedBesides(monster.block, 1);
+   //       //foreach (var monster in BlocksManager.Instance.GetNeighbours(monster.block))
+   //       //{
+   //       //    monster.GetComponent<ThisMonster>().multipleAwards = 1;
+   //       //}
+   //   }
            
-   }
+   //}
 }

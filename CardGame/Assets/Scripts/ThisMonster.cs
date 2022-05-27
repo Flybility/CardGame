@@ -46,11 +46,17 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public bool isAddBurnsCount;//附加灼伤是否随怪物数增长
     public bool isIntangible;//是否无形（可直接攻击）
     public bool isNeighbourAwardMultiple;
+    public bool isNeiboursAttackMultiple;
     public bool isIntervalAttackMultiple;
     public GameObject leftMonster, rightMonster;
 
     public List<GameObject> neighbours;
     public List<GameObject> intervals;
+    public List<GameObject> besides;
+
+    public bool isBesideAward;
+    public bool isIntervalAttack;
+    public bool isBesideAttack;
     void Start()
     {
         OnStart();
@@ -96,43 +102,123 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         BattleField.Instance.MonsterRoundEnd.AddListener(PerRoundChange);
     }
 
+    public bool CheckNeighbourAward()
+    {
+        foreach (var monster in neighbours)
+        {
+            if (monster.GetComponent<ThisMonster>().isNeighbourAwardMultiple)
+            {return true;}
+        }
+        return false;
+    }
+    public bool CheckNeighbourAttack()
+    {
+        foreach (var monster in neighbours)
+        {
+            if (monster.GetComponent<ThisMonster>().isNeiboursAttackMultiple)
+            { return true; }
+        }
+        return false;
+    }
+    public bool CheckIntervalAttack()
+    {
+        foreach (var monster in intervals)
+        {
+            if (monster.GetComponent<ThisMonster>().isIntervalAttackMultiple)
+            { return true; }
+        }
+        return false;
+    }
     public void OnUpdate()
     {
         neighbours = BlocksManager.Instance.GetNeighbours(block.transform);
         intervals = BlocksManager.Instance.GetInterval(block.transform);
-        if(neighbours.Count==2)
-        {
-            if (neighbours[0].GetComponent<ThisMonster>().isNeighbourAwardMultiple == false && neighbours[1].GetComponent<ThisMonster>().isNeighbourAwardMultiple == false)
-            {
-                multipleAwards = 1;  
-            }
-            else { multipleAwards = 2; }
-        }
-        else if (neighbours.Count == 1)
-        {
-            if(neighbours[0].GetComponent<ThisMonster>().isNeighbourAwardMultiple == false)
-            {
-                multipleAwards = 1;
-            }
-            else { multipleAwards = 2; }
-        }
-        
 
-        if (intervals.Count > 1)
+
+        isBesideAward = CheckNeighbourAward();
+        isBesideAttack = CheckNeighbourAttack();
+        isIntervalAttack = CheckIntervalAttack();
+
+        if ((isBesideAttack && isIntervalAttack))
         {
-            if (intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == false && intervals[1].GetComponent<ThisMonster>().isIntervalAttackMultiple == false)
-            {
-                multipleAttacks = 1;
-            }
+            multipleAttacks = 1;
         }
-        else if(intervals.Count == 1)
+        if (isBesideAttack == false && isIntervalAttack == false)
         {
-            if (intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == false)
-            {
-                multipleAttacks = 1;
-            }
+            multipleAttacks = 1;
         }
-      
+        if (isBesideAttack && isIntervalAttack == false)
+        {
+            multipleAttacks = 2;
+        }
+        if (isBesideAttack == false && isIntervalAttack)
+        {
+            multipleAttacks = 0.5f;
+        }
+        if (isBesideAward==false)
+        {
+            multipleAwards = 1;
+        }
+        if (isBesideAward)
+        {
+            multipleAwards = 2;
+        }
+        //if (neighbours.Count==2)
+        //{
+        //    if (neighbours[0].GetComponent<ThisMonster>().isNeighbourAwardMultiple == false && neighbours[1].GetComponent<ThisMonster>().isNeighbourAwardMultiple == false)
+        //    {multipleAwards = 1;  }
+        //    if (neighbours[0].GetComponent<ThisMonster>().isNeighbourAwardMultiple == true || neighbours[1].GetComponent<ThisMonster>().isNeighbourAwardMultiple == true) 
+        //    { multipleAwards = 2; }
+        //    if (neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == false && neighbours[1].GetComponent<ThisMonster>().isNeiboursAttackMultiple == false)
+        //    { multipleAttacks = 1; }
+        //    //if (neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == true || neighbours[1].GetComponent<ThisMonster>().isNeiboursAttackMultiple == true) 
+        //    //{multipleAttacks = 2; }
+        //}
+        //if (neighbours.Count == 1)
+        //{
+        //    if(neighbours[0].GetComponent<ThisMonster>().isNeighbourAwardMultiple == false)
+        //    {multipleAwards = 1;}
+        //    if (neighbours[0].GetComponent<ThisMonster>().isNeighbourAwardMultiple == true) { multipleAwards = 2; }
+        //    //if (neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == false)
+        //    //{ multipleAttacks = 1; }
+        //    //if (neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == true)
+        //    //{
+        //    //    multipleAttacks = 2;
+        //    //}
+        //
+        //}
+
+
+        //if (intervals.Count > 1)
+        //{
+        //    
+        //    if (neighbours.Count == 1)
+        //    {
+        //        if ((intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == false && intervals[1].GetComponent<ThisMonster>().isIntervalAttackMultiple == false) && neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == false)
+        //        { multipleAttacks = 1; }
+        //        if ((intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == false && intervals[1].GetComponent<ThisMonster>().isIntervalAttackMultiple == false) && neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == true)
+        //        { multipleAttacks = 2; }
+        //        if ((intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == true || intervals[1].GetComponent<ThisMonster>().isIntervalAttackMultiple == true) && neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == false)
+        //        { multipleAttacks = 0.5f; }
+        //        if ((intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == true || intervals[1].GetComponent<ThisMonster>().isIntervalAttackMultiple == true) && neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == true)
+        //        { multipleAttacks = 1; }
+        //    }
+        //}
+
+        //if(intervals.Count == 1)
+        //{
+        //    if (intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == false)
+        //    { multipleAttacks = 1; }
+        //    if (neighbours.Count == 1)
+        //    {
+        //        if (intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == false && neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == false)
+        //        { multipleAttacks = 1; }
+        //        if(intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == true && neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == true)
+        //        { multipleAttacks = 1; }
+        //    }
+        //}
+
+
 
 
 

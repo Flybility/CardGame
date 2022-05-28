@@ -24,7 +24,7 @@ public class ThisMonsterCard : MonoBehaviour
 
     public MonsterCard card;
 
-    public Text summonTimesText;
+    public Transform summonTimesBlock;
     public Text healthText;
     public Text awardText;
     public Text cardNameText;
@@ -39,7 +39,7 @@ public class ThisMonsterCard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ShowCardDynamicStatus();
+        //ShowCardDynamicStatus();
 
     }
     public void ShowCardStaticStatus()
@@ -60,16 +60,21 @@ public class ThisMonsterCard : MonoBehaviour
 
         cardNameText.text = "" + cardName;    
         descriptionText.text = "" + description;
-
+        damageText.text = "" + damage;
+        healthText.text = "" + health;
+        awardText.text = "" + award;
         thatImage.sprite = thisSprite;
         thatBackground.sprite = thisBackground;
+
+        for(int i = 0; i < summonTimes; i++)
+        {
+            Instantiate(Skills.Instance.summonTimesCounter, summonTimesBlock);
+        }
     }
     public void ShowCardDynamicStatus()
     {
        
-        damageText.text = "" + damage;
-        healthText.text = "" + health;
-        awardText.text = "" + award;
-        summonTimesText.text = "" + summonTimes;
+        
+        
     }
 }

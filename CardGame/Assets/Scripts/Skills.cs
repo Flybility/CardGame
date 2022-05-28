@@ -16,6 +16,7 @@ public class Skills : MonoSingleton<Skills>
     public GameObject scareCounter;
     public GameObject absorbCounter;
     public GameObject attackCounter;//攻击随回合增长计数器
+    public GameObject summonTimesCounter;
 
     // Start is called before the first frame update
     public void AttackPlayer(int damage,ThisMonster monster)
@@ -38,7 +39,7 @@ public class Skills : MonoSingleton<Skills>
     {
         target.GetComponent<ThisMonster>().HealthDecrease(damage,isStraight);
     }
-    public void RecoverHealth(int value)
+    public void RecoverPlayerHealth(int value)
     {
         PlayerData.Instance.HealthRecover(value);
     }
@@ -170,6 +171,13 @@ public class Skills : MonoSingleton<Skills>
             monster.GetComponent<ThisMonster>().multipleAwards = count;
         }
     }
+    public void RecoverBesides(Transform block, int count)
+    {       
+        foreach (var monster in BlocksManager.Instance.GetNeighbours(block))
+        {
+            monster.GetComponent<ThisMonster>().HealthRecover(count);
+        }
+    }
     public void StartExchangeBesidePosition(GameObject monster)
     {
         StartCoroutine(ExchangeBesidePosition(monster)); 
@@ -193,12 +201,14 @@ public class Skills : MonoSingleton<Skills>
             nextMonsterCard.transform.SetParent(block);
             nextMonster.transform.SetParent(block);
             nextMonster.GetComponent<ThisMonster>().stateBlock.SetParent(block);
+            nextMonster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(nextMonster.GetComponent<ThisMonster>().initialStateBlock, 0.3f);
             nextMonster.GetComponent<ThisMonster>().block = block;
             
 
             monsterCard.transform.SetParent(nextblock);
             monster.transform.SetParent(nextblock);
             monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextblock);
+            monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.3f) ;
             monster.GetComponent<ThisMonster>().block = nextblock;
 
             nextMonster.transform.DOLocalMove(Vector3.zero, 0.3f);

@@ -35,7 +35,7 @@ public class Equipment18 : MonoBehaviour, IPointerClickHandler
     public void RecoverHealth(int value)
     {
         //主动触发装备
-        Skills.Instance.RecoverHealth(value);
+        Skills.Instance.RecoverPlayerHealth(value);
         card.summonTimes--;
 
     }

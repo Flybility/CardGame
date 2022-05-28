@@ -11,6 +11,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
 {
     public GameObject monsterCard;
     public Transform block;
+    public Vector3 initialStateBlock;
     public Component effect;
     private int id;
     public int summonTime;
@@ -57,6 +58,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public bool isBesideAward;
     public bool isIntervalAttack;
     public bool isBesideAttack;
+    public bool isBesideRecover;
     void Start()
     {
         OnStart();
@@ -77,6 +79,8 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         if (burnsCount > 0) DecreaseBurns(1);
         if (absorbCount > 0) DecreaseAbsorb(1);
         if (isAddAttack) AddAttackPerRound(1);
+
+        if (isBesideRecover) Skills.Instance.RecoverBesides(block, 20);
     }
     public void OnStart()
     {
@@ -88,6 +92,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         slider = transform.GetChild(0).GetComponent<Slider>();
         healthValue = transform.GetChild(1).GetComponent<Text>();
         stateBlock = transform.GetChild(2);
+        initialStateBlock = stateBlock.localPosition;
         attackText = transform.GetChild(3).GetComponent<Text>();
 
         stateBlock.transform.SetParent(transform.parent);
@@ -163,65 +168,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         {
             multipleAwards = 2;
         }
-        //if (neighbours.Count==2)
-        //{
-        //    if (neighbours[0].GetComponent<ThisMonster>().isNeighbourAwardMultiple == false && neighbours[1].GetComponent<ThisMonster>().isNeighbourAwardMultiple == false)
-        //    {multipleAwards = 1;  }
-        //    if (neighbours[0].GetComponent<ThisMonster>().isNeighbourAwardMultiple == true || neighbours[1].GetComponent<ThisMonster>().isNeighbourAwardMultiple == true) 
-        //    { multipleAwards = 2; }
-        //    if (neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == false && neighbours[1].GetComponent<ThisMonster>().isNeiboursAttackMultiple == false)
-        //    { multipleAttacks = 1; }
-        //    //if (neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == true || neighbours[1].GetComponent<ThisMonster>().isNeiboursAttackMultiple == true) 
-        //    //{multipleAttacks = 2; }
-        //}
-        //if (neighbours.Count == 1)
-        //{
-        //    if(neighbours[0].GetComponent<ThisMonster>().isNeighbourAwardMultiple == false)
-        //    {multipleAwards = 1;}
-        //    if (neighbours[0].GetComponent<ThisMonster>().isNeighbourAwardMultiple == true) { multipleAwards = 2; }
-        //    //if (neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == false)
-        //    //{ multipleAttacks = 1; }
-        //    //if (neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == true)
-        //    //{
-        //    //    multipleAttacks = 2;
-        //    //}
-        //
-        //}
-
-
-        //if (intervals.Count > 1)
-        //{
-        //    
-        //    if (neighbours.Count == 1)
-        //    {
-        //        if ((intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == false && intervals[1].GetComponent<ThisMonster>().isIntervalAttackMultiple == false) && neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == false)
-        //        { multipleAttacks = 1; }
-        //        if ((intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == false && intervals[1].GetComponent<ThisMonster>().isIntervalAttackMultiple == false) && neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == true)
-        //        { multipleAttacks = 2; }
-        //        if ((intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == true || intervals[1].GetComponent<ThisMonster>().isIntervalAttackMultiple == true) && neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == false)
-        //        { multipleAttacks = 0.5f; }
-        //        if ((intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == true || intervals[1].GetComponent<ThisMonster>().isIntervalAttackMultiple == true) && neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == true)
-        //        { multipleAttacks = 1; }
-        //    }
-        //}
-
-        //if(intervals.Count == 1)
-        //{
-        //    if (intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == false)
-        //    { multipleAttacks = 1; }
-        //    if (neighbours.Count == 1)
-        //    {
-        //        if (intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == false && neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == false)
-        //        { multipleAttacks = 1; }
-        //        if(intervals[0].GetComponent<ThisMonster>().isIntervalAttackMultiple == true && neighbours[0].GetComponent<ThisMonster>().isNeiboursAttackMultiple == true)
-        //        { multipleAttacks = 1; }
-        //    }
-        //}
-
-
-
-
-
+       
         healthValue.text = health + "/" + maxHealth;
         afterMultipleAttacks = (int)(currentAttacks * multipleAttacks*(attackCount+1));
         if (isAddAward)
@@ -289,6 +236,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
             Skills.Instance.StartBoom(block, absorbDamages);
             absorbDamages = 0;
             Destroy(absorb);
+            HealthDecrease(absorbDamages,false);
         }
         if (absorb != null && absorbCount > 0)
         {
@@ -365,6 +313,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         if (health <= 0)
         {
             monsterCard.GetComponent<ThisMonsterCard>().summonTimes--;
+            Destroy(stateBlock.gameObject);
             //击杀怪物回复生命值
             PlayerData.Instance.HealthRecover(currentAwards);
             BattleField.Instance.StartMonsterDead(this.gameObject, monsterCard);
@@ -375,6 +324,15 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
             return;
         }
 
+    }
+    public void HealthRecover(int value)
+    {
+        health += value;
+        if (health > maxHealth)
+        {health = maxHealth;}
+        slider.value = (float)health / maxHealth;
+        GameObject floatValue = Instantiate(PlayerData.Instance.floatHealth, this.transform.parent);
+        floatValue.GetComponent<Text>().text = "+" + value.ToString();
     }
     public void OnPointerClick(PointerEventData eventData)
     {

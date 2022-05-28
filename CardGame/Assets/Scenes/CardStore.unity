@@ -5719,6 +5719,7 @@ MonoBehaviour:
   scareCounter: {fileID: 2190176559971026236, guid: 0be4b4fd37d7f0e468fc5cdf4a5df32d, type: 3}
   absorbCounter: {fileID: 2190176559971026236, guid: 677261aacc911be44ab21fb09b234d5b, type: 3}
   attackCounter: {fileID: 2190176559971026236, guid: 487df92723b0b8644a7a24f425b48e55, type: 3}
+  summonTimesCounter: {fileID: 2190176559971026236, guid: 9bd051ef1a532ca48922b41cc58cdd33, type: 3}
 --- !u!4 &1590227582
 Transform:
   m_ObjectHideFlags: 0

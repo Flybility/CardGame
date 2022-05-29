@@ -8,7 +8,6 @@ using DG.Tweening;
 public class Equipment1 : MonoBehaviour,IPointerClickHandler
 {
     public bool isInEquipment;
-    public int damage;
     public MouseInteraction mi;
     public ThisEquiptmentCard card;
 
@@ -17,6 +16,7 @@ public class Equipment1 : MonoBehaviour,IPointerClickHandler
     {
         if (isInEquipment && eventData.button == PointerEventData.InputButton.Left)
         {
+            Debug.Log("hhh");
             transform.DOScale(1 / mi.clickSize, 0.1f);
             UseEquipmentRequest(this.gameObject);
         }
@@ -26,9 +26,8 @@ public class Equipment1 : MonoBehaviour,IPointerClickHandler
     void Start()
     {
         mi = GetComponent<MouseInteraction>();
-        isInEquipment = mi.isInEquipment;
         card = GetComponent<ThisEquiptmentCard>();
-
+        isInEquipment = mi.isInEquipment;
         BattleField.Instance.useEquipmentEvent.AddListener(ToMonster);
     }
     //可主动选择怪物触发型

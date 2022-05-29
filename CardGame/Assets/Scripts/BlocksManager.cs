@@ -70,19 +70,14 @@ public class BlocksManager : MonoSingleton<BlocksManager>
 
 
     }
-    public List<GameObject> GetNeighboursBlock(Transform thisBlock)
+    public GameObject GetNextBlock(Transform thisBlock)
     {
-        List<GameObject> neighbours = new List<GameObject>();
-        int lowerNumber = thisBlock.GetSiblingIndex() - 1;
         int higherNumber = thisBlock.GetSiblingIndex() + 1;
-
-        if (lowerNumber < 0) lowerNumber = 5;
+        GameObject block =new GameObject();
         if (higherNumber > 5) higherNumber = 0;
-        if (BattleField.Instance.blocks[lowerNumber] != null)
-            neighbours.Add(BattleField.Instance.blocks[lowerNumber]);
         if (BattleField.Instance.blocks[higherNumber] != null)
-            neighbours.Add(BattleField.Instance.blocks[higherNumber]);
-        return neighbours;
+        { block = BattleField.Instance.blocks[higherNumber]; }
+        return block;
 
     }
     public List<GameObject> GetNeighbours(Transform thisBlock)
@@ -109,22 +104,14 @@ public class BlocksManager : MonoSingleton<BlocksManager>
         }
         return neighbours;
     }
-    public List<GameObject> GetIntervalBlock(Transform thisBlock)
+    public GameObject GetNextIntervalBlock(Transform thisBlock)
     {
-        List<GameObject> interval = new List<GameObject>();
-        int lowerNumber = thisBlock.GetSiblingIndex() - 2;
+        GameObject interval = new GameObject();
         int higherNumber = thisBlock.GetSiblingIndex() + 2;
-
-        if (lowerNumber < 0) lowerNumber += 6;
         if (higherNumber > 5) higherNumber -= 6;
-        //if (lowerNumber == -1) lowerNumber = 5;
-        //if (lowerNumber == -2) lowerNumber = 4;
-        //if (higherNumber == 6) higherNumber = 0;
-        //if (higherNumber == 7) higherNumber = 1;
-        if (BattleField.Instance.blocks[lowerNumber] != null)
-            interval.Add(BattleField.Instance.blocks[lowerNumber]);
+
         if (BattleField.Instance.blocks[higherNumber] != null)
-            interval.Add(BattleField.Instance.blocks[higherNumber]);
+        { interval = BattleField.Instance.blocks[higherNumber]; }
        
         return interval;
     }

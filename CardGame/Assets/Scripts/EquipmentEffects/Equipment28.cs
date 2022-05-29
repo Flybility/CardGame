@@ -47,10 +47,14 @@ public class Equipment28 : MonoBehaviour, IPointerUpHandler
     }
     public void ToMonster(GameObject monster)
     {
-        if (BattleField.Instance.usingEquipment == this)
+
+        if (BattleField.Instance.usingEquipment != null)
         {
-            Skills.Instance.AttackMonster(damage, monster, true);
-            BattleField.Instance.usingEquipment = null;
+            if (card.id == BattleField.Instance.usingEquipment.GetComponent<ThisEquiptmentCard>().id)
+            {
+                Skills.Instance.AttackMonster(damage, monster, true);
+                BattleField.Instance.usingEquipment = null;
+            }
         }
     }
     // Update is called once per frame

@@ -167,6 +167,7 @@ public class BattleField : MonoSingleton<BattleField>
         SelectingMonster=0;
         monstersCounter = 0;
         monsterChange.Invoke();
+        currentPlayerAttackTime = playerAttackTime;
         PlayerData.Instance.PerBattleRecover();
         PanelMask.SetActive(false);
     }
@@ -427,6 +428,7 @@ public class BattleField : MonoSingleton<BattleField>
                 yield return new WaitForSeconds(0.05f);
                 //monster.GetComponent<ThisMonster>().HealthDecrease(PlayerData.Instance.attacks);
                 Skills.Instance.AttackMonster(PlayerData.Instance.currentAttacks, monster,true);
+                PlayerData.Instance.tempAttaks = 0;
                 yield return new WaitForSeconds(0.3f);
                 //monsterChange.Invoke();
             }

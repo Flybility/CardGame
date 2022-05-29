@@ -71,6 +71,17 @@ public class ThisMonsterCard : MonoBehaviour
             Instantiate(Skills.Instance.summonTimesCounter, summonTimesBlock);
         }
     }
+    private void OnEnable()
+    {
+        for(int i = 0; i < summonTimesBlock.childCount; i++)
+        {
+            Destroy(summonTimesBlock.GetChild(i).gameObject);
+        }
+        for (int i = 0; i < summonTimes; i++)
+        {
+            Instantiate(Skills.Instance.summonTimesCounter, summonTimesBlock);
+        }
+    }
     public void ShowCardDynamicStatus()
     {
        

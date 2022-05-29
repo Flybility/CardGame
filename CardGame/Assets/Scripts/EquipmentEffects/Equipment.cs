@@ -5,10 +5,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using DG.Tweening;
 
-public class Equipment : MonoBehaviour,IPointerClickHandler
+public class Equipment : MonoBehaviour, IPointerClickHandler
 {
     public bool isInEquipment;
-    public int damage;
     public MouseInteraction mi;
     public ThisEquiptmentCard card;
 
@@ -26,9 +25,8 @@ public class Equipment : MonoBehaviour,IPointerClickHandler
     void Start()
     {
         mi = GetComponent<MouseInteraction>();
-        isInEquipment = mi.isInEquipment;
         card = GetComponent<ThisEquiptmentCard>();
-        
+        isInEquipment = mi.isInEquipment;
         BattleField.Instance.useEquipmentEvent.AddListener(ToMonster);
     }
     //可主动选择怪物触发型
@@ -47,10 +45,14 @@ public class Equipment : MonoBehaviour,IPointerClickHandler
     }
     public void ToMonster(GameObject monster)
     {
-        if (card.id == BattleField.Instance.usingEquipment.GetComponent<ThisEquiptmentCard>().id)
+
+        if (BattleField.Instance.usingEquipment != null)
         {
-            Skills.Instance.StartExchangeBesidePosition(monster);
-            BattleField.Instance.usingEquipment = null;
+            if (card.id == BattleField.Instance.usingEquipment.GetComponent<ThisEquiptmentCard>().id)
+            {
+                Skills.Instance.StartExchangeBesidePosition(monster);
+                BattleField.Instance.usingEquipment = null;
+            }
         }
     }
     // Update is called once per frame

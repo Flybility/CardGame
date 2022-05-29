@@ -35,12 +35,13 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public int absorbCount;//吸收回合数
     public int absorbDamages;//吸收总伤害数
     public int attackCount;//增加伤害回合数
+    public int armorCount;//护甲层数
 
     private Slider slider;
     private Text healthValue;
     private Text attackText;
     public Transform stateBlock;
-    private GameObject dizzy, absorb, attack, burns;
+    private GameObject dizzy, absorb, attack, burns,armor;
     private bool isAddAttack;
     public bool isAddAward;
     public bool isAddScareCount;//附加恐惧是否随怪物数增长
@@ -59,6 +60,10 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public bool isIntervalAttack;
     public bool isBesideAttack;
     public bool isBesideRecover;
+    public bool isSelfArmored;
+    public int selfArmoredValue;
+    public bool isBesideArmored;
+    public bool isRoundExchange;
     void Start()
     {
         OnStart();
@@ -72,22 +77,31 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         OnUpdate();
 
     }
-
-    public void PerRoundChange()
+    public void StartPerRoundChange()
+    {
+        StartCoroutine(PerRoundChange());
+    }
+    IEnumerator PerRoundChange()
     {
         if (dizzyCount > 0) DecreaseDizzy(1);
         if (burnsCount > 0) DecreaseBurns(1);
         if (absorbCount > 0) DecreaseAbsorb(1);
+        if (armorCount > 0) DecreaseArmor(armorCount);
         if (isAddAttack) AddAttackPerRound(1);
 
-        if (isBesideRecover) Skills.Instance.RecoverBesides(block, 20);
+        yield return new WaitForSeconds(0.1f);
+        if (isBesideRecover) Skills.Instance.RecoverBesides(block, 10);
+        if (isBesideArmored) Skills.Instance.ArmoredBesides(block, 10);
+        if (isSelfArmored) Skills.Instance.ArmoredSelf(this, selfArmoredValue);
+        yield return new WaitForSeconds(0.1f);
+        if (isRoundExchange) Skills.Instance.StartExchangeBesidePosition(this.gameObject);
     }
     public void OnStart()
     {
         multipleAttacks = 1;
         multipleAwards = 1;
-        awardHealth = monsterCard.GetComponent<ThisMonsterCard>().card.award;
-        attacks = monsterCard.GetComponent<ThisMonsterCard>().card.damage;
+        awardHealth = monsterCard.GetComponent<ThisMonsterCard>().award;
+        attacks = monsterCard.GetComponent<ThisMonsterCard>().damage;
         currentAttacks = attacks;
         slider = transform.GetChild(0).GetComponent<Slider>();
         healthValue = transform.GetChild(1).GetComponent<Text>();
@@ -98,13 +112,13 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         stateBlock.transform.SetParent(transform.parent);
         monsterCard = GetComponentInParent<Blocks>().card;
         id = monsterCard.GetComponent<ThisMonsterCard>().id;
-        maxHealth = monsterCard.GetComponent<ThisMonsterCard>().card.health;
+        maxHealth = monsterCard.GetComponent<ThisMonsterCard>().health;
         summonTime = monsterCard.GetComponent<ThisMonsterCard>().summonTimes;
         health = maxHealth;
         slider.value = (float)health / maxHealth;
         block = transform.parent;
         //effect = gameObject.GetComponent(Type.GetType("Monster" + id));
-        BattleField.Instance.MonsterRoundEnd.AddListener(PerRoundChange);
+        BattleField.Instance.MonsterRoundEnd.AddListener(StartPerRoundChange);
     }
 
     public bool CheckNeighbourAward()
@@ -234,9 +248,9 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         if (absorb != null && absorbCount <= 0)
         {
             Skills.Instance.StartBoom(block, absorbDamages);
-            absorbDamages = 0;
             Destroy(absorb);
             HealthDecrease(absorbDamages,false);
+            absorbDamages = 0;
         }
         if (absorb != null && absorbCount > 0)
         {
@@ -275,6 +289,36 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         }
         else { burnsCount = 0; }
     }
+    public void AddArmor(int Counts, GameObject armorPrefab)
+    {
+        armorCount += Counts;
+        if (armor == null && armorCount != 0)
+        {
+            armor = Instantiate(armorPrefab, stateBlock);
+            armor.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
+        }
+        else if (armor != null && armorCount != 0)
+        {
+            armor.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
+            armor.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+        }
+        else { return; }
+
+    }
+    public void DecreaseArmor(int count)
+    {
+        armorCount -= count;
+        if (armor != null && armorCount <= 0)
+        {
+            Destroy(armor);
+        }
+        if (armor != null && armorCount > 0)
+        {
+            armor.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
+            armor.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+        }
+        else { armorCount = 0; }
+    }
     public void AddAttack(int count,GameObject prefab)
     {
         isAddAttack = true;
@@ -295,35 +339,43 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     }
     public void HealthDecrease(int damage,bool isStraight)
     {
+        if (isIntangible && isStraight)
+        {
+            damage = 0;
+        }
         if (absorbCount > 0)
         {
             absorbDamages += damage;
             damage = 0;
         }
-        if (isIntangible && isStraight)
+        
+        if (armorCount >= damage)
         {
-            damage = 0;
-        }
-        health -= damage;
-        //Debug.Log("伤害=" + damage);
-        slider.value = (float)health / maxHealth;
-        GameObject floatValue = Instantiate(PlayerData.Instance.floatPrefab, this.transform.parent);
-        floatValue.GetComponent<Text>().text = "-" + damage.ToString();
-       
-        if (health <= 0)
-        {
-            monsterCard.GetComponent<ThisMonsterCard>().summonTimes--;
-            Destroy(stateBlock.gameObject);
-            //击杀怪物回复生命值
-            PlayerData.Instance.HealthRecover(currentAwards);
-            BattleField.Instance.StartMonsterDead(this.gameObject, monsterCard);
-
+            DecreaseArmor(damage);
+            GameObject floatValue = Instantiate(PlayerData.Instance.floatPrefab, this.transform.parent);
+            floatValue.GetComponent<Text>().text = "-" + damage.ToString();
         }
         else
         {
-            return;
-        }
+            int realDamage = damage - armorCount;
+            DecreaseArmor(armorCount);
+            health -= realDamage;
+            //Debug.Log("伤害=" + damage);
+            slider.value = (float)health / maxHealth;
+            GameObject floatValue = Instantiate(PlayerData.Instance.floatPrefab, this.transform.parent);
+            floatValue.GetComponent<Text>().text = "-" + damage.ToString();
 
+            if (health <= 0)
+            {
+                health = 0;
+                monsterCard.GetComponent<ThisMonsterCard>().summonTimes--;
+                Destroy(stateBlock.gameObject);
+                //击杀怪物回复生命值
+                PlayerData.Instance.HealthRecover(currentAwards);
+                BattleField.Instance.StartMonsterDead(this.gameObject, monsterCard);
+            }
+            else{ return;}
+        }
     }
     public void HealthRecover(int value)
     {
@@ -386,10 +438,10 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         CursorFollow.Instance.description.SetActive(false);
     }
 
-    private void OnDestroy()
-    {
-        Destroy(stateBlock.gameObject);
-    }
+    // private void OnDestroy()
+    // {
+    //     Destroy(stateBlock.gameObject);
+    // }
     // Start is called before the first frame update
 
 

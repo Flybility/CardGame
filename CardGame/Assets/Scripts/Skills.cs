@@ -8,6 +8,8 @@ public class Skills : MonoSingleton<Skills>
     public GameObject boomEffect;
     public GameObject dizzyEffect;
     public GameObject burnsEffect;
+
+    public GameObject boomCounter;
     public GameObject dizzyCounter;
     public GameObject burnsCounter;
     public GameObject bondageCounter;
@@ -17,6 +19,7 @@ public class Skills : MonoSingleton<Skills>
     public GameObject absorbCounter;
     public GameObject attackCounter;//攻击随回合增长计数器
     public GameObject summonTimesCounter;
+    public GameObject armorCounter;//护甲计数器
 
     // Start is called before the first frame update
     public void AttackPlayer(int damage,ThisMonster monster)
@@ -103,6 +106,10 @@ public class Skills : MonoSingleton<Skills>
         }
         
     }
+    public void AddArmorToPlayer(int count)
+    {
+        PlayerData.Instance.AddArmor(count, armorCounter);
+    }
     public void AddDizzyToBesides(Transform block, int count)
     {       
         foreach(var monster in BlocksManager.Instance.GetNeighbours(block))
@@ -178,6 +185,17 @@ public class Skills : MonoSingleton<Skills>
             monster.GetComponent<ThisMonster>().HealthRecover(count);
         }
     }
+    public void ArmoredBesides(Transform block, int count)
+    {
+        foreach (var monster in BlocksManager.Instance.GetNeighbours(block))
+        {
+            monster.GetComponent<ThisMonster>().AddArmor(count, armorCounter);
+        }
+    }
+    public void ArmoredSelf(ThisMonster monster,int count)
+    {
+        monster.AddArmor(count, armorCounter);
+    }
     public void StartExchangeBesidePosition(GameObject monster)
     {
         StartCoroutine(ExchangeBesidePosition(monster)); 
@@ -189,14 +207,15 @@ public class Skills : MonoSingleton<Skills>
     IEnumerator ExchangeBesidePosition(GameObject monster)
     {
         Transform block = monster.GetComponent<ThisMonster>().block;
+        GameObject monsterCard = monster.GetComponent<ThisMonster>().monsterCard;
         if (BlocksManager.Instance.GetNeighbourNext(block) != null)
         {
             GameObject nextMonster = BlocksManager.Instance.GetNeighbourNext(block);
             Transform nextblock = nextMonster.GetComponent<ThisMonster>().block;
-            GameObject monsterCard = monster.GetComponent<ThisMonster>().monsterCard;
+
             GameObject nextMonsterCard = nextMonster.GetComponent<ThisMonster>().monsterCard;
             //
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
 
             nextMonsterCard.transform.SetParent(block);
             nextMonster.transform.SetParent(block);
@@ -216,20 +235,32 @@ public class Skills : MonoSingleton<Skills>
 
             BlocksManager.Instance.MonsterChange();
         }
-        else { yield return null; }
+        else 
+        {
+            yield return new WaitForSeconds(0.2f);
+            Transform nextBlock = BlocksManager.Instance.GetNextBlock(block).transform;
+            monsterCard.transform.SetParent(nextBlock);
+            monster.transform.SetParent(nextBlock);
+            monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
+            monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.3f);
+            monster.GetComponent<ThisMonster>().block = nextBlock;
+            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+
+            BlocksManager.Instance.MonsterChange();
+        }
 
     }
     IEnumerator ExchangeIntervalPosition(GameObject monster)
     {
         Transform block = monster.GetComponent<ThisMonster>().block;
+        GameObject monsterCard = monster.GetComponent<ThisMonster>().monsterCard;
         if (BlocksManager.Instance.GetIntervalNext(block) != null)
         {
             GameObject nextMonster = BlocksManager.Instance.GetIntervalNext(block);
             Transform nextblock = nextMonster.GetComponent<ThisMonster>().block;
-            GameObject monsterCard = monster.GetComponent<ThisMonster>().monsterCard;
             GameObject nextMonsterCard = nextMonster.GetComponent<ThisMonster>().monsterCard;
             //
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
 
             nextMonsterCard.transform.SetParent(block);
             nextMonster.transform.SetParent(block);
@@ -247,7 +278,19 @@ public class Skills : MonoSingleton<Skills>
 
             BlocksManager.Instance.MonsterChange();
         }
-        else { yield return null; }
+        else
+        {
+            yield return new WaitForSeconds(0.2f);
+            Transform nextBlock = BlocksManager.Instance.GetNextIntervalBlock(block).transform;
+            monsterCard.transform.SetParent(nextBlock);
+            monster.transform.SetParent(nextBlock);
+            monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
+            monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.3f);
+            monster.GetComponent<ThisMonster>().block = nextBlock;
+            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+
+            BlocksManager.Instance.MonsterChange();
+        }
 
     }
 

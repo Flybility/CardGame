@@ -5711,6 +5711,7 @@ MonoBehaviour:
   boomEffect: {fileID: 0}
   dizzyEffect: {fileID: 0}
   burnsEffect: {fileID: 0}
+  boomCounter: {fileID: 2190176559971026236, guid: 4eadbac4d90e75943a860b583b502504, type: 3}
   dizzyCounter: {fileID: 2190176559971026236, guid: 254b94dc52900b748b4e966f30fc65be, type: 3}
   burnsCounter: {fileID: 2190176559971026236, guid: 6bfe7aa4ea8a1284a9f12e5a4a6859ba, type: 3}
   bondageCounter: {fileID: 2190176559971026236, guid: 0a1f94b70c638184da194fdbe8cbe5bb, type: 3}
@@ -5720,6 +5721,7 @@ MonoBehaviour:
   absorbCounter: {fileID: 2190176559971026236, guid: 677261aacc911be44ab21fb09b234d5b, type: 3}
   attackCounter: {fileID: 2190176559971026236, guid: 487df92723b0b8644a7a24f425b48e55, type: 3}
   summonTimesCounter: {fileID: 2190176559971026236, guid: 9bd051ef1a532ca48922b41cc58cdd33, type: 3}
+  armorCounter: {fileID: 2190176559971026236, guid: 0d38700a9a6d6d848a2860af34492096, type: 3}
 --- !u!4 &1590227582
 Transform:
   m_ObjectHideFlags: 0

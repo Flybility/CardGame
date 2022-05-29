@@ -57,6 +57,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     private GameObject scareBar;
     private GameObject burnsBar;
     private GameObject bondageBar;
+    private GameObject ArmorBar;//护甲层数
 
     // Start is called before the first frame update
     void Awake()
@@ -69,30 +70,31 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerMonsterCards.Add(cardData.CopyMonsterCard(0));
         playerMonsterCards.Add(cardData.CopyMonsterCard(1));
         playerMonsterCards.Add(cardData.CopyMonsterCard(2));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(3));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(4));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(5));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(6));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(7));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(8));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(9));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(10));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(11));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(12));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(13));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(14));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(15));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(21));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(22));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(23));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(23));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(24));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(26));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(5));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(6));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(7));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(8));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(9));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(10));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(11));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(12));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(13));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(14));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(15));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(21));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(22));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(23));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(23));
 
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(0));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(2));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(3));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(4));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(11));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(18));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(23));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(26));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(28));
         //playerEquipmentCards.Add(cardData.CopyEquipmentCard(6));
         //playerEquipmentCards.Add(cardData.CopyEquipmentCard(7));
 
@@ -114,7 +116,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     public void PerBattleRecover()
     {
         currentHealth = maxHealth;
-        tempAttaks = 0;
+        //mpAttaks = 0;
         tempExtraCardMax = 0;
         isAngerCountOpen = false;
         DecreaseCounterattackCount(angerCount);
@@ -131,7 +133,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     {
         HealthDecrease(perRoundHealthDecrease + extraPerRoundHealthDecrease);
         yield return new WaitForSeconds(0.5f);
-        if (armorCount >0)          armorCount--;
+        if (armorCount > 0)         DecreaseArmor(armorCount);
         if (scareCount > 0)         DecreaseScareCount(1);
         if (angerCount > 0)         DecreaseCounterattackCount(angerCount/2);
         if (burnsCount > 0)         DecreaseBurns(1);
@@ -329,26 +331,69 @@ public class PlayerData : MonoSingleton<PlayerData>
         else { currentCardMax = monsterCardMaxCount; }
 
     }
+    public void AddArmor(int Counts, GameObject armorPrefab)
+    {
+        armorCount += Counts;
+        if (ArmorBar == null && armorCount != 0)
+        {
+            ArmorBar = Instantiate(armorPrefab, playerStatesBar);
+            ArmorBar.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
+        }
+        else if (ArmorBar != null && armorCount != 0)
+        {
+            ArmorBar.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
+            ArmorBar.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+        }
+        else { return; }
+
+    }
+    public void DecreaseArmor(int count)
+    {
+        armorCount -= count;
+        if (ArmorBar != null && armorCount <= 0)
+        {
+            Destroy(ArmorBar);
+        }
+        if (ArmorBar != null && armorCount > 0)
+        {
+            ArmorBar.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
+            ArmorBar.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+        }
+        else { armorCount = 0; }
+    }
     public void HealthDecrease(int damage)
     {
-        int plus= (int)(damage*(1+ extraHurt));
-        currentHealth -= plus;
-        perRoundHurt += plus;
-        if (isAngerCountOpen && plus > counterThreshold)
+        int plusDamage= (int)(damage*(1+ extraHurt));
+        if (armorCount >= plusDamage)
         {
-            AddCounterattackCount(1,Skills.Instance.counterattackCounter);
-            CheckAttacks();
-        }
-        if (currentHealth <= 0)
-        {
-            currentHealth = 0;
-        }
-        if (damage > 0)
-        {
+            DecreaseArmor(plusDamage);
             GameObject floatValue = Instantiate(floatPrefab, this.transform);
-            floatValue.GetComponent<Text>().text = "-" + plus.ToString();
-            HealthBarChange();
-        }    
+            floatValue.GetComponent<Text>().text = "-" + plusDamage.ToString();
+        }
+        else 
+        {
+            int realDamage= plusDamage -armorCount;
+
+            DecreaseArmor(armorCount);
+            currentHealth -= realDamage;
+            perRoundHurt += realDamage;
+            if (isAngerCountOpen && realDamage > counterThreshold)
+            {
+                AddCounterattackCount(1, Skills.Instance.counterattackCounter);
+                CheckAttacks();
+            }
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+            }
+            if (realDamage > 0)
+            {
+                GameObject floatValue = Instantiate(floatPrefab, this.transform);
+                floatValue.GetComponent<Text>().text = "-" + plusDamage.ToString();
+                HealthBarChange();
+            }
+        }
+        
     }
     public void HealthRecover(int value)
     {

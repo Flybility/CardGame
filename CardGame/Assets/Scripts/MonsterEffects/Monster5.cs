@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Monster5 :MonoBehaviour
 {
@@ -10,8 +11,8 @@ public class Monster5 :MonoBehaviour
     void Start()//怪物上场时调用技能函数
     {
         monster = GetComponent<ThisMonster>();
-        boomDamage = 15;
-        // Skills.Instance.AttackPlayer(1);
+        GameObject boomCounter = Instantiate(Skills.Instance.boomCounter, monster.stateBlock);
+        boomCounter.transform.GetChild(0).GetComponent<Text>().text = boomDamage.ToString();
     }
 
     // Update is called once per frame

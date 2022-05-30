@@ -330,6 +330,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterCard: {fileID: 0}
   block: {fileID: 0}
+  initialStateBlock: {x: 0, y: 0, z: 0}
   effect: {fileID: 0}
   summonTime: 0
   health: 0
@@ -345,19 +346,32 @@ MonoBehaviour:
   attackAttachedBondages: 0
   dizzyCount: 0
   burnsCount: 0
+  burnsDamage: 10
   absorbCount: 0
   absorbDamages: 0
   attackCount: 0
+  armorCount: 0
+  stateBlock: {fileID: 0}
   isAddAward: 0
   isAddScareCount: 0
   isAddBurnsCount: 0
   isIntangible: 0
   isNeighbourAwardMultiple: 0
+  isNeiboursAttackMultiple: 0
   isIntervalAttackMultiple: 0
   leftMonster: {fileID: 0}
   rightMonster: {fileID: 0}
   neighbours: []
   intervals: []
+  besides: []
+  isBesideAward: 0
+  isIntervalAttack: 0
+  isBesideAttack: 0
+  isBesideRecover: 0
+  isSelfArmored: 0
+  selfArmoredValue: 0
+  isBesideArmored: 0
+  isRoundExchange: 0
 --- !u!1 &3336817174295435958
 GameObject:
   m_ObjectHideFlags: 0

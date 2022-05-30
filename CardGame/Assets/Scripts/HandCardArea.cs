@@ -9,7 +9,7 @@ public class HandCardArea : MonoBehaviour
     public Vector2 thisPos;
     public List<Transform> childs;
     public Vector2 distant;
-
+    public int children;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,10 +20,11 @@ public class HandCardArea : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.childCount>0)
-        {
-            CheckChilds();
-        }
+        CheckChilds();
+    }
+    private void LateUpdate()
+    {
+        
     }
     public void CheckChilds()
     {
@@ -40,7 +41,7 @@ public class HandCardArea : MonoBehaviour
         {
             foreach (var child in childs)
             {
-                child.position = spot + distant;                  
+                child.localPosition = spot + distant;                  
             }
         }
         else if(childs.Count > 1)
@@ -52,12 +53,12 @@ public class HandCardArea : MonoBehaviour
             Quaternion perRotation = Quaternion.AngleAxis(perAngle, Vector2.up);
             Vector2[] directions = new Vector2[childs.Count];
             directions[0] = distant * halfRotation.eulerAngles;
-            childs[0].position = spot + directions[0];
+            childs[0].localPosition = spot + directions[0];
             childs[0].rotation = halfRotation;
             for (int i = 1; i < childs.Count; i++)
             {
                 directions[i] = directions[i - 1] * perRotation.eulerAngles;
-                childs[i].position = spot + directions[i];
+                childs[i].localPosition = spot + directions[i];
                 childs[i].rotation = childs[i - 1].rotation *perRotation;
             }
         }

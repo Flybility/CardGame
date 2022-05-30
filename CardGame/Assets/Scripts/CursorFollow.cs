@@ -21,7 +21,7 @@ public class CursorFollow : MonoSingleton<CursorFollow>
     private string 反击 = "反击：回合末第一次攻击伤害 = 初始伤害 + 反击层数*本回合受到所有伤害的20%";
     private string 恐惧 = "恐惧：受到的伤害增加30%";
     private string 眩晕 = "眩晕：停止行动";
-    private string 灼伤 = "灼伤：每回合受到5点伤害，无视护甲";
+    private string 灼伤 = "灼伤：每回合受到10点伤害，无视护甲";
     private string 束缚 = "束缚：玩家抽牌数减少1";
     void Start()
     {

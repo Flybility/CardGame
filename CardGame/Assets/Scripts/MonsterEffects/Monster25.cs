@@ -12,6 +12,7 @@ public class Monster25 : MonoBehaviour
         monster = GetComponent<ThisMonster>();
         monster.isSelfArmored = true;
         monster.selfArmoredValue = armorValue;
+        Skills.Instance.ArmoredSelf(monster, armorValue);
 
     }
 

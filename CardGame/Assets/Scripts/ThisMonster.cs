@@ -32,6 +32,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
 
     public int dizzyCount;//眩晕层数
     public int burnsCount;//灼伤层数
+    public int burnsDamage;//灼伤伤害
     public int absorbCount;//吸收回合数
     public int absorbDamages;//吸收总伤害数
     public int attackCount;//增加伤害回合数
@@ -63,7 +64,8 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public bool isSelfArmored;
     public int selfArmoredValue;
     public bool isBesideArmored;
-    public bool isRoundExchange;
+    public bool isRoundExchangeBeside;
+    public bool isRoundExchangeInterval;
     void Start()
     {
         OnStart();
@@ -83,6 +85,8 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     }
     IEnumerator PerRoundChange()
     {
+        BurnsEffect();
+        yield return new WaitForSeconds(0.2f);
         if (dizzyCount > 0) DecreaseDizzy(1);
         if (burnsCount > 0) DecreaseBurns(1);
         if (absorbCount > 0) DecreaseAbsorb(1);
@@ -93,8 +97,10 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         if (isBesideRecover) Skills.Instance.RecoverBesides(block, 10);
         if (isBesideArmored) Skills.Instance.ArmoredBesides(block, 10);
         if (isSelfArmored) Skills.Instance.ArmoredSelf(this, selfArmoredValue);
-        yield return new WaitForSeconds(0.1f);
-        if (isRoundExchange) Skills.Instance.StartExchangeBesidePosition(this.gameObject);
+        yield return new WaitForSeconds(0.2f);
+        if (isRoundExchangeBeside) Skills.Instance.StartExchangeBesidePosition(this.gameObject);
+        yield return new WaitForSeconds(0.3f);
+        if (isRoundExchangeInterval) Skills.Instance.StartExchangeIntervalPosition(this.gameObject);
     }
     public void OnStart()
     {
@@ -249,7 +255,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         {
             Skills.Instance.StartBoom(block, absorbDamages);
             Destroy(absorb);
-            HealthDecrease(absorbDamages,false);
+            HealthDecrease(absorbDamages,false,false);
             absorbDamages = 0;
         }
         if (absorb != null && absorbCount > 0)
@@ -288,6 +294,11 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
             burns.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { burnsCount = 0; }
+    }
+    public void BurnsEffect()
+    {
+        if (burnsCount > 0) { HealthDecrease(burnsDamage,false,true); }
+
     }
     public void AddArmor(int Counts, GameObject armorPrefab)
     {
@@ -337,7 +348,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         }
         else return;
     }
-    public void HealthDecrease(int damage,bool isStraight)
+    public void HealthDecrease(int damage,bool isStraight,bool isReal)
     {
         if (isIntangible && isStraight)
         {
@@ -355,10 +366,15 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
             GameObject floatValue = Instantiate(PlayerData.Instance.floatPrefab, this.transform.parent);
             floatValue.GetComponent<Text>().text = "-" + damage.ToString();
         }
-        else
+        if(armorCount < damage||isReal)
         {
-            int realDamage = damage - armorCount;
-            DecreaseArmor(armorCount);
+            int realDamage;
+            if (isReal) { realDamage = damage; }
+            else 
+            {
+                realDamage = damage - armorCount;
+                DecreaseArmor(armorCount);
+            } 
             health -= realDamage;
             //Debug.Log("伤害=" + damage);
             slider.value = (float)health / maxHealth;

@@ -68,11 +68,11 @@ public class PlayerData : MonoSingleton<PlayerData>
         HealthBarChange();
 
         playerMonsterCards.Add(cardData.CopyMonsterCard(0));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(1));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(2));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(19));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(20));
         playerMonsterCards.Add(cardData.CopyMonsterCard(24));
         playerMonsterCards.Add(cardData.CopyMonsterCard(26));
-        //playerMonsterCards.Add(cardData.CopyMonsterCard(5));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(27));
         //playerMonsterCards.Add(cardData.CopyMonsterCard(6));
         //playerMonsterCards.Add(cardData.CopyMonsterCard(7));
         //playerMonsterCards.Add(cardData.CopyMonsterCard(8));
@@ -132,7 +132,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     IEnumerator PerRoundChange()
     {
         HealthDecrease(perRoundHealthDecrease + extraPerRoundHealthDecrease);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         if (armorCount > 0)         DecreaseArmor(armorCount);
         if (scareCount > 0)         DecreaseScareCount(1);
         if (angerCount > 0)         DecreaseCounterattackCount(angerCount/2);

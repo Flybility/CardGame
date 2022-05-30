@@ -216,11 +216,12 @@ public class BattleField : MonoSingleton<BattleField>
         if (gameState == GameState.玩家抽牌)
         {
             PanelMask.SetActive(true);
-            FlyToDiscardArea();
+            
             currentRound++;
             perRoundDead = 0;
             currentPlayerAttackTime = playerAttackTime;
-            DrawHandMonster();
+            FlyToDiscardArea();
+            Invoke("DrawHandMonster", 0.6f);
             PlayerData.Instance.ChangeRound();
         }
 
@@ -405,7 +406,7 @@ public class BattleField : MonoSingleton<BattleField>
         gameState = GameState.玩家抽牌;
         stateChangeEvent.Invoke();
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         MonsterRoundEnd.Invoke();//怪物回合结束事件（结算buff）
         yield return new WaitForSeconds(0.5f);
 

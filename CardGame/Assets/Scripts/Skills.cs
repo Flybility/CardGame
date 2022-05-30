@@ -40,7 +40,7 @@ public class Skills : MonoSingleton<Skills>
     }
     public void AttackMonster(int damage, GameObject target,bool isStraight)
     {
-        target.GetComponent<ThisMonster>().HealthDecrease(damage,isStraight);
+        target.GetComponent<ThisMonster>().HealthDecrease(damage,isStraight,false);
     }
     public void RecoverPlayerHealth(int value)
     {
@@ -115,6 +115,13 @@ public class Skills : MonoSingleton<Skills>
         foreach(var monster in BlocksManager.Instance.GetNeighbours(block))
         {
             monster.GetComponent<ThisMonster>().AddDizzy(count, dizzyCounter);
+        }
+    }
+    public void AddBurnsToBesides(Transform block,int count)
+    {
+        foreach (var monster in BlocksManager.Instance.GetNeighbours(block))
+        {
+            monster.GetComponent<ThisMonster>().AddBurns(count, burnsCounter);
         }
     }
     public void AddAttackTimesCount(int times)
@@ -220,18 +227,18 @@ public class Skills : MonoSingleton<Skills>
             nextMonsterCard.transform.SetParent(block);
             nextMonster.transform.SetParent(block);
             nextMonster.GetComponent<ThisMonster>().stateBlock.SetParent(block);
-            nextMonster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(nextMonster.GetComponent<ThisMonster>().initialStateBlock, 0.3f);
+            nextMonster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(nextMonster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
             nextMonster.GetComponent<ThisMonster>().block = block;
             
 
             monsterCard.transform.SetParent(nextblock);
             monster.transform.SetParent(nextblock);
             monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextblock);
-            monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.3f) ;
+            monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f) ;
             monster.GetComponent<ThisMonster>().block = nextblock;
 
-            nextMonster.transform.DOLocalMove(Vector3.zero, 0.3f);
-            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+            nextMonster.transform.DOLocalMove(Vector3.zero, 0.2f);
+            monster.transform.DOLocalMove(Vector3.zero, 0.2f);
 
             BlocksManager.Instance.MonsterChange();
         }
@@ -242,9 +249,9 @@ public class Skills : MonoSingleton<Skills>
             monsterCard.transform.SetParent(nextBlock);
             monster.transform.SetParent(nextBlock);
             monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
-            monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.3f);
+            monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
             monster.GetComponent<ThisMonster>().block = nextBlock;
-            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+            monster.transform.DOLocalMove(Vector3.zero, 0.2f);
 
             BlocksManager.Instance.MonsterChange();
         }
@@ -273,8 +280,8 @@ public class Skills : MonoSingleton<Skills>
             monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextblock);
             monster.GetComponent<ThisMonster>().block = nextblock;
 
-            nextMonster.transform.DOLocalMove(Vector3.zero, 0.3f);
-            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+            nextMonster.transform.DOLocalMove(Vector3.zero, 0.2f);
+            monster.transform.DOLocalMove(Vector3.zero, 0.2f);
 
             BlocksManager.Instance.MonsterChange();
         }
@@ -285,9 +292,9 @@ public class Skills : MonoSingleton<Skills>
             monsterCard.transform.SetParent(nextBlock);
             monster.transform.SetParent(nextBlock);
             monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
-            monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.3f);
+            monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
             monster.GetComponent<ThisMonster>().block = nextBlock;
-            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+            monster.transform.DOLocalMove(Vector3.zero, 0.2f);
 
             BlocksManager.Instance.MonsterChange();
         }

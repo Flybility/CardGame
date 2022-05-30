@@ -11,9 +11,9 @@ public class Monster26 : MonoBehaviour
     {
         monster = GetComponent<ThisMonster>();
         monster.isSelfArmored = true;
-        monster.isRoundExchange = true;
+        monster.isRoundExchangeBeside = true;
         monster.selfArmoredValue = armorValue;
-
+        Skills.Instance.ArmoredSelf(monster, armorValue);
     }
 
     // Update is called once per frame

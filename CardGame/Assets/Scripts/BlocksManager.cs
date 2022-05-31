@@ -52,6 +52,22 @@ public class BlocksManager : MonoSingleton<BlocksManager>
 
        
     }
+    public GameObject GetNeighbourPrevious(Transform block)
+    {
+        int higherNumber = block.GetSiblingIndex() -1;
+
+        if (higherNumber <0) higherNumber = 5;
+        if (monsters[higherNumber] != null)
+        {
+            return monsters[higherNumber].gameObject;
+        }
+        else
+        {
+            return null;
+        }
+
+
+    }
     public GameObject GetIntervalNext(Transform block)
     {
         int higherNumber = block.GetSiblingIndex() + 2;
@@ -75,6 +91,16 @@ public class BlocksManager : MonoSingleton<BlocksManager>
         int higherNumber = thisBlock.GetSiblingIndex() + 1;
         GameObject block =new GameObject();
         if (higherNumber > 5) higherNumber = 0;
+        if (BattleField.Instance.blocks[higherNumber] != null)
+        { block = BattleField.Instance.blocks[higherNumber]; }
+        return block;
+
+    }
+    public GameObject GetPreviousBlock(Transform thisBlock)
+    {
+        int higherNumber = thisBlock.GetSiblingIndex() - 1;
+        GameObject block = new GameObject();
+        if (higherNumber <0) higherNumber = 5;
         if (BattleField.Instance.blocks[higherNumber] != null)
         { block = BattleField.Instance.blocks[higherNumber]; }
         return block;

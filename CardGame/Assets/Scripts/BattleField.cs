@@ -375,13 +375,18 @@ public class BattleField : MonoSingleton<BattleField>
     {
         if (monsterInBattle.Count > 0)
         {
+            
+            MonsterRoundEnd.Invoke();//怪物回合结束事件（结算buff）
+            yield return new WaitForSeconds(0.6f);
             PlayerRoundEnd.Invoke();//玩家回合结束事件(结算buff)
             Debug.Log("敌人回合");
             gameState = GameState.敌方回合;
             stateChangeEvent.Invoke();
-            foreach (var monster in monsterInBattle)
+            for(int i=0;i<monsterInBattle.Count;i++)
             {
-                if (monster.GetComponent<ThisMonster>().dizzyCount > 0)
+                
+                ThisMonster thismonster = monsterInBattle[i].GetComponent<ThisMonster>();
+                if (thismonster.dizzyCount > 0)
                 {
                     //眩晕动画
                     yield return new WaitForSeconds(0.25f);
@@ -389,26 +394,66 @@ public class BattleField : MonoSingleton<BattleField>
                 else
                 {
                     Vector3 targetPos = target.transform.localPosition;
-                    Vector3 monsterPos = monster.transform.parent.localPosition;
-                    monster.transform.DOPunchPosition(targetPos - monsterPos, 0.5f, 1);
+                    Vector3 monsterPos = monsterInBattle[i].transform.parent.localPosition;
+                    if (thismonster.isRoundSwallowBeside)
+                    {
+                        int m, n;
+                        GameObject a = new GameObject();
+                        GameObject b = new GameObject();
+                        m = monsterInBattle.Count;
+                        a = monsterInBattle[i];
+                        Skills.Instance.StartSwallowMonster(monsterInBattle[i]);
+                        yield return new WaitForSeconds(0.5f);
+                        n = monsterInBattle.Count;
+                        b = monsterInBattle[i];
+                        if (n != m)//说明吞噬怪物为真
+                        {
+                            if (n==1){i = 0;}
+                            else if (a != b) { i--; }
+                        }
+                       
+                    }
+                    monsterInBattle[i].transform.DOPunchPosition(targetPos - monsterPos, 0.5f, 1);
                     yield return new WaitForSeconds(0.20f);
+
+
+                    
                     AudioManager.Instance.monsterAttack.Play();
                     yield return new WaitForSeconds(0.05f);
-                    Skills.Instance.AttackPlayer(monster.GetComponent<ThisMonster>().afterMultipleAttacks, monster.GetComponent<ThisMonster>());
+                    Skills.Instance.AttackPlayer(monsterInBattle[i].GetComponent<ThisMonster>().afterMultipleAttacks, monsterInBattle[i].GetComponent<ThisMonster>());
                     yield return new WaitForSeconds(0.25f);
+                    if (thismonster.isRoundExchangeBeside)
+                    {
+                        yield return new WaitForSeconds(0.2f);
+                        Skills.Instance.StartExchangeBesidePosition(monsterInBattle[i]);
+                        yield return new WaitForSeconds(0.4f);
+                    }
+                    if (thismonster.isRoundExchangeInterval)
+                    {
+                        yield return new WaitForSeconds(0.2f);
+                        Skills.Instance.StartExchangeIntervalPosition(monsterInBattle[i]);
+                        yield return new WaitForSeconds(0.4f);
+                    }
+                    yield return new WaitForSeconds(0.2f);
+                    if (thismonster.isBesideRecover) Skills.Instance.RecoverBesides(thismonster.block, 10);
+                    if (thismonster.isBesideArmored) Skills.Instance.ArmoredBesides(thismonster.block, 10);
+                    if (thismonster.isSelfArmored)   Skills.Instance.ArmoredSelf(thismonster, thismonster.selfArmoredValue);
+
                 }
-                
+
                 //Skills.Instance.Attack(monster.GetComponent<ThisMonster>().damage, player);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.1f);
+  
+                
             }
         }
         
         gameState = GameState.玩家抽牌;
         stateChangeEvent.Invoke();
-
-        yield return new WaitForSeconds(0.2f);
-        MonsterRoundEnd.Invoke();//怪物回合结束事件（结算buff）
-        yield return new WaitForSeconds(0.5f);
+       //
+       // yield return new WaitForSeconds(0.2f);
+       // 
+       // yield return new WaitForSeconds(0.5f);
 
         PlayerExtractCard();
         yield break;
@@ -442,10 +487,9 @@ public class BattleField : MonoSingleton<BattleField>
         player.transform.DOLocalMove(playerPos, 0.3f);
         PlayerData.Instance.perRoundHurt = 0;
 
-        
+
 
         //StartCoroutine(MonsterAttack(player));
-
         
     }
     public void JumpPlayerRound()//跳过玩家回合，由跳过回合按钮调用

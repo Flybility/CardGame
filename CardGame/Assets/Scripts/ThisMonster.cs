@@ -15,8 +15,8 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public Component effect;
     private int id;
     public int summonTime;
-    public  int health;
-    private int maxHealth;
+    public int health;
+    public int maxHealth;
     public int awardHealth;
 
     public int currentAwards;
@@ -66,6 +66,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public bool isBesideArmored;
     public bool isRoundExchangeBeside;
     public bool isRoundExchangeInterval;
+    public bool isRoundSwallowBeside;
     void Start()
     {
         OnStart();
@@ -92,15 +93,14 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         if (absorbCount > 0) DecreaseAbsorb(1);
         if (armorCount > 0) DecreaseArmor(armorCount);
         if (isAddAttack) AddAttackPerRound(1);
+        
 
-        yield return new WaitForSeconds(0.1f);
-        if (isBesideRecover) Skills.Instance.RecoverBesides(block, 10);
-        if (isBesideArmored) Skills.Instance.ArmoredBesides(block, 10);
-        if (isSelfArmored) Skills.Instance.ArmoredSelf(this, selfArmoredValue);
-        yield return new WaitForSeconds(0.2f);
-        if (isRoundExchangeBeside) Skills.Instance.StartExchangeBesidePosition(this.gameObject);
-        yield return new WaitForSeconds(0.3f);
-        if (isRoundExchangeInterval) Skills.Instance.StartExchangeIntervalPosition(this.gameObject);
+        
+
+
+        //if (isRoundExchangeBeside) Skills.Instance.StartExchangeBesidePosition(this.gameObject);
+        //yield return new WaitForSeconds(0.22f);
+        //if (isRoundExchangeInterval) Skills.Instance.StartExchangeIntervalPosition(this.gameObject);
     }
     public void OnStart()
     {
@@ -115,7 +115,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         initialStateBlock = stateBlock.localPosition;
         attackText = transform.GetChild(3).GetComponent<Text>();
 
-        stateBlock.transform.SetParent(transform.parent);
+        //stateBlock.transform.SetParent(transform.parent);
         monsterCard = GetComponentInParent<Blocks>().card;
         id = monsterCard.GetComponent<ThisMonsterCard>().id;
         maxHealth = monsterCard.GetComponent<ThisMonsterCard>().health;
@@ -385,7 +385,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
             {
                 health = 0;
                 monsterCard.GetComponent<ThisMonsterCard>().summonTimes--;
-                Destroy(stateBlock.gameObject);
+                //Destroy(stateBlock.gameObject);
                 //击杀怪物回复生命值
                 PlayerData.Instance.HealthRecover(currentAwards);
                 BattleField.Instance.StartMonsterDead(this.gameObject, monsterCard);

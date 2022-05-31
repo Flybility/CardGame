@@ -222,36 +222,36 @@ public class Skills : MonoSingleton<Skills>
 
             GameObject nextMonsterCard = nextMonster.GetComponent<ThisMonster>().monsterCard;
             //
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.05f);
 
             nextMonsterCard.transform.SetParent(block);
             nextMonster.transform.SetParent(block);
-            nextMonster.GetComponent<ThisMonster>().stateBlock.SetParent(block);
-            nextMonster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(nextMonster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
+            //nextMonster.GetComponent<ThisMonster>().stateBlock.SetParent(block);
+            ///nextMonster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(nextMonster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
             nextMonster.GetComponent<ThisMonster>().block = block;
             
 
             monsterCard.transform.SetParent(nextblock);
             monster.transform.SetParent(nextblock);
-            monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextblock);
-            monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f) ;
+            //monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextblock);
+            //monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f) ;
             monster.GetComponent<ThisMonster>().block = nextblock;
 
-            nextMonster.transform.DOLocalMove(Vector3.zero, 0.2f);
-            monster.transform.DOLocalMove(Vector3.zero, 0.2f);
+            nextMonster.transform.DOLocalMove(Vector3.zero, 0.3f);
+            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
 
             BlocksManager.Instance.MonsterChange();
         }
         else 
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.05f);
             Transform nextBlock = BlocksManager.Instance.GetNextBlock(block).transform;
             monsterCard.transform.SetParent(nextBlock);
             monster.transform.SetParent(nextBlock);
-            monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
-            monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
+            //monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
+            //monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
             monster.GetComponent<ThisMonster>().block = nextBlock;
-            monster.transform.DOLocalMove(Vector3.zero, 0.2f);
+            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
 
             BlocksManager.Instance.MonsterChange();
         }
@@ -267,38 +267,268 @@ public class Skills : MonoSingleton<Skills>
             Transform nextblock = nextMonster.GetComponent<ThisMonster>().block;
             GameObject nextMonsterCard = nextMonster.GetComponent<ThisMonster>().monsterCard;
             //
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.05f);
 
             nextMonsterCard.transform.SetParent(block);
             nextMonster.transform.SetParent(block);
-            nextMonster.GetComponent<ThisMonster>().stateBlock.SetParent(block);
+            //nextMonster.GetComponent<ThisMonster>().stateBlock.SetParent(block);
+            //nextMonster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(nextMonster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
             nextMonster.GetComponent<ThisMonster>().block = block;
 
 
             monsterCard.transform.SetParent(nextblock);
             monster.transform.SetParent(nextblock);
-            monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextblock);
+            //monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextblock);
+            //monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
             monster.GetComponent<ThisMonster>().block = nextblock;
 
-            nextMonster.transform.DOLocalMove(Vector3.zero, 0.2f);
-            monster.transform.DOLocalMove(Vector3.zero, 0.2f);
+            nextMonster.transform.DOLocalMove(Vector3.zero, 0.3f);
+            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
 
             BlocksManager.Instance.MonsterChange();
         }
         else
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.05f);
             Transform nextBlock = BlocksManager.Instance.GetNextIntervalBlock(block).transform;
             monsterCard.transform.SetParent(nextBlock);
             monster.transform.SetParent(nextBlock);
-            monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
-            monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
+            //monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
+            //monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
             monster.GetComponent<ThisMonster>().block = nextBlock;
-            monster.transform.DOLocalMove(Vector3.zero, 0.2f);
+            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
 
             BlocksManager.Instance.MonsterChange();
         }
 
+    }
+    public GameObject nextMonster;
+    public Transform nextBlock;
+    public GameObject nextMonsterCard;
+    public bool isNext = true;
+    public int reverse;
+    public void StartSwallowMonster(GameObject monster)
+    {
+        if (isNext == true)
+        {
+            StartCoroutine(SwallowMonsterNext(monster));
+        }
+        else if(isNext==false)
+        {
+            StartCoroutine(SwallowMonsterPrevious(monster));
+        }
+
+    }
+
+    IEnumerator SwallowMonsterNext(GameObject monster)
+    {
+        Transform block = monster.GetComponent<ThisMonster>().block;
+        GameObject monsterCard = monster.GetComponent<ThisMonster>().monsterCard;
+        if (BlocksManager.Instance.GetNeighbourNext(block))
+        {
+            nextMonster = BlocksManager.Instance.GetNeighbourNext(block);
+            nextBlock = nextMonster.GetComponent<ThisMonster>().block;
+            nextMonsterCard = nextMonster.GetComponent<ThisMonster>().monsterCard;
+            if (nextMonster.GetComponent<ThisMonster>().health < monster.GetComponent<ThisMonster>().health)
+            {
+                reverse = 0;
+                yield return new WaitForSeconds(0.05f);
+                Debug.Log("change");
+                nextMonsterCard.GetComponent<ThisMonsterCard>().summonTimes--;
+                int n = nextMonster.GetComponent<ThisMonster>().awardHealth;
+                monster.GetComponent<ThisMonster>().awardHealth += n;
+                int award = nextMonster.GetComponent<ThisMonster>().awardHealth;
+                int attack = nextMonster.GetComponent<ThisMonster>().currentAttacks;
+                int health = nextMonster.GetComponent<ThisMonster>().health;
+                monster.GetComponent<ThisMonster>().awardHealth += award;
+                monster.GetComponent<ThisMonster>().currentAttacks += (int)attack / 2;
+                monster.GetComponent<ThisMonster>().health += (int)health / 2;
+                monster.GetComponent<ThisMonster>().maxHealth += (int)health / 2;
+                //Destroy(nextMonster.GetComponent<ThisMonster>().stateBlock.gameObject);
+                BattleField.Instance.StartMonsterDead(nextMonster, nextMonsterCard);
+                monsterCard.transform.SetParent(nextBlock);
+                monster.transform.SetParent(nextBlock);
+                //monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
+                // monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
+                monster.GetComponent<ThisMonster>().block = nextBlock;
+                monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+
+
+
+                BlocksManager.Instance.MonsterChange();
+                yield break;
+            }
+            else if (BlocksManager.Instance.GetNeighbourPrevious(block))
+            {
+                reverse += 1;
+                isNext = false;
+
+                if (reverse > 2)
+                {
+                    Debug.Log("stop");
+                    yield break;
+                }
+                else
+                {
+                    StartCoroutine(SwallowMonsterPrevious(monster));
+                }
+                // nextMonster = BlocksManager.Instance.GetNeighbourNext(block);
+                // nextBlock = nextMonster.GetComponent<ThisMonster>().block;
+                // nextMonsterCard = nextMonster.GetComponent<ThisMonster>().monsterCard;
+                // yield return new WaitForSeconds(0.05f);
+                //
+                // nextMonsterCard.GetComponent<ThisMonsterCard>().summonTimes--;
+                //
+                // int award = nextMonster.GetComponent<ThisMonster>().awardHealth;
+                // int attack = nextMonster.GetComponent<ThisMonster>().currentAttacks;
+                // int health = nextMonster.GetComponent<ThisMonster>().health;
+                // monster.GetComponent<ThisMonster>().awardHealth += award;
+                // monster.GetComponent<ThisMonster>().currentAttacks += attack;
+                // monster.GetComponent<ThisMonster>().health += (int)health / 2;
+                // monster.GetComponent<ThisMonster>().maxHealth += (int)health / 2;
+                // //Destroy(nextMonster.GetComponent<ThisMonster>().stateBlock.gameObject);
+                // BattleField.Instance.StartMonsterDead(nextMonster, nextMonsterCard);
+
+            }
+            else if (BlocksManager.Instance.GetNeighbourPrevious(block)==null)
+            {
+                isNext = false;
+                reverse = 0;
+                nextBlock= BlocksManager.Instance.GetPreviousBlock(block).transform;
+                monsterCard.transform.SetParent(nextBlock);
+                monster.transform.SetParent(nextBlock);
+                //monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
+                // monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
+                monster.GetComponent<ThisMonster>().block = nextBlock;
+                monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+
+
+
+                BlocksManager.Instance.MonsterChange();
+            }
+
+            yield break;
+        }
+        else
+        {
+            reverse = 0;
+            Debug.Log("hhh");
+            yield return new WaitForSeconds(0.05f);
+            Transform nextBlock = BlocksManager.Instance.GetNextBlock(block).transform;
+            monsterCard.transform.SetParent(nextBlock);
+            monster.transform.SetParent(nextBlock);
+            //monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
+            //monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
+            monster.GetComponent<ThisMonster>().block = nextBlock;
+            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+
+            BlocksManager.Instance.MonsterChange();
+        }
+    }
+    IEnumerator SwallowMonsterPrevious(GameObject monster)
+    {
+        Transform block = monster.GetComponent<ThisMonster>().block;
+        GameObject monsterCard = monster.GetComponent<ThisMonster>().monsterCard;
+        if (BlocksManager.Instance.GetNeighbourPrevious(block))
+        {
+            nextMonster = BlocksManager.Instance.GetNeighbourPrevious(block);
+            nextBlock = nextMonster.GetComponent<ThisMonster>().block;
+            nextMonsterCard = nextMonster.GetComponent<ThisMonster>().monsterCard;
+            if (nextMonster.GetComponent<ThisMonster>().health < monster.GetComponent<ThisMonster>().health)
+            {
+                reverse = 0;
+                yield return new WaitForSeconds(0.05f);
+
+                nextMonsterCard.GetComponent<ThisMonsterCard>().summonTimes--;
+                int n = nextMonster.GetComponent<ThisMonster>().awardHealth;
+                monster.GetComponent<ThisMonster>().awardHealth += n;
+                int award = nextMonster.GetComponent<ThisMonster>().awardHealth;
+                int attack = nextMonster.GetComponent<ThisMonster>().currentAttacks;
+                int health = nextMonster.GetComponent<ThisMonster>().health;
+                monster.GetComponent<ThisMonster>().awardHealth += award;
+                monster.GetComponent<ThisMonster>().currentAttacks += (int)attack/2;
+                monster.GetComponent<ThisMonster>().health += (int)health / 2;
+                monster.GetComponent<ThisMonster>().maxHealth += (int)health / 2;
+                //Destroy(nextMonster.GetComponent<ThisMonster>().stateBlock.gameObject);
+                BattleField.Instance.StartMonsterDead(nextMonster, nextMonsterCard);
+                monsterCard.transform.SetParent(nextBlock);
+                monster.transform.SetParent(nextBlock);
+                //monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
+                // monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
+                monster.GetComponent<ThisMonster>().block = nextBlock;
+                monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+
+
+
+                BlocksManager.Instance.MonsterChange();
+                yield break;
+            }
+            else if (BlocksManager.Instance.GetNeighbourNext(block))
+            {
+                reverse += 1;
+                isNext = true;
+                if (reverse >2)
+                {
+                    Debug.Log("stop");
+                    yield break;
+                }
+                else
+                {
+                    StartCoroutine(SwallowMonsterNext(monster));
+                }
+
+               // nextMonster = BlocksManager.Instance.GetNeighbourNext(block);
+               // nextBlock = nextMonster.GetComponent<ThisMonster>().block;
+               // nextMonsterCard = nextMonster.GetComponent<ThisMonster>().monsterCard;
+               // yield return new WaitForSeconds(0.05f);
+               //
+               // nextMonsterCard.GetComponent<ThisMonsterCard>().summonTimes--;
+               //
+               // int award = nextMonster.GetComponent<ThisMonster>().awardHealth;
+               // int attack = nextMonster.GetComponent<ThisMonster>().currentAttacks;
+               // int health = nextMonster.GetComponent<ThisMonster>().health;
+               // monster.GetComponent<ThisMonster>().awardHealth += award;
+               // monster.GetComponent<ThisMonster>().currentAttacks += attack;
+               // monster.GetComponent<ThisMonster>().health += (int)health / 2;
+               // monster.GetComponent<ThisMonster>().maxHealth += (int)health / 2;
+               // //Destroy(nextMonster.GetComponent<ThisMonster>().stateBlock.gameObject);
+               // BattleField.Instance.StartMonsterDead(nextMonster, nextMonsterCard);
+
+            }
+            else if (BlocksManager.Instance.GetNeighbourNext(block) == null)
+            {
+                isNext = true;
+                reverse = 0;
+                nextBlock = BlocksManager.Instance.GetNextBlock(block).transform;
+                monsterCard.transform.SetParent(nextBlock);
+                monster.transform.SetParent(nextBlock);
+                //monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
+                // monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
+                monster.GetComponent<ThisMonster>().block = nextBlock;
+                monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+
+
+
+                BlocksManager.Instance.MonsterChange();
+            }
+
+            yield break;
+           
+        }
+        else
+        {
+            reverse = 0;
+            yield return new WaitForSeconds(0.05f);
+            Transform nextBlock = BlocksManager.Instance.GetPreviousBlock(block).transform;
+            monsterCard.transform.SetParent(nextBlock);
+            monster.transform.SetParent(nextBlock);
+            //monster.GetComponent<ThisMonster>().stateBlock.SetParent(nextBlock);
+            //monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
+            monster.GetComponent<ThisMonster>().block = nextBlock;
+            monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+
+            BlocksManager.Instance.MonsterChange();
+        }
     }
 
 

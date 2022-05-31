@@ -5722,6 +5722,11 @@ MonoBehaviour:
   attackCounter: {fileID: 2190176559971026236, guid: 487df92723b0b8644a7a24f425b48e55, type: 3}
   summonTimesCounter: {fileID: 2190176559971026236, guid: 9bd051ef1a532ca48922b41cc58cdd33, type: 3}
   armorCounter: {fileID: 2190176559971026236, guid: 0d38700a9a6d6d848a2860af34492096, type: 3}
+  nextMonster: {fileID: 0}
+  nextBlock: {fileID: 0}
+  nextMonsterCard: {fileID: 0}
+  isNext: 1
+  reverse: 0
 --- !u!4 &1590227582
 Transform:
   m_ObjectHideFlags: 0

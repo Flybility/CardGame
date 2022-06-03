@@ -297,6 +297,7 @@ public class BattleField : MonoSingleton<BattleField>
         {
             //卡牌飞向
             //extractArea.GetChild(i).DOMove(monsterArea.position, 0.5f);
+            card.SetActive(false);
             card.SetActive(true);
             card.transform.SetParent(monsterArea);
             AudioManager.Instance.cardEnter.Play();
@@ -375,7 +376,8 @@ public class BattleField : MonoSingleton<BattleField>
     {
         if (monsterInBattle.Count > 0)
         {
-            
+
+            PanelMask.SetActive(true);
             MonsterRoundEnd.Invoke();//怪物回合结束事件（结算buff）
             yield return new WaitForSeconds(0.6f);
             PlayerRoundEnd.Invoke();//玩家回合结束事件(结算buff)
@@ -443,7 +445,7 @@ public class BattleField : MonoSingleton<BattleField>
 
                 //Skills.Instance.Attack(monster.GetComponent<ThisMonster>().damage, player);
                 yield return new WaitForSeconds(0.1f);
-  
+
                 
             }
         }
@@ -616,7 +618,18 @@ public class BattleField : MonoSingleton<BattleField>
         //此怪物对应的卡牌赋予给生成的怪物所在的block中的卡牌
         _block.GetComponent<Blocks>().card = _monster; 
         _monster.transform.SetParent(_block);
+        _monster.transform.rotation = Quaternion.Euler(0, 0, 0);
+        _monster.transform.DOScale(Vector3.one, 0.1f);
+        _monster.SetActive(true);
+        _monster.GetComponent<MouseInteraction>().enabled = false;
+        _monster.transform.DOLocalMove(Vector3.zero, 0.4f);
+        _monster.transform.DORotate(new Vector3(0, 0, 360), 0.4f, RotateMode.FastBeyond360);
+        _monster.transform.DOScale(Vector3.zero, 0.6f);
+        yield return new WaitForSeconds(0.4f);
+        _monster.transform.DOScale(Vector3.one, 0.6f);
+        _monster.transform.rotation = Quaternion.Euler(0, 0, 0);
         _monster.SetActive(false);
+        _monster.GetComponent<MouseInteraction>().enabled = true;
 
         //依据怪物编号找出monsterPrefab里对应的怪物并生成于_block处
         GameObject monster=Instantiate(monstersPrefab.transform.GetChild(monsterId), _block).gameObject;
@@ -722,7 +735,20 @@ public class BattleField : MonoSingleton<BattleField>
         }
         else if (monsterCard.GetComponent<ThisMonsterCard>().summonTimes > 0)
         {
-            monsterCard.transform.SetParent(discardArea);            
+            monsterCard.transform.rotation = Quaternion.Euler(0, 0, 0);
+            monsterCard.transform.DOScale(Vector3.one, 0.1f);
+            monsterCard.SetActive(true);
+            monsterCard.GetComponent<MouseInteraction>().enabled = false;
+            monsterCard.transform.DOMove(discardArea.position, 0.4f);
+            monsterCard.transform.DORotate(new Vector3(0, 0, 720), 0.4f, RotateMode.FastBeyond360);
+            monsterCard.transform.DOScale(Vector3.zero, 0.6f);
+            yield return new WaitForSeconds(0.4f);
+            monsterCard.transform.DOScale(Vector3.one, 0.6f);
+            monsterCard.transform.rotation = Quaternion.Euler(0, 0, 0);
+            monsterCard.SetActive(false);
+            monsterCard.GetComponent<MouseInteraction>().enabled = true;
+            monsterCard.transform.SetParent(discardArea);
+            monsterCard.transform.localPosition = Vector3.zero;
         }
         Destroy(monster);
         Debug.Log("怪物死亡");

@@ -49,6 +49,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     public int awardEquipCardAmount;
     public bool isAngerCountOpen;
     public int counterThreshold;
+    
 
     public int perRoundHurt;
 
@@ -69,6 +70,8 @@ public class PlayerData : MonoSingleton<PlayerData>
 
         playerMonsterCards.Add(cardData.CopyMonsterCard(0));
         playerMonsterCards.Add(cardData.CopyMonsterCard(19));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(1));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(2));
         playerMonsterCards.Add(cardData.CopyMonsterCard(20));
         playerMonsterCards.Add(cardData.CopyMonsterCard(24));
         playerMonsterCards.Add(cardData.CopyMonsterCard(26));
@@ -91,6 +94,9 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(0));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(2));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(3));
+       //playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
+       //playerEquipmentCards.Add(cardData.CopyEquipmentCard(2));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(18));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(23));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(26));

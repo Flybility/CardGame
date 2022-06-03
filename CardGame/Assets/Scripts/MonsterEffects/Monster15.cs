@@ -12,6 +12,8 @@ public class Monster15 : MonoBehaviour
     {
         monster = GetComponent<ThisMonster>();
         AbsorbDamages();
+        monster.isAbsorbBoom = true;
+        
     }
 
     // Update is called once per frame

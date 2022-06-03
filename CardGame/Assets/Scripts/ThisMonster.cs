@@ -34,6 +34,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public int burnsCount;//灼伤层数
     public int burnsDamage;//灼伤伤害
     public int absorbCount;//吸收回合数
+    public bool isAbsorbBoom;
     public int absorbDamages;//吸收总伤害数
     public int attackCount;//增加伤害回合数
     public int armorCount;//护甲层数
@@ -253,10 +254,17 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         absorbCount -= count;
         if (absorb != null && absorbCount <= 0)
         {
-            Skills.Instance.StartBoom(block, absorbDamages);
-            Destroy(absorb);
-            HealthDecrease(absorbDamages,false,false);
-            absorbDamages = 0;
+            if (isAbsorbBoom)
+            {
+                Skills.Instance.StartBoom(block, absorbDamages);
+                HealthDecrease(absorbDamages, false, false);
+                absorbDamages = 0;
+            }
+            else
+            {
+                Destroy(absorb);
+            }
+
         }
         if (absorb != null && absorbCount > 0)
         {

@@ -11,7 +11,7 @@ public class CardDatabase : MonoSingleton<CardDatabase>
         equipmentCardList.Add(new EquipmentCard( 0, "蓝宝石",     10, 10, "使指定的心魔顺时针与下一个心魔互换位置",                                                Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 1, "紫宝石",     10, 10, "使指定的心魔顺时针与下一个相间的心魔互换位置",                                          Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 2, "红宝石",     10, 10, "使用后本回合内每次攻击对目标攻击2次",                                                   Resources.Load<Sprite>("EquipmentImages/01")));
-        equipmentCardList.Add(new EquipmentCard( 3, "橙宝石",     10,  3, "间位获得与被攻击目标同样的伤害",                                                        Resources.Load<Sprite>("EquipmentImages/01")));
+        equipmentCardList.Add(new EquipmentCard( 3, "绿宝石",     10,  3, "选择一名心魔使其本回合免疫任何伤害",                                                        Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 4, "黄宝石",     10,  3, "每受到一次大于4点的伤害，增加一层反击",                                                 Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 5, "红水晶",     10,  2, "下次攻击对目标攻击3次",                                                                 Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 6, "橙水晶",     10,  3, "下次攻击间位获得与被攻击目标同样的伤害",                                                Resources.Load<Sprite>("EquipmentImages/01")));
@@ -40,7 +40,7 @@ public class CardDatabase : MonoSingleton<CardDatabase>
         equipmentCardList.Add(new EquipmentCard(29, "英雄饼干",   10,  3, "增加2层反击",                                                                           Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard(30, "荆棘外衣",   10,  3, "每回合开始获得10点护甲",                                                                Resources.Load<Sprite>("EquipmentImages/01")));
 
-        monsterCardList.Add(new MonsterCard(00, "常规(小)",    8,  3,  2,  4, "",                                                                                                                                       Resources.Load<Sprite>("CardImages/01"), Resources.Load<Sprite>("CardBackgrounds/1")));
+        monsterCardList.Add(new MonsterCard(00, "常规(小)",    8,  3,  2,  3, "",                                                                                                                                       Resources.Load<Sprite>("CardImages/01"), Resources.Load<Sprite>("CardBackgrounds/1")));
         monsterCardList.Add(new MonsterCard(01, "愤怒(小)",    5,  2,  1,  3, "击杀后爆炸,对左右位置的心魔造成8点爆炸伤害",                                                                                             Resources.Load<Sprite>("CardImages/01"), Resources.Load<Sprite>("CardBackgrounds/1")));
         monsterCardList.Add(new MonsterCard(02, "常规(中)",   10,  4,  5,  1, "",                                                                                                                                       Resources.Load<Sprite>("CardImages/01"), Resources.Load<Sprite>("CardBackgrounds/2")));
         monsterCardList.Add(new MonsterCard(03, "常规(大)",   20,  6,  8,  1, "",                                                                                                                                       Resources.Load<Sprite>("CardImages/01"), Resources.Load<Sprite>("CardBackgrounds/1")));

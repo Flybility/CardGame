@@ -430,7 +430,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         Invoke("ShowDescription", 0.1f);
         CursorFollow.Instance.description.SetActive(true);
         Color color = CursorFollow.Instance.description.GetComponent<Image>().color;
-        CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 1), 0.4f);
+        CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 0.7f), 0.4f);
     }
     public void ShowDescription()
     {

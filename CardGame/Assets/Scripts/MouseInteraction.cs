@@ -77,14 +77,14 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         {
             CursorFollow.Instance.description.SetActive(true);
             Color color = CursorFollow.Instance.description.GetComponent<Image>().color;
-            CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 1), 0.5f);
+            CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 0.7f), 0.5f);
             Invoke("ShowDescriptionEquipment", 0.1f);
         }
         if (GetComponent<ThisMonsterCard>() != null)
         {
             CursorFollow.Instance.description.SetActive(true);
             Color color = CursorFollow.Instance.description.GetComponent<Image>().color;
-            CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 1), 0.5f);
+            CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 0.7f), 0.5f);
             Invoke("ShowDescriptionMonster", 0.1f);
         }
         

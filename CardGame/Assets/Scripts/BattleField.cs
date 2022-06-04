@@ -736,14 +736,20 @@ public class BattleField : MonoSingleton<BattleField>
         else if (monsterCard.GetComponent<ThisMonsterCard>().summonTimes > 0)
         {
             monsterCard.transform.rotation = Quaternion.Euler(0, 0, 0);
-            monsterCard.transform.DOScale(Vector3.one, 0.1f);
+            monsterCard.transform.DOScale(Vector3.zero, 0.1f);
+            yield return new WaitForSeconds(0.1f);
+            monsterCard.transform.DOScale(Vector3.one, 0.25f);
+            monsterCard.transform.SetAsLastSibling();
+            //yield return new WaitForSeconds(0.25f);
             monsterCard.SetActive(true);
             monsterCard.GetComponent<MouseInteraction>().enabled = false;
+
+            yield return new WaitForSeconds(0.4f);
             monsterCard.transform.DOMove(discardArea.position, 0.4f);
             monsterCard.transform.DORotate(new Vector3(0, 0, 720), 0.4f, RotateMode.FastBeyond360);
-            monsterCard.transform.DOScale(Vector3.zero, 0.6f);
+            monsterCard.transform.DOScale(Vector3.zero, 0.5f);
             yield return new WaitForSeconds(0.4f);
-            monsterCard.transform.DOScale(Vector3.one, 0.6f);
+            monsterCard.transform.DOScale(Vector3.one, 0.1f);
             monsterCard.transform.rotation = Quaternion.Euler(0, 0, 0);
             monsterCard.SetActive(false);
             monsterCard.GetComponent<MouseInteraction>().enabled = true;

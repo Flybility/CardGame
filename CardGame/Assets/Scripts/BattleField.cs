@@ -392,6 +392,7 @@ public class BattleField : MonoSingleton<BattleField>
                 {
                     //眩晕动画
                     yield return new WaitForSeconds(0.25f);
+                    thismonster.DecreaseDizzy(1);
                 }
                 else
                 {
@@ -739,6 +740,7 @@ public class BattleField : MonoSingleton<BattleField>
             monsterCard.transform.DOScale(Vector3.zero, 0.1f);
             yield return new WaitForSeconds(0.1f);
             monsterCard.transform.DOScale(Vector3.one, 0.25f);
+            monsterCard.transform.localPosition = Vector3.zero;
             monsterCard.transform.SetAsLastSibling();
             //yield return new WaitForSeconds(0.25f);
             monsterCard.SetActive(true);

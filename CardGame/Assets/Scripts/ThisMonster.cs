@@ -88,8 +88,8 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     IEnumerator PerRoundChange()
     {
         BurnsEffect();
-        yield return new WaitForSeconds(0.2f);
-        if (dizzyCount > 0) DecreaseDizzy(1);
+        yield return new WaitForSeconds(0.1f);
+
         if (burnsCount > 0) DecreaseBurns(1);
         if (absorbCount > 0) DecreaseAbsorb(1);
         if (armorCount > 0) DecreaseArmor(armorCount);

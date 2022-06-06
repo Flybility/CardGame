@@ -23,6 +23,7 @@ public class CursorFollow : MonoSingleton<CursorFollow>
     private string 眩晕 = "眩晕：停止行动";
     private string 灼伤 = "灼伤：每回合受到10点伤害，无视护甲";
     private string 束缚 = "束缚：玩家抽牌数减少1";
+    private string 吞噬 = "吞噬：消灭目标并累加吞噬目标一半的生命值和攻击力";
     void Start()
     {
         
@@ -63,6 +64,11 @@ public class CursorFollow : MonoSingleton<CursorFollow>
             extraDis.SetActive(true);
             extraText.text = 反击;
         }
+        if (text.text.Contains("吞噬"))
+        {
+            extraDis.SetActive(true);
+            extraText.text = 吞噬;
+        }
         if (text.text.Contains("灼伤"))
         {
             extraDis.SetActive(true);
@@ -88,7 +94,7 @@ public class CursorFollow : MonoSingleton<CursorFollow>
             extraDis.SetActive(true);
             extraText.text = 眩晕 + "\n\n" + 恐惧;
         }
-        if (!text.text.Contains("反击") && !text.text.Contains("恐惧") && !text.text.Contains("眩晕")&&!text.text.Contains("灼伤")&&!text.text.Contains("束缚"))
+        if (!text.text.Contains("反击") && !text.text.Contains("恐惧") && !text.text.Contains("眩晕")&&!text.text.Contains("灼伤")&&!text.text.Contains("束缚")&&!text.text.Contains("吞噬"))
         {
             extraDis.SetActive(false);
         }

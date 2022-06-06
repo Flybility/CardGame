@@ -129,14 +129,14 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         //当在战场手牌里和怪物当前可召唤数量大于0和是否已经点击召唤为false和点击鼠标左键和战斗状态为玩家回合时才可召唤
         if (isInBattle && BattleField.Instance.monstersCounter < 6 &&clicked==false&& eventData.button == PointerEventData.InputButton.Left&&BattleField.Instance.gameState==GameState.玩家回合)
         {
-            transform.DOScale(1.1f, 0.1f);
+            transform.DOScale(zoomSize, 0.1f);
             clicked = true;
             BattleField.Instance.PanelMask.SetActive(true);
             BattleField.Instance.SummonRequest(gameObject);
         }
         if (isInOpenMonsterPool&&eventData.button == PointerEventData.InputButton.Left)
         {
-            transform.DOScale(1/clickSize, 0.1f);
+            transform.DOScale(zoomSize, 0.1f);
             //向玩家怪物卡组加入选中的怪物牌
             PlayerData.Instance.playerMonsterCards.Add(thisCard2.card);
             //点击卡包里的卡之后其他卡牌消失

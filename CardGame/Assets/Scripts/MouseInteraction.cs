@@ -76,7 +76,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.DOScale (zoomSize,0.1f);
-        
+        number = transform.GetSiblingIndex();
         if (isInBattle)
         {
             transform.SetAsLastSibling();

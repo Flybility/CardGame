@@ -41,27 +41,51 @@ public class Skills : MonoSingleton<Skills>
     }
     public void AttackMonster(int damage, GameObject target,bool isStraight)
     {
-        target.GetComponent<ThisMonster>().HealthDecrease(damage,isStraight,false);
-        target.transform.DOPunchPosition(new Vector3(30, 0, 0), 0.3f, 3, 1);
+        List<GameObject> monster = new List<GameObject>();
+        if (PlayerData.Instance.isAttackBesides)
+        {
+            
+            monster = BlocksManager.Instance.GetNeighbours(target.GetComponent<ThisMonster>().block);
+            PlayerData.Instance.isAttackBesides = false;
+        }
+        if (PlayerData.Instance.isAttackInterval) 
+        {
+            
+            monster = BlocksManager.Instance.GetInterval(target.GetComponent<ThisMonster>().block);
+            PlayerData.Instance.isAttackInterval = false;
+        }
+        monster.Add(target);
+        int c = monster.Count;
+        int n = damage % c;
+        if (n != 0)
+        {
+            if (n >= c-1) { damage = damage / c + 1; } 
+        }
+        else { damage /= c; }
+        foreach (var mons in monster)
+        {
+            mons.GetComponent<ThisMonster>().HealthDecrease(damage, isStraight, false);
+            mons.transform.DOPunchPosition(new Vector3(30, 0, 0), 0.3f, 3, 1);
+        }
+        
     }
     public void RecoverPlayerHealth(int value)
     {
         PlayerData.Instance.HealthRecover(value);
     }
-    public void StartBoom(Transform block, int damage)
+    public void StartBoom(ThisMonster thisMonster, int damage)
     {
-        StartCoroutine(BoomBeside(block, damage));
+        StartCoroutine(BoomBeside(thisMonster, damage));
     }
-    IEnumerator BoomBeside(Transform block, int damage)
+    IEnumerator BoomBeside(ThisMonster thisMonster, int damage)
     {       
         if (BattleField.Instance.isFinished == false)
         {
-
-            yield return new WaitForSeconds(0.2f);
+            
             AudioManager.Instance.boom1.Play();
-            List<GameObject> monsters = BlocksManager.Instance.GetNeighbours(block);
+            List<GameObject> monsters = BlocksManager.Instance.GetNeighbours(thisMonster.block);
                 //播放爆炸动画
-            foreach (var monster in BlocksManager.Instance.GetNeighbours(block))
+            foreach (var monster in BlocksManager.Instance.GetNeighbours(thisMonster.block))
             {
                 yield return new WaitForSeconds(0.06f);
                 AttackMonster(damage, monster,false);

@@ -300,6 +300,7 @@ public class BattleField : MonoSingleton<BattleField>
             //extractArea.GetChild(i).DOMove(monsterArea.position, 0.5f);
             //card.SetActive(false);
             //card.SetActive(true);
+            card.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             card.transform.SetParent(monsterArea);
 
             AddToHand.Invoke(card);
@@ -358,13 +359,16 @@ public class BattleField : MonoSingleton<BattleField>
             Debug.Log(hand.Count);
         }
         //每张hand放入弃牌堆里
+        discardArea.gameObject.SetActive(true);
         foreach (var card in hand)
         {
             Debug.Log("丢弃剩余手牌");
 
             //monsterArea.GetChild(i).DOLocalMove(discardArea.position, 0.5f);
-             
             card.transform.SetParent(discardArea);
+            
+            card.transform.DOLocalMove(Vector3.zero, 0.2f);
+            card.transform.DOScale(Vector3.zero, 0.2f);
             AddToHand.Invoke(null);
             yield return new WaitForSeconds(0.2f);
             
@@ -373,7 +377,7 @@ public class BattleField : MonoSingleton<BattleField>
             //yield return new WaitForSeconds(interval);
 
         }
-
+        discardArea.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.2f);
         DrawHandMonster();
         //for (int i = 0; i < discardArea.childCount; i++)
@@ -759,17 +763,23 @@ public class BattleField : MonoSingleton<BattleField>
             monsterCard.SetActive(true);
             monsterCard.GetComponent<MouseInteraction>().enabled = false;
 
-            yield return new WaitForSeconds(0.4f);
-            monsterCard.transform.DOMove(discardArea.position, 0.4f);
-            monsterCard.transform.DORotate(new Vector3(0, 0, 720), 0.4f, RotateMode.FastBeyond360);
-            monsterCard.transform.DOScale(Vector3.zero, 0.5f);
-            yield return new WaitForSeconds(0.4f);
-            monsterCard.transform.DOScale(Vector3.one, 0.1f);
-            monsterCard.transform.rotation = Quaternion.Euler(0, 0, 0);
-            monsterCard.SetActive(false);
+            yield return new WaitForSeconds(0.3f);
+            monsterCard.transform.DOMove(discardArea.position, 0.3f);
+            monsterCard.transform.DORotate(new Vector3(0, 0, 540), 0.3f, RotateMode.FastBeyond360);
+            monsterCard.transform.DOScale(Vector3.zero, 0.4f);
+            yield return new WaitForSeconds(0.3f);
+            monsterCard.transform.localScale = Vector3.one;
+            monsterCard.transform.rotation = Quaternion.identity;
+            //monsterCard.SetActive(false);
             monsterCard.GetComponent<MouseInteraction>().enabled = true;
             monsterCard.transform.SetParent(discardArea);
             monsterCard.transform.localPosition = Vector3.zero;
+        }
+        if (monster.GetComponent<ThisMonster>().isBoom)
+        {
+            monster.transform.DOScale(transform.localScale * 1.5f, 0.4f);
+            monster.GetComponent<ThisMonster>().image.DOColor(Color.HSVToRGB(1,1f,0.8f), 0.4f);
+            yield return new WaitForSeconds(0.4f);
         }
         Destroy(monster);
         Debug.Log("怪物死亡");

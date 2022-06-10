@@ -45,6 +45,8 @@ public class PlayerData : MonoSingleton<PlayerData>
     //public int perRoundExtractCount;//每回合抽牌数
     public int tempExtraCardMax;//临时增加最大抽牌数
 
+    public bool isAttackBesides;
+    public bool isAttackInterval;
     public int awardMonsterCardAmount;
     public int awardEquipCardAmount;
     public bool isAngerCountOpen;
@@ -95,7 +97,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(2));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(3));
-       //playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(4));
        //playerEquipmentCards.Add(cardData.CopyEquipmentCard(2));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(18));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(23));

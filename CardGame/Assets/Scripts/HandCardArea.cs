@@ -38,10 +38,10 @@ public class HandCardArea : MonoSingleton<HandCardArea>
             Vector2 pos = new Vector2(leftPosX + cardWidth * i, 0);
             transform.GetChild(i).transform.DOLocalMove(pos, 0.2f);
             transform.GetChild(i).transform.DOScale(Vector3.one, 0.2f);
-            if (card != null)
-            {
-                card.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), 0.25f);
-            }
+            //if (card != null)
+            //{
+            //    card.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), 0.25f);
+            //}
             childs.Add(transform.GetChild(i).gameObject);
 
         }        

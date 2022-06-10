@@ -457,7 +457,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 203043929}
-  - component: {fileID: 203043930}
   m_Layer: 5
   m_Name: 'DiscardCardArea '
   m_TagString: BattleDiscardPanel
@@ -484,30 +483,6 @@ RectTransform:
   m_AnchoredPosition: {x: -835, y: -290}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &203043930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 203043928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 200, y: 300}
-  m_Spacing: {x: -180, y: 0}
-  m_Constraint: 2
-  m_ConstraintCount: 1
 --- !u!1 &212419910
 GameObject:
   m_ObjectHideFlags: 0
@@ -4322,7 +4297,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1122177993}
-  - component: {fileID: 1122177994}
   - component: {fileID: 1122177995}
   m_Layer: 5
   m_Name: ExtractCardArea
@@ -4350,30 +4324,6 @@ RectTransform:
   m_AnchoredPosition: {x: 875, y: -290}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1122177994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1122177992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 200, y: 300}
-  m_Spacing: {x: -180, y: 0}
-  m_Constraint: 2
-  m_ConstraintCount: 1
 --- !u!114 &1122177995
 MonoBehaviour:
   m_ObjectHideFlags: 0

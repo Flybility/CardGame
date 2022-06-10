@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using DG.Tweening;
 using System;
 
-public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerClickHandler
+public class ThisMonster : MonoBehaviour
 {
     public GameObject monsterCard;
     public Transform block;
@@ -45,10 +45,11 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     private Text attackText;
     public Transform stateBlock;
     private GameObject dizzy, absorb, attack, burns,armor;
-    private bool isAddAttack;
+    public bool isAddAttack;
     public bool isAddAward;
     public bool isAddScareCount;//附加恐惧是否随怪物数增长
     public bool isAddBurnsCount;//附加灼伤是否随怪物数增长
+    public bool isBoom;
     public bool isIntangible;//是否无形（可直接攻击）
     public bool isNeighbourAwardMultiple;
     public bool isNeiboursAttackMultiple;
@@ -258,7 +259,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         {
             if (isAbsorbBoom)
             {
-                Skills.Instance.StartBoom(block, absorbDamages);
+                Skills.Instance.StartBoom(this, absorbDamages);
                 HealthDecrease(absorbDamages, false, false);
                 absorbDamages = 0;
             }
@@ -412,57 +413,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         GameObject floatValue = Instantiate(PlayerData.Instance.floatHealth, this.transform.parent);
         floatValue.GetComponent<Text>().text = "+" + value.ToString();
     }
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (eventData.button == PointerEventData.InputButton.Left && BattleField.Instance.SelectingMonster!=1&& BattleField.Instance.usingEquipment==null&&BattleField.Instance.AttackSelecting)
-        {
-            BattleField.Instance.StartPlayerAttack(this.gameObject);
-            //BattleField.Instance.CloseHighlightWithinMonster();
-        }
-        if(eventData.button == PointerEventData.InputButton.Left && BattleField.Instance.usingEquipment!=null)
-        {
-            BattleField.Instance.UseEquipment(this.gameObject, BattleField.Instance.usingEquipment);
-            //BattleField.Instance.usingEquipment = null;
-        }
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        //transform.DOScale(1.1f ,0.1f);
-        Invoke("ShowDescription", 0.1f);
-        CursorFollow.Instance.description.SetActive(true);
-        Color color = CursorFollow.Instance.description.GetComponent<Image>().color;
-        CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 0.7f), 0.4f);
-    }
-    public void ShowDescription()
-    {
-        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().cardName + ":" + "\n" + monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n\n" + "击杀获得情绪量:" + "<b>" + "<color=blue>" + currentAwards + "</color>" + "</b>";
-        if (absorbCount > 0)
-        {
-            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().cardName + ":"+ "\n" + monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n" + "击杀获得情绪量:" + "<b>"+"<color=blue>"+currentAwards+ "</color>" +"</b>" + "\n"
-                + "已储蓄爆炸伤害:" + "<b>" + "<color=red>" + absorbDamages + "</color>" + "</b>";
-        }
-        else if (isAddAttack)
-        {
-            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().cardName + ":" + "\n" + monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n" + "击杀获得情绪量:" + "<b>" + "<color=blue>" + currentAwards + "</color>" + "</b>" + "\n"
-               + "伤害增加:" + "<b>" + "<color=red>" + attackCount + "</color>" + "</b>"+"倍";
-        }
-        else if (isAddAward)
-        {
-            CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = monsterCard.GetComponent<ThisMonsterCard>().cardName + ":" + "\n" + monsterCard.GetComponent<ThisMonsterCard>().card.description + "\n" + "击杀获得情绪量:" + "<b>" + "<color=blue>" + currentAwards + "</color>" + "</b>" + 
-              "*本回合击杀怪物数("+"<b>" + "<color=red>" + BattleField.Instance.perRoundDead + "</color>" + "</b>"+")";
-        }
-        
-           
- 
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        //transform.DOScale(1, 0.1f);
-        CursorFollow.Instance.description.transform.GetChild(0).GetComponent<Text>().text = null;
-        CursorFollow.Instance.description.SetActive(false);
-    }
+   
 
     // private void OnDestroy()
     // {

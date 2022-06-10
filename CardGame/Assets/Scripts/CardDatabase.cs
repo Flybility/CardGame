@@ -12,8 +12,8 @@ public class CardDatabase : MonoSingleton<CardDatabase>
         equipmentCardList.Add(new EquipmentCard( 1, "紫宝石",     10, 10, "使指定的心魔顺时针与下一个相间的心魔互换位置",                                          Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 2, "红宝石",     10, 10, "使用后本回合内每次攻击对目标攻击2次",                                                   Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 3, "绿宝石",     10,  3, "选择一名心魔使其本回合免疫任何伤害",                                                    Resources.Load<Sprite>("EquipmentImages/01")));
-        equipmentCardList.Add(new EquipmentCard( 4, "橙宝石",     10,  3, "每受到一次大于4点的伤害，增加一层反击",                                                 Resources.Load<Sprite>("EquipmentImages/01")));
-        equipmentCardList.Add(new EquipmentCard( 5, "黄宝石",     10,  2, "下次攻击对目标攻击3次",                                                                 Resources.Load<Sprite>("EquipmentImages/01")));
+        equipmentCardList.Add(new EquipmentCard( 4, "橙宝石",     10,  3, "下次攻击同时扩散至相邻的心魔",                                                 Resources.Load<Sprite>("EquipmentImages/01")));
+        equipmentCardList.Add(new EquipmentCard( 5, "黄宝石",     10,  2, "下次攻击同时扩散至相间的心魔",                                                                 Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 6, "橙水晶",     10,  3, "下次攻击间位获得与被攻击目标同样的伤害",                                                Resources.Load<Sprite>("EquipmentImages/01")));
         equipmentCardList.Add(new EquipmentCard( 7, "黄水晶",     10,  3, "下次攻击邻位获得与被攻击目标同样的伤害",                                                Resources.Load<Sprite>("EquipmentImages/01")));        
         equipmentCardList.Add(new EquipmentCard( 8, "酒精",       10,  5, "被击中的目标本回合内若受到“爆炸伤害”被添加3层“灼伤”",                               Resources.Load<Sprite>("EquipmentImages/01")));

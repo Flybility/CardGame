@@ -11,6 +11,7 @@ public class Monster6 :MonoBehaviour
     void Start()//怪物上场时调用技能函数
     {
         monster = GetComponent<ThisMonster>();
+        monster.isBoom = true;
         GameObject boomCounter = Instantiate(Skills.Instance.boomCounter, monster.stateBlock);
         boomCounter.transform.GetChild(0).GetComponent<Text>().text = boomDamage.ToString();
     }

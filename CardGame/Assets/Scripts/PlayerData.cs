@@ -143,7 +143,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (scareCount > 0)         DecreaseScareCount(1);
         if (angerCount > 0)         DecreaseCounterattackCount(angerCount/2);
         if (burnsCount > 0)         DecreaseBurns(1);
-        if (bondageCount > 0)       DecreaseBondage(1);
+        //if (bondageCount > 0)       DecreaseBondage(1);
         if (attackTimesCount > 0)   DecreaseAttackTimeCount(1);
         //确保在玩家抽入手牌之后
 
@@ -165,7 +165,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         else if (attackTimeBar != null && attackTimesCount != 0)
         {
             attackTimeBar.transform.GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
-            attackTimeBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f,1, 0);
+            attackTimeBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f,2, 0);
         }
         else { return; }
 
@@ -180,7 +180,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (attackTimeBar != null && attackTimesCount > 0)
         {
             attackTimeBar.transform.GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
-            attackTimeBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f,1,0);
+            attackTimeBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f,2,0);
         }
         else { attackTimesCount = 0; }
     }
@@ -201,7 +201,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         else if (scareBar != null && scareCount != 0)
         {
             scareBar.transform.GetChild(0).GetComponent<Text>().text = scareCount.ToString();
-            scareBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f, 1, 0);
+            scareBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { return; }
 
@@ -216,7 +216,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (scareBar != null && scareCount > 0)
         {
             scareBar.transform.GetChild(0).GetComponent<Text>().text = scareCount.ToString();
-            scareBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f, 1, 0);
+            scareBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { scareCount = 0; }
     }
@@ -237,7 +237,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         else if (angerBar != null && angerCount != 0)
         {
             angerBar.transform.GetChild(0).GetComponent<Text>().text = angerCount.ToString();
-            angerBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f, 1, 0);
+            angerBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { return; }
     }
@@ -252,7 +252,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (angerBar != null && angerCount > 0)
         {
             angerBar.transform.GetChild(0).GetComponent<Text>().text = angerCount.ToString();
-            angerBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f, 1, 0);
+            angerBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { angerCount = 0; }
     }
@@ -273,7 +273,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         else if (burnsBar != null && burnsCount != 0)
         {
             burnsBar.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
-            burnsBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f, 1, 0);
+            burnsBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { return; }
 
@@ -288,7 +288,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (burnsBar != null && burnsCount > 0)
         {
             burnsBar.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
-            burnsBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f, 1, 0);
+            burnsBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { burnsCount = 0; }
     }
@@ -309,7 +309,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         else if (bondageBar != null && burnsCount != 0)
         {
             bondageBar.transform.GetChild(0).GetComponent<Text>().text = bondageCount.ToString();
-            bondageBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f, 1, 0);
+            bondageBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { return; }
 
@@ -324,7 +324,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (bondageBar != null && bondageCount > 0)
         {
             bondageBar.transform.GetChild(0).GetComponent<Text>().text = bondageCount.ToString();
-            bondageBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f, 1, 0);
+            bondageBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { bondageCount = 0; }
     }
@@ -348,7 +348,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         else if (ArmorBar != null && armorCount != 0)
         {
             ArmorBar.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
-            ArmorBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f, 1, 0);
+            ArmorBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { return; }
 
@@ -363,7 +363,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (ArmorBar != null && armorCount > 0)
         {
             ArmorBar.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
-            ArmorBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f, 1, 0);
+            ArmorBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { armorCount = 0; }
     }

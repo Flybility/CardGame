@@ -9,6 +9,7 @@ using DG.Tweening;
 public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerDownHandler, IPointerUpHandler
 {
     public float zoomSize;
+    public float zoomUp;
     public float clickSize;
     public bool isInOpenMonsterPool;
     public bool isInOpenEquipmentPool;
@@ -48,16 +49,18 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         }
         BattleField.Instance.summonEvent.AddListener(OnSummonOver);
         BattleField.Instance.ChangeParent.AddListener(OnChangeParent);
+        OnChangeParent();
     }
 
     // Update is called once per frame
     void Update()
     {
-        number = transform.GetSiblingIndex();
+        //number = transform.GetSiblingIndex();
         //右键取消召唤
         if (Input.GetMouseButtonUp(1) && clicked == true)
         {
-            transform.localScale = Vector3.one;
+            transform.DOScale(Vector3.one, 0.2f);
+            transform.DOLocalMoveY(0, 0.2f);
             clicked = false;
             BattleField.Instance.SummonCancel();
         }
@@ -69,24 +72,32 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         isInDiscard = transform.parent.CompareTag("BattleDiscardPanel");
         isInEquipment = transform.parent.CompareTag("BattleEquipmentPanel");
     }
+    
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.DOScale (zoomSize,0.1f);
+        
+        if (isInBattle)
+        {
+            transform.SetAsLastSibling();
+            transform.DOLocalMoveY(zoomUp, 0.1f);
+        }
+
         AudioManager.Instance.choseCard.Play();
         if (GetComponent<ThisEquiptmentCard>() != null)
         {
             CursorFollow.Instance.description.SetActive(true);
             Color color = CursorFollow.Instance.description.GetComponent<Image>().color;
-            CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 0.7f), 0.5f);
+            CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 0.8f), 0.5f);
             Invoke("ShowDescriptionEquipment", 0.1f);
         }
-        if (GetComponent<ThisMonsterCard>() != null)
-        {
-            CursorFollow.Instance.description.SetActive(true);
-            Color color = CursorFollow.Instance.description.GetComponent<Image>().color;
-            CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 0.7f), 0.5f);
-            Invoke("ShowDescriptionMonster", 0.1f);
-        }
+        //if (GetComponent<ThisMonsterCard>() != null)
+        //{
+        //    CursorFollow.Instance.description.SetActive(true);
+        //    Color color = CursorFollow.Instance.description.GetComponent<Image>().color;
+        //    CursorFollow.Instance.description.GetComponent<Image>().DOColor(new Color(color.r, color.g, color.b, 0.8f), 0.5f);
+        //    Invoke("ShowDescriptionMonster", 0.1f);
+        //}
         
     }
     public void ShowDescriptionEquipment()
@@ -107,7 +118,12 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         }
         else
         {
-            transform.DOScale(Vector3.one, 0.1f);
+            if (isInBattle)
+            {
+                transform.DOLocalMoveY(0, 0.2f);
+                transform.SetSiblingIndex(number);
+            }
+            transform.DOScale(Vector3.one, 0.2f);
         }
         if (isInBag&&thisCard1!=null)
         {
@@ -120,6 +136,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         if (eventData.button == PointerEventData.InputButton.Left)
         { 
             transform.DOScale(clickSize, 0.1f);
+            transform.SetSiblingIndex(number);
             AudioManager.Instance.click.Play();
         }
 

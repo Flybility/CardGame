@@ -64,6 +64,7 @@ public class BattleField : MonoSingleton<BattleField>
     public UnityEvent MonsterRoundEnd = new UnityEvent();     //怪物回合结束事件(结算buff)
     public UnityEvent MonsterDeadEvent = new UnityEvent();
     public UnityEvent ChangeParent = new UnityEvent();        //卡牌父物体改变事件，用于检测卡牌父物体是哪个牌堆
+    public MyGameObjectEvent AddToHand = new MyGameObjectEvent();        //加入手牌事件
     public MyGameObjectEvent useEquipmentEvent = new MyGameObjectEvent();
     // Start is called before the first frame update
 
@@ -220,8 +221,8 @@ public class BattleField : MonoSingleton<BattleField>
             currentRound++;
             perRoundDead = 0;
             currentPlayerAttackTime = playerAttackTime;
-            FlyToDiscardArea();
-            Invoke("DrawHandMonster", 0.6f);
+            StartCoroutine( FlyToDiscardArea());
+            
             PlayerData.Instance.ChangeRound();
         }
 
@@ -297,12 +298,14 @@ public class BattleField : MonoSingleton<BattleField>
         {
             //卡牌飞向
             //extractArea.GetChild(i).DOMove(monsterArea.position, 0.5f);
-            card.SetActive(false);
-            card.SetActive(true);
+            //card.SetActive(false);
+            //card.SetActive(true);
             card.transform.SetParent(monsterArea);
-            AudioManager.Instance.cardEnter.Play();
+
+            AddToHand.Invoke(card);
+            
             ChangeParent.Invoke();
-            card.transform.DOPunchScale(new Vector3(0.2f,0.2f,0.2f), interval);
+            
             Debug.Log("飞入手牌");
             yield return new WaitForSeconds(interval);
         }
@@ -312,6 +315,7 @@ public class BattleField : MonoSingleton<BattleField>
         //手牌结束抽牌后改变为玩家回合开始
         gameState = GameState.玩家回合;
         stateChangeEvent.Invoke();
+        if (PlayerData.Instance.bondageCount > 0) PlayerData.Instance.DecreaseBondage(1);
         yield break;
     }
     //弃牌堆牌进入抽牌堆
@@ -338,12 +342,13 @@ public class BattleField : MonoSingleton<BattleField>
         {
             Debug.Log("回到抽牌堆");
             card.transform.SetParent(extractArea);
+            card.transform.localPosition = Vector3.zero;
             ChangeParent.Invoke();            
         }
 
     }
     //手牌回合结束剩余进入弃牌堆
-    public void FlyToDiscardArea()
+    IEnumerator FlyToDiscardArea()
     {
         List<GameObject> hand = new List<GameObject>();
         //手牌堆里所有牌存入hand
@@ -356,15 +361,21 @@ public class BattleField : MonoSingleton<BattleField>
         foreach (var card in hand)
         {
             Debug.Log("丢弃剩余手牌");
-            
-            //monsterArea.GetChild(i).DOLocalMove(discardArea.position, 0.5f);            
+
+            //monsterArea.GetChild(i).DOLocalMove(discardArea.position, 0.5f);
+             
             card.transform.SetParent(discardArea);
+            AddToHand.Invoke(null);
+            yield return new WaitForSeconds(0.2f);
+            
             ChangeParent.Invoke();
             //card.transform.DOPunchScale(-new Vector3(0.2f, 0.2f, 0.2f), interval);
             //yield return new WaitForSeconds(interval);
 
         }
-        
+
+        yield return new WaitForSeconds(0.2f);
+        DrawHandMonster();
         //for (int i = 0; i < discardArea.childCount; i++)
         //{
         //    cardsInHand.RemoveAt(i);
@@ -391,7 +402,8 @@ public class BattleField : MonoSingleton<BattleField>
                 if (thismonster.dizzyCount > 0)
                 {
                     //眩晕动画
-                    yield return new WaitForSeconds(0.25f);
+                    thismonster.transform.DOPunchPosition(new Vector3(30,0,0), 0.4f,5, 1,true);
+                    yield return new WaitForSeconds(0.4f);
                     thismonster.DecreaseDizzy(1);
                 }
                 else
@@ -427,21 +439,21 @@ public class BattleField : MonoSingleton<BattleField>
                     yield return new WaitForSeconds(0.25f);
                     if (thismonster.isRoundExchangeBeside)
                     {
-                        yield return new WaitForSeconds(0.2f);
+                        yield return new WaitForSeconds(0.3f);
                         Skills.Instance.StartExchangeBesidePosition(monsterInBattle[i]);
                         yield return new WaitForSeconds(0.4f);
                     }
                     if (thismonster.isRoundExchangeInterval)
                     {
-                        yield return new WaitForSeconds(0.2f);
+                        yield return new WaitForSeconds(0.3f);
                         Skills.Instance.StartExchangeIntervalPosition(monsterInBattle[i]);
                         yield return new WaitForSeconds(0.4f);
                     }
-                    yield return new WaitForSeconds(0.2f);
+                    yield return new WaitForSeconds(0.3f);
                     if (thismonster.isBesideRecover) Skills.Instance.RecoverBesides(thismonster.block, 10);
                     if (thismonster.isBesideArmored) Skills.Instance.ArmoredBesides(thismonster.block, 10);
                     if (thismonster.isSelfArmored)   Skills.Instance.ArmoredSelf(thismonster, thismonster.selfArmoredValue);
-
+                    yield return new WaitForSeconds(0.2f);
                 }
 
                 //Skills.Instance.Attack(monster.GetComponent<ThisMonster>().damage, player);
@@ -619,6 +631,7 @@ public class BattleField : MonoSingleton<BattleField>
         //此怪物对应的卡牌赋予给生成的怪物所在的block中的卡牌
         _block.GetComponent<Blocks>().card = _monster; 
         _monster.transform.SetParent(_block);
+        AddToHand.Invoke(null);
         _monster.transform.rotation = Quaternion.Euler(0, 0, 0);
         _monster.transform.DOScale(Vector3.one, 0.1f);
         _monster.SetActive(true);

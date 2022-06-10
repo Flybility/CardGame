@@ -548,6 +548,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -571,6 +579,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3917458728723266667}
     m_Modifications:
+    - target: {fileID: 323598777290303006, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2f6544d1d5ed04549b6f99a8dc7ad43b, type: 3}
     - target: {fileID: 2869875911029974546, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -659,6 +671,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (34)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -765,6 +785,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -788,6 +816,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3917458728723266667}
     m_Modifications:
+    - target: {fileID: 323598777290303006, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2f6544d1d5ed04549b6f99a8dc7ad43b, type: 3}
     - target: {fileID: 2869875911029974546, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -876,6 +908,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (32)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -982,6 +1022,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1093,6 +1141,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (23)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1209,6 +1265,14 @@ PrefabInstance:
       value: Monster
       objectReference: {fileID: 0}
     - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_Maskable
       value: 0
       objectReference: {fileID: 0}
@@ -1322,6 +1386,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (21)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1433,6 +1505,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1456,6 +1536,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3917458728723266667}
     m_Modifications:
+    - target: {fileID: 323598777290303006, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2f6544d1d5ed04549b6f99a8dc7ad43b, type: 3}
     - target: {fileID: 2869875911029974546, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1544,6 +1628,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1655,6 +1747,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1766,6 +1866,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1877,6 +1985,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (18)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1988,6 +2104,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2099,6 +2223,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2210,6 +2342,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2316,6 +2456,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2427,6 +2575,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2538,6 +2694,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (25)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2561,6 +2725,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3917458728723266667}
     m_Modifications:
+    - target: {fileID: 323598777290303006, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2f6544d1d5ed04549b6f99a8dc7ad43b, type: 3}
     - target: {fileID: 2869875911029974546, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2649,6 +2817,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (36)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2760,6 +2936,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2783,6 +2967,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3917458728723266667}
     m_Modifications:
+    - target: {fileID: 323598777290303006, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2f6544d1d5ed04549b6f99a8dc7ad43b, type: 3}
     - target: {fileID: 2869875911029974546, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2871,6 +3059,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (30)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2977,6 +3173,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3088,6 +3292,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3199,6 +3411,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (35)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3305,6 +3525,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3328,6 +3556,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3917458728723266667}
     m_Modifications:
+    - target: {fileID: 323598777290303006, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2f6544d1d5ed04549b6f99a8dc7ad43b, type: 3}
     - target: {fileID: 2869875911029974546, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3416,6 +3648,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (26)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3527,6 +3767,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3550,6 +3798,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3917458728723266667}
     m_Modifications:
+    - target: {fileID: 323598777290303006, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2f6544d1d5ed04549b6f99a8dc7ad43b, type: 3}
     - target: {fileID: 2869875911029974546, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3638,6 +3890,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (31)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3656,6 +3916,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3917458728723266667}
     m_Modifications:
+    - target: {fileID: 323598777290303006, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2f6544d1d5ed04549b6f99a8dc7ad43b, type: 3}
     - target: {fileID: 2869875911029974546, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3744,6 +4008,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (27)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3767,6 +4039,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3917458728723266667}
     m_Modifications:
+    - target: {fileID: 323598777290303006, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2f6544d1d5ed04549b6f99a8dc7ad43b, type: 3}
     - target: {fileID: 2869875911029974546, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3855,6 +4131,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (33)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3873,6 +4157,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3917458728723266667}
     m_Modifications:
+    - target: {fileID: 323598777290303006, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2f6544d1d5ed04549b6f99a8dc7ad43b, type: 3}
     - target: {fileID: 2869875911029974546, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3961,6 +4249,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3979,6 +4275,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3917458728723266667}
     m_Modifications:
+    - target: {fileID: 323598777290303006, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2f6544d1d5ed04549b6f99a8dc7ad43b, type: 3}
     - target: {fileID: 2869875911029974546, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4067,6 +4367,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (28)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4178,6 +4486,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4289,6 +4605,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4400,6 +4724,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b965a3b13c40d045812bbbbfdcff863, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4511,6 +4843,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (24)
       objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2869875911029974548, guid: c798202bf6b61784882134646252efa2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 311a5921f6e30584e9616d35ebd9e43d, type: 3}
     - target: {fileID: 7185212040640062289, guid: c798202bf6b61784882134646252efa2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

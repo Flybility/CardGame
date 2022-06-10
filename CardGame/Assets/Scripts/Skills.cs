@@ -36,11 +36,13 @@ public class Skills : MonoSingleton<Skills>
         }
         else { PlayerData.Instance.AddBurns(monster.attackAttachedBurns, scareCounter); }
         PlayerData.Instance.AddBondages(monster.attackAttachedBondages, bondageCounter);
+        PlayerData.Instance.gameObject.transform.DOPunchPosition(new Vector3(-40, 0, 0), 0.3f, 3, 1);
 
     }
     public void AttackMonster(int damage, GameObject target,bool isStraight)
     {
         target.GetComponent<ThisMonster>().HealthDecrease(damage,isStraight,false);
+        target.transform.DOPunchPosition(new Vector3(30, 0, 0), 0.3f, 3, 1);
     }
     public void RecoverPlayerHealth(int value)
     {
@@ -55,7 +57,7 @@ public class Skills : MonoSingleton<Skills>
         if (BattleField.Instance.isFinished == false)
         {
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
             AudioManager.Instance.boom1.Play();
             List<GameObject> monsters = BlocksManager.Instance.GetNeighbours(block);
                 //播放爆炸动画
@@ -80,7 +82,7 @@ public class Skills : MonoSingleton<Skills>
     {
         if (BattleField.Instance.isFinished == false)
         {
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
             AudioManager.Instance.boom1.Play();
             List<GameObject> monsters = new List<GameObject>();
             foreach (var monster in BlocksManager.Instance.monsters)

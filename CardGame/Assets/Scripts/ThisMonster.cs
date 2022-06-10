@@ -13,6 +13,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     public Transform block;
     public Vector3 initialStateBlock;
     public Component effect;
+    public Image image;
     private int id;
     public int summonTime;
     public int health;
@@ -71,7 +72,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
     void Start()
     {
         OnStart();
-       
+        
     }
 
     // Update is called once per frame
@@ -121,6 +122,7 @@ public class ThisMonster : MonoBehaviour,IPointerEnterHandler,IPointerExitHandle
         id = monsterCard.GetComponent<ThisMonsterCard>().id;
         maxHealth = monsterCard.GetComponent<ThisMonsterCard>().health;
         summonTime = monsterCard.GetComponent<ThisMonsterCard>().summonTimes;
+        image.sprite = monsterCard.GetComponent<ThisMonsterCard>().thisSprite;
         health = maxHealth;
         slider.value = (float)health / maxHealth;
         block = transform.parent;

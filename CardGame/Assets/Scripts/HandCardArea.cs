@@ -1,67 +1,57 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 
-public class HandCardArea : MonoBehaviour
+public class HandCardArea : MonoSingleton<HandCardArea>
 {
-    public Vector2 spot;
-    public Vector2 thisPos;
-    public List<Transform> childs;
-    public Vector2 distant;
-    public int children;
-    // Start is called before the first frame update
-    void Start()
-    {
-        thisPos = transform.position;
-        distant = thisPos - spot;
-    }
+    //public GridLayoutGroup glg;
+    public List<GameObject> childs = new List<GameObject>();
+    private float width;
+    public float cardWidth;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        CheckChilds();
-    }
-    private void LateUpdate()
-    {
+        //glg = GetComponent<GridLayoutGroup>();
+       
+        BattleField.Instance.AddToHand.AddListener(StartChange);
         
     }
-    public void CheckChilds()
+    private void StartChange(GameObject card)
     {
+        
+        StartCoroutine(ChangeHandCard(card));
+    }
+    IEnumerator ChangeHandCard(GameObject card)
+    {
+        
+        int childAmount = transform.childCount;
+        
+        //
+        width = (childAmount-1) * cardWidth;
+
+        float leftPosX = -width / 2;
         childs.Clear();
-        for(int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < childAmount; i++)
         {
-            childs.Add(transform.GetChild(i));
-        }
-        TransformChild();
-    }
-    public void TransformChild()
-    {
-        if (childs.Count == 1)
-        {
-            foreach (var child in childs)
+            Vector2 pos = new Vector2(leftPosX + cardWidth * i, 0);
+            transform.GetChild(i).transform.DOLocalMove(pos, 0.2f);
+            transform.GetChild(i).transform.DOScale(Vector3.one, 0.2f);
+            if (card != null)
             {
-                child.localPosition = spot + distant;                  
+                card.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), 0.25f);
             }
-        }
-        else if(childs.Count > 1)
-        {
-            float angle = childs.Count*5;
-            float halfAngle = angle / 2;
-            float perAngle = angle / childs.Count;
-            Quaternion halfRotation = Quaternion.AngleAxis(-halfAngle, Vector2.up);
-            Quaternion perRotation = Quaternion.AngleAxis(perAngle, Vector2.up);
-            Vector2[] directions = new Vector2[childs.Count];
-            directions[0] = distant * halfRotation.eulerAngles;
-            childs[0].localPosition = spot + directions[0];
-            childs[0].rotation = halfRotation;
-            for (int i = 1; i < childs.Count; i++)
-            {
-                directions[i] = directions[i - 1] * perRotation.eulerAngles;
-                childs[i].localPosition = spot + directions[i];
-                childs[i].rotation = childs[i - 1].rotation *perRotation;
-            }
-        }
-       
+            childs.Add(transform.GetChild(i).gameObject);
+
+        }        
+   
+        yield return new WaitForSeconds(0.2f);
+        AudioManager.Instance.cardEnter.Play();
+        
     }
+   //IEnumerator OnPointerEnterCard(GameObject card)
+   //{
+   //
+   //}
 }

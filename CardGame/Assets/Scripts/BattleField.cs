@@ -368,7 +368,7 @@ public class BattleField : MonoSingleton<BattleField>
             card.transform.SetParent(discardArea);
             
             card.transform.DOLocalMove(Vector3.zero, 0.2f);
-            card.transform.DOScale(Vector3.zero, 0.2f);
+            card.transform.DOScale(Vector3.one*0.3f, 0.2f);
             AddToHand.Invoke(null);
             yield return new WaitForSeconds(0.2f);
             

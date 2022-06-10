@@ -654,7 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deda1005fcb13f44ebcea2fe3529b4cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomSize: 1.4
+  zoomSize: 1.28
   zoomUp: 50
   clickSize: 0.95
   isInOpenMonsterPool: 0

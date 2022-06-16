@@ -19,7 +19,7 @@ public class Monster7 : MonoBehaviour
     }
     private void OnDestroy()
     {
-        if (BattleField.Instance.isFinished == false)
+        if (BattleField.Instance.isFinished == false && monster.isSwallowed == false)
         {
             Skills.Instance.AddDizzyToBesides(monster.block, dizzyDamage);
             Skills.Instance.AddScareCount(terrorValue);

@@ -23,6 +23,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     public Slider slider;
     //基础状态
     public int maxHealth;
+    public int extraMaxHealth;//额外最大生命值
     public int currentHealth;//当前生命值
     public int perRoundHealthDecrease;//每回合固定降低生命值
     public int extraPerRoundHealthDecrease;//额外每回合降低生命值
@@ -66,21 +67,24 @@ public class PlayerData : MonoSingleton<PlayerData>
     void Awake()
     {
         attackTimes = 1;
-        slider =transform.GetChild(0).GetComponent<Slider>();
+        //slider =transform.GetChild(0).GetComponent<Slider>();
         currentHealth = maxHealth;
         HealthBarChange();
 
-        playerMonsterCards.Add(cardData.CopyMonsterCard(1));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(3));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(8));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(9));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(36));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(5));
         playerMonsterCards.Add(cardData.CopyMonsterCard(5));
         playerMonsterCards.Add(cardData.CopyMonsterCard(6));
         playerMonsterCards.Add(cardData.CopyMonsterCard(7));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(9));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(11));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(12));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(8));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(21));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(26));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(23));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(15));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(16));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(18));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(24));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(25));
+        playerMonsterCards.Add(cardData.CopyMonsterCard(28));
         //playerMonsterCards.Add(cardData.CopyMonsterCard(9));
         //playerMonsterCards.Add(cardData.CopyMonsterCard(10));
         //playerMonsterCards.Add(cardData.CopyMonsterCard(11));
@@ -96,14 +100,14 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(0));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(2));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(3));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(4));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(5));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(8));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(15));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(18));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(23));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(26));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(30));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(31));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(28));
-        //playerEquipmentCards.Add(cardData.CopyEquipmentCard(6));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(10));
         //playerEquipmentCards.Add(cardData.CopyEquipmentCard(7));
 
         currentAttacks = initialAttacks;
@@ -123,7 +127,8 @@ public class PlayerData : MonoSingleton<PlayerData>
     //}
     public void PerBattleRecover()
     {
-        currentHealth = maxHealth;
+        extraMaxHealth = 0;
+        currentHealth = (maxHealth + extraMaxHealth);
         //mpAttaks = 0;
         tempExtraCardMax = 0;
         isAngerCountOpen = false;
@@ -162,11 +167,11 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (attackTimeBar == null && attackTimesCount != 0)
         {
             attackTimeBar = Instantiate(prefab, playerStatesBar);
-            attackTimeBar.transform.GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
+            attackTimeBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
         }
         else if (attackTimeBar != null && attackTimesCount != 0)
         {
-            attackTimeBar.transform.GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
+            attackTimeBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
             attackTimeBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f,2, 0);
         }
         else { return; }
@@ -181,7 +186,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         }
         if (attackTimeBar != null && attackTimesCount > 0)
         {
-            attackTimeBar.transform.GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
+            attackTimeBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = attackTimesCount.ToString();
             attackTimeBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f,2,0);
         }
         else { attackTimesCount = 0; }
@@ -198,11 +203,11 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (scareBar == null && scareCount != 0)
         {
             scareBar = Instantiate(prefab, playerStatesBar);
-            scareBar.transform.GetChild(0).GetComponent<Text>().text = scareCount.ToString();
+            scareBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = scareCount.ToString();
         }
         else if (scareBar != null && scareCount != 0)
         {
-            scareBar.transform.GetChild(0).GetComponent<Text>().text = scareCount.ToString();
+            scareBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = scareCount.ToString();
             scareBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { return; }
@@ -217,7 +222,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         }
         if (scareBar != null && scareCount > 0)
         {
-            scareBar.transform.GetChild(0).GetComponent<Text>().text = scareCount.ToString();
+            scareBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = scareCount.ToString();
             scareBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { scareCount = 0; }
@@ -234,11 +239,11 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (angerBar == null && angerCount != 0)
         {
             angerBar = Instantiate(prefab, playerStatesBar);
-            angerBar.transform.GetChild(0).GetComponent<Text>().text = angerCount.ToString();
+            angerBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = angerCount.ToString();
         }
         else if (angerBar != null && angerCount != 0)
         {
-            angerBar.transform.GetChild(0).GetComponent<Text>().text = angerCount.ToString();
+            angerBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = angerCount.ToString();
             angerBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { return; }
@@ -253,7 +258,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         }
         if (angerBar != null && angerCount > 0)
         {
-            angerBar.transform.GetChild(0).GetComponent<Text>().text = angerCount.ToString();
+            angerBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = angerCount.ToString();
             angerBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { angerCount = 0; }
@@ -270,11 +275,11 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (burnsBar == null && burnsCount != 0)
         {
             burnsBar = Instantiate(burnsPrefab, playerStatesBar);
-            burnsBar.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
+            burnsBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
         }
         else if (burnsBar != null && burnsCount != 0)
         {
-            burnsBar.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
+            burnsBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
             burnsBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { return; }
@@ -289,7 +294,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         }
         if (burnsBar != null && burnsCount > 0)
         {
-            burnsBar.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
+            burnsBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
             burnsBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { burnsCount = 0; }
@@ -306,11 +311,11 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (bondageBar == null && bondageCount != 0)
         {
             bondageBar = Instantiate(burnsPrefab, playerStatesBar);
-            bondageBar.transform.GetChild(0).GetComponent<Text>().text = bondageCount.ToString();
+            bondageBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = bondageCount.ToString();
         }
         else if (bondageBar != null && burnsCount != 0)
         {
-            bondageBar.transform.GetChild(0).GetComponent<Text>().text = bondageCount.ToString();
+            bondageBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = bondageCount.ToString();
             bondageBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { return; }
@@ -325,7 +330,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         }
         if (bondageBar != null && bondageCount > 0)
         {
-            bondageBar.transform.GetChild(0).GetComponent<Text>().text = bondageCount.ToString();
+            bondageBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = bondageCount.ToString();
             bondageBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { bondageCount = 0; }
@@ -345,11 +350,11 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (ArmorBar == null && armorCount != 0)
         {
             ArmorBar = Instantiate(armorPrefab, playerStatesBar);
-            ArmorBar.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
+            ArmorBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = armorCount.ToString();
         }
         else if (ArmorBar != null && armorCount != 0)
         {
-            ArmorBar.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
+            ArmorBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = armorCount.ToString();
             ArmorBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { return; }
@@ -364,7 +369,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         }
         if (ArmorBar != null && armorCount > 0)
         {
-            ArmorBar.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
+            ArmorBar.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = armorCount.ToString();
             ArmorBar.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.2f, 2, 0);
         }
         else { armorCount = 0; }
@@ -420,8 +425,8 @@ public class PlayerData : MonoSingleton<PlayerData>
     public void HealthBarChange()
     {
         Debug.Log("生命值改变");
-        slider.value = (float)currentHealth / maxHealth;
-        healthText.text = currentHealth + "/" + maxHealth;
+        slider.value = (float)currentHealth / (maxHealth+extraMaxHealth);
+        healthText.text = currentHealth + "/" + (maxHealth + extraMaxHealth);
     }
     public void StartAddTempAttacks(int value)
     {
@@ -447,6 +452,10 @@ public class PlayerData : MonoSingleton<PlayerData>
     public void CheckAttacks()
     {
         AttackChange();
+    }
+    public void AddAttacks(int value)
+    {
+        initialAttacks += value;
     }
 
     //public void loadPlayerData()

@@ -40,20 +40,24 @@ public class ThisMonster : MonoBehaviour
     public int attackCount;//增加伤害回合数
     public int armorCount;//护甲层数
 
-    private Slider slider;
-    private Text healthValue;
-    private Text attackText;
+    public Slider slider;
+    public Text healthValue;
+    public Text attackText;
     public Transform stateBlock;
-    private GameObject dizzy, absorb, attack, burns,armor;
+    public GameObject dizzy, absorb, attack, burns, armor, alcohol, explodeDizzy;
     public bool isAddAttack;
     public bool isAddAward;
     public bool isAddScareCount;//附加恐惧是否随怪物数增长
     public bool isAddBurnsCount;//附加灼伤是否随怪物数增长
-    public bool isBoom;
+    public bool isBoom;//自身是否爆炸
+    public bool isAddAlcohol;//是
+    public bool isAddExplodeDizzy;
     public bool isIntangible;//是否无形（可直接攻击）
     public bool isNeighbourAwardMultiple;
     public bool isNeiboursAttackMultiple;
     public bool isIntervalAttackMultiple;
+
+    public bool isSwallowed;
     public GameObject leftMonster, rightMonster;
 
     public List<GameObject> neighbours;
@@ -96,6 +100,7 @@ public class ThisMonster : MonoBehaviour
         if (absorbCount > 0) DecreaseAbsorb(1);
         if (armorCount > 0) DecreaseArmor(armorCount);
         if (isAddAttack) AddAttackPerRound(1);
+        if (alcohol != null) { Destroy(alcohol.gameObject);alcohol = null;isAddAlcohol = false; }
         
 
         
@@ -112,11 +117,11 @@ public class ThisMonster : MonoBehaviour
         awardHealth = monsterCard.GetComponent<ThisMonsterCard>().award;
         attacks = monsterCard.GetComponent<ThisMonsterCard>().damage;
         currentAttacks = attacks;
-        slider = transform.GetChild(0).GetComponent<Slider>();
-        healthValue = transform.GetChild(1).GetComponent<Text>();
-        stateBlock = transform.GetChild(2);
+        //slider = transform.GetChild(0).GetComponent<Slider>();
+        //healthValue = transform.GetChild(1).GetComponent<Text>();
+        //stateBlock = transform.GetChild(2);
         initialStateBlock = stateBlock.localPosition;
-        attackText = transform.GetChild(3).GetComponent<Text>();
+        //attackText = transform.GetChild(3).GetComponent<Text>();
 
         //stateBlock.transform.SetParent(transform.parent);
         monsterCard = GetComponentInParent<Blocks>().card;
@@ -212,12 +217,12 @@ public class ThisMonster : MonoBehaviour
         if (dizzy == null&&dizzyCount!=0)
         {
             dizzy= Instantiate(dizzyPrefab, stateBlock);
-            dizzy.transform.GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
+            dizzy.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
         }
         else if(dizzy != null && dizzyCount !=0)
         {
-            dizzy.transform.GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
-            dizzy.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+            dizzy.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
+            dizzy.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { return; }
        
@@ -231,8 +236,8 @@ public class ThisMonster : MonoBehaviour
         }
         if (dizzy != null && dizzyCount > 0)
         {
-            dizzy.transform.GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
-            dizzy.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+            dizzy.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = dizzyCount.ToString();
+            dizzy.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { dizzyCount = 0; }
     }
@@ -242,12 +247,12 @@ public class ThisMonster : MonoBehaviour
         if (absorb == null && absorbCount != 0)
         {
             absorb = Instantiate(absorbPrefab, stateBlock);
-            absorb.transform.GetChild(0).GetComponent<Text>().text = absorbCount.ToString();
+            absorb.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = absorbCount.ToString();
         }
         else if (absorb != null && absorbCount != 0)
         {
-            absorb.transform.GetChild(0).GetComponent<Text>().text = absorbCount.ToString();
-            absorb.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+            absorb.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = absorbCount.ToString();
+            absorb.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { return; }
 
@@ -271,8 +276,8 @@ public class ThisMonster : MonoBehaviour
         }
         if (absorb != null && absorbCount > 0)
         {
-            absorb.transform.GetChild(0).GetComponent<Text>().text = absorbCount.ToString();
-            absorb.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+            absorb.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = absorbCount.ToString();
+            absorb.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { absorbCount = 0; }
     }
@@ -282,12 +287,12 @@ public class ThisMonster : MonoBehaviour
         if (burns == null && burnsCount != 0)
         {
             burns = Instantiate(burnsPrefab, stateBlock);
-            burns.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
+            burns.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
         }
         else if (burns != null && burnsCount != 0)
         {
-            burns.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
-            burns.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+            burns.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
+            burns.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { return; }
 
@@ -301,8 +306,8 @@ public class ThisMonster : MonoBehaviour
         }
         if (burns != null && burnsCount > 0)
         {
-            burns.transform.GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
-            burns.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+            burns.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = burnsCount.ToString();
+            burns.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { burnsCount = 0; }
     }
@@ -317,12 +322,12 @@ public class ThisMonster : MonoBehaviour
         if (armor == null && armorCount != 0)
         {
             armor = Instantiate(armorPrefab, stateBlock);
-            armor.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
+            armor.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = armorCount.ToString();
         }
         else if (armor != null && armorCount != 0)
         {
-            armor.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
-            armor.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+            armor.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = armorCount.ToString();
+            armor.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { return; }
 
@@ -336,8 +341,8 @@ public class ThisMonster : MonoBehaviour
         }
         if (armor != null && armorCount > 0)
         {
-            armor.transform.GetChild(0).GetComponent<Text>().text = armorCount.ToString();
-            armor.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+            armor.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = armorCount.ToString();
+            armor.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else { armorCount = 0; }
     }
@@ -346,7 +351,7 @@ public class ThisMonster : MonoBehaviour
         isAddAttack = true;
         attackCount = count;
         attack = Instantiate(prefab, stateBlock);
-        attack.transform.GetChild(0).GetComponent<Text>().text = attackCount.ToString();
+        attack.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = attackCount.ToString();
 
     }
     public void AddAttackPerRound(int n)
@@ -354,8 +359,8 @@ public class ThisMonster : MonoBehaviour
         if (attack != null&& isAddAttack)
         {
             attackCount += n;
-            attack.transform.GetChild(0).GetComponent<Text>().text = attackCount.ToString();
-            attack.transform.GetChild(0).transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
+            attack.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = attackCount.ToString();
+            attack.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f);
         }
         else return;
     }

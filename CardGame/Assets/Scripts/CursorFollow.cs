@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class CursorFollow : MonoSingleton<CursorFollow>
 {
@@ -14,6 +15,7 @@ public class CursorFollow : MonoSingleton<CursorFollow>
     Color initialColor;
     public GameObject description;
     public GameObject extraDis;
+    public Image image;
     public Text text;
     public Text extraText;
     public bool isOnUI;
@@ -41,6 +43,10 @@ public class CursorFollow : MonoSingleton<CursorFollow>
     }
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            image.gameObject.transform.DOPunchRotation(new Vector3(0, 0, 20), 0.1f, 1, 1);
+        }
         FollowMouseMove();
         isOnUI = GetOverUI(canvas);
         if (isOnUI==false)

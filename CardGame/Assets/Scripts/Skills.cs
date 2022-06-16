@@ -20,6 +20,8 @@ public class Skills : MonoSingleton<Skills>
     public GameObject attackCounter;//攻击随回合增长计数器
     public GameObject summonTimesCounter;
     public GameObject armorCounter;//护甲计数器
+    public GameObject alcoholCounter;
+    public GameObject explodedCounter;
 
     // Start is called before the first frame update
     public void AttackPlayer(int damage,ThisMonster monster)
@@ -89,6 +91,14 @@ public class Skills : MonoSingleton<Skills>
             {
                 yield return new WaitForSeconds(0.06f);
                 AttackMonster(damage, monster,false);
+               if(monster.GetComponent<ThisMonster>().isAddAlcohol )
+                {
+                    monster.GetComponent<ThisMonster>().AddBurns(2, burnsCounter);
+                }
+                if (monster.GetComponent<ThisMonster>().isAddExplodeDizzy)
+                {
+                    monster.GetComponent<ThisMonster>().AddDizzy(1, dizzyCounter);
+                }
             }
             //for (int i = 0; i < BlocksManager.Instance.backMonsters.Count; i++)
             //{
@@ -128,6 +138,14 @@ public class Skills : MonoSingleton<Skills>
             {
                 yield return new WaitForSeconds(0.06f);
                 AttackMonster(damage, monsters[i],false);
+                if (monsters[i].GetComponent<ThisMonster>().isAddAlcohol)
+                {
+                    monsters[i].GetComponent<ThisMonster>().AddBurns(2, burnsCounter);
+                }
+                if (monsters[i].GetComponent<ThisMonster>().isAddExplodeDizzy)
+                {
+                    monsters[i].GetComponent<ThisMonster>().AddDizzy(1, dizzyCounter);
+                }
             }
         }
         
@@ -149,6 +167,18 @@ public class Skills : MonoSingleton<Skills>
         {
             monster.GetComponent<ThisMonster>().AddBurns(count, burnsCounter);
         }
+    }
+    public void AddAlcohol(GameObject monster)
+    {
+        ThisMonster tMonster = monster.GetComponent<ThisMonster>();
+        tMonster.isAddAlcohol = true;
+        tMonster.alcohol = Instantiate(alcoholCounter, tMonster.stateBlock);
+    }
+    public void AddExplodedDizzy(GameObject monster)
+    {
+        ThisMonster tMonster = monster.GetComponent<ThisMonster>();
+        tMonster.isAddExplodeDizzy = true;
+        tMonster.explodeDizzy = Instantiate(explodedCounter, tMonster.stateBlock);
     }
     public void AddAttackTimesCount(int times)
     {
@@ -371,6 +401,7 @@ public class Skills : MonoSingleton<Skills>
                 monster.GetComponent<ThisMonster>().health += (int)health / 2;
                 monster.GetComponent<ThisMonster>().maxHealth += (int)health / 2;
                 //Destroy(nextMonster.GetComponent<ThisMonster>().stateBlock.gameObject);
+                nextMonster.GetComponent<ThisMonster>().isSwallowed = true;
                 BattleField.Instance.StartMonsterDead(nextMonster, nextMonsterCard);
                 monsterCard.transform.SetParent(nextBlock);
                 monster.transform.SetParent(nextBlock);
@@ -476,6 +507,7 @@ public class Skills : MonoSingleton<Skills>
                 monster.GetComponent<ThisMonster>().health += (int)health / 2;
                 monster.GetComponent<ThisMonster>().maxHealth += (int)health / 2;
                 //Destroy(nextMonster.GetComponent<ThisMonster>().stateBlock.gameObject);
+                nextMonster.GetComponent<ThisMonster>().isSwallowed = true;
                 BattleField.Instance.StartMonsterDead(nextMonster, nextMonsterCard);
                 monsterCard.transform.SetParent(nextBlock);
                 monster.transform.SetParent(nextBlock);

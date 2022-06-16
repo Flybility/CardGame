@@ -55,15 +55,15 @@ public class BattleField : MonoSingleton<BattleField>
     [SerializeField]
     public List<GameObject> monsterInBattle = new List<GameObject>();//存在于战场上的召唤兽的集合
 
-    public UnityEvent stateChangeEvent = new UnityEvent();    //战斗状态切换事件，用于屏幕中央战斗状态文字的切换
-    public UnityEvent highlightClear = new UnityEvent();      //战场位格高亮清除事件，用于解除战场上所有位格的高亮状态
-    public UnityEvent summonEvent = new UnityEvent();         //召唤完成事件，用于解除场上每个怪物卡牌禁止召唤状态
-    public UnityEvent monsterChange = new UnityEvent();
-    public UnityEvent BattleEnd = new UnityEvent();           //战斗结束事件，用于Blocks脚本清除怪兽子物体
-    public UnityEvent PlayerRoundEnd = new UnityEvent();      //玩家回合结束事件(结算buff)
-    public UnityEvent MonsterRoundEnd = new UnityEvent();     //怪物回合结束事件(结算buff)
-    public UnityEvent MonsterDeadEvent = new UnityEvent();
-    public UnityEvent ChangeParent = new UnityEvent();        //卡牌父物体改变事件，用于检测卡牌父物体是哪个牌堆
+    public UnityEvent stateChangeEvent = new UnityEvent();               //战斗状态切换事件，用于屏幕中央战斗状态文字的切换
+    public UnityEvent highlightClear = new UnityEvent();                 //战场位格高亮清除事件，用于解除战场上所有位格的高亮状态
+    public UnityEvent summonEvent = new UnityEvent();                    //召唤完成事件，用于解除场上每个怪物卡牌禁止召唤状态
+    public UnityEvent monsterChange = new UnityEvent();                  
+    public UnityEvent BattleEnd = new UnityEvent();                      //战斗结束事件，用于Blocks脚本清除怪兽子物体
+    public UnityEvent PlayerRoundEnd = new UnityEvent();                 //玩家回合结束事件(结算buff)
+    public UnityEvent MonsterRoundEnd = new UnityEvent();                //怪物回合结束事件(结算buff)
+    public UnityEvent MonsterDeadEvent = new UnityEvent();               
+    public UnityEvent ChangeParent = new UnityEvent();                   //卡牌父物体改变事件，用于检测卡牌父物体是哪个牌堆
     public MyGameObjectEvent AddToHand = new MyGameObjectEvent();        //加入手牌事件
     public MyGameObjectEvent useEquipmentEvent = new MyGameObjectEvent();
     // Start is called before the first frame update
@@ -406,7 +406,7 @@ public class BattleField : MonoSingleton<BattleField>
                 if (thismonster.dizzyCount > 0)
                 {
                     //眩晕动画
-                    thismonster.transform.DOPunchPosition(new Vector3(30,0,0), 0.4f,5, 1,true);
+                    thismonster.transform.DOPunchPosition(new Vector3(30,0,0), 0.4f,3, 1,true);
                     yield return new WaitForSeconds(0.4f);
                     thismonster.DecreaseDizzy(1);
                 }
@@ -430,8 +430,9 @@ public class BattleField : MonoSingleton<BattleField>
                             if (n==1){i = 0;}
                             else if (a != b) { i--; }
                         }
-                       
+                        yield return new WaitForSeconds(0.3f);
                     }
+                    yield return new WaitForSeconds(0.2f);
                     monsterInBattle[i].transform.DOPunchPosition(targetPos - monsterPos, 0.5f, 1);
                     yield return new WaitForSeconds(0.20f);
 
@@ -724,12 +725,14 @@ public class BattleField : MonoSingleton<BattleField>
     public void CreateArrow(Transform startPoint,GameObject prefab)
     {
         DestroyArrow();
+        CursorFollow.Instance.image.color = Color.clear;
         arrow = Instantiate(prefab, startPoint.position,Quaternion.identity,this.transform.parent);
         arrow.GetComponent<BezierArrow>().SetStartPoint(new Vector2(startPoint.position.x, startPoint.position.y));
     }
     //摧毁箭头
     public void DestroyArrow()
     {
+        CursorFollow.Instance.image.color = Color.white;
         Destroy(arrow);
     }
     //怪物死亡

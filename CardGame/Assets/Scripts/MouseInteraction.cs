@@ -182,10 +182,11 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
             OpenPackage.Instance.cardsEquiptment.Clear();
             //开卡包界面消失
             GameManager.Instance.openEquipmentCard.SetActive(false);
+            GameManager.Instance.nodePanel.SetActive(true);
         }
         if (isInBag && eventData.button == PointerEventData.InputButton.Right && thisCard1 != null)
         {
-            transform.GetChild(1).gameObject.SetActive(true);
+            transform.GetChild(2).gameObject.SetActive(true);
         }
 
 

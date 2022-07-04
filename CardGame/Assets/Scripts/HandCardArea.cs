@@ -8,7 +8,7 @@ public class HandCardArea : MonoSingleton<HandCardArea>
 {
     //public GridLayoutGroup glg;
     public List<GameObject> childs = new List<GameObject>();
-    private float width;
+    public float width;
     public float cardWidth;
 
     private void Start()
@@ -18,34 +18,36 @@ public class HandCardArea : MonoSingleton<HandCardArea>
         BattleField.Instance.AddToHand.AddListener(StartChange);
         
     }
-    private void StartChange(GameObject card)
+    private void StartChange()
     {
         
-        StartCoroutine(ChangeHandCard(card));
+        StartCoroutine(ChangeHandCard());
     }
-    IEnumerator ChangeHandCard(GameObject card)
+    IEnumerator ChangeHandCard()
     {
-        
+
         int childAmount = transform.childCount;
+        float cardwidth = cardWidth * Mathf.Log(6, childAmount + 1);
+
         
-        //
-        width = (childAmount-1) * cardWidth;
+        width = (childAmount - 1) * cardwidth;
 
         float leftPosX = -width / 2;
         childs.Clear();
         for (int i = 0; i < childAmount; i++)
         {
-            Vector2 pos = new Vector2(leftPosX + cardWidth * i, 0);
-            transform.GetChild(i).transform.DOLocalMove(pos, 0.2f);
-            transform.GetChild(i).transform.DOScale(Vector3.one, 0.2f);
+            Transform card = transform.GetChild(i);
+            Vector2 pos = new Vector2(leftPosX + cardwidth * i, 0);
+            card.transform.DOLocalMove(pos, 0.2f);
+            card.transform.DOScale(Vector3.one, 0.2f);
             //if (card != null)
             //{
             //    card.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), 0.25f);
             //}
             childs.Add(transform.GetChild(i).gameObject);
 
-        }        
-   
+        }
+
         yield return new WaitForSeconds(0.2f);
         AudioManager.Instance.cardEnter.Play();
         

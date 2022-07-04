@@ -14,6 +14,9 @@ public class AudioManager : MonoSingleton<AudioManager>
     public AudioSource monsterDead1;
     public AudioSource monsterDead2;
     public AudioSource summonMonster;
+    public AudioSource Exchange;
+    public AudioSource swallow;
+    public AudioSource chooseEquip;
 
     public AudioSource startMusic;
     public AudioSource battleMusic;

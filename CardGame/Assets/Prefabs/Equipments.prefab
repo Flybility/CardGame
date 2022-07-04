@@ -50,21 +50,6 @@ MonoBehaviour:
   card: {fileID: 0}
   count: 0
   threshold: 4
---- !u!114 &738812606221345430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4487314603302931732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 647d6d5380c56e04e9a46dc995de6d09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isInEquipment: 0
-  mi: {fileID: 0}
-  card: {fileID: 0}
 --- !u!114 &5226162769703231730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,6 +64,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isInEquipment: 0
   damage: 25
+  mi: {fileID: 0}
+  card: {fileID: 0}
+--- !u!114 &738812606221345430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4487314603302931732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 647d6d5380c56e04e9a46dc995de6d09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInEquipment: 0
   mi: {fileID: 0}
   card: {fileID: 0}
 --- !u!1 &4754383265742220407
@@ -105,7 +105,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4754383265742220407}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.41850847, y: 0.43777728, z: 556.3955}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8611388620348974496}
@@ -2462,6 +2462,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1547506657346540383, guid: ade48c9b72179864da23306cdf3adce9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2495098306413106153, guid: ade48c9b72179864da23306cdf3adce9, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

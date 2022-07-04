@@ -16,7 +16,8 @@ public class BattleField : MonoSingleton<BattleField>
     public GameObject monstersPrefab;
     
     public GameObject PanelMask;      //遮罩图片，开关可以使得进行某些操作（洗牌与选择怪物）的时候鼠标不触发其他事件
-    public Transform equipmentArea;   //装备牌区父物体
+    public Transform equipmentAreaStatic;   //装备牌区父物体
+    public Transform equipmentAreaDynamic;
     public Transform discardArea;     //弃牌堆父物体
     public Transform extractArea;     //抽牌堆父物体
     public Transform monsterArea;     //怪物手牌堆父物体
@@ -28,13 +29,16 @@ public class BattleField : MonoSingleton<BattleField>
     public int currentRound;          //当前回合数
     public int perRoundDead;          //每回合当前消灭怪物数
     public int playerAttackTime;       //玩家攻击次数
+    public int playerExchangeTime;     //玩家交换次数
     public int currentPlayerAttackTime;//当前玩家攻击次数
+    public int currentPlayerExchangeTime;//当前玩家交换次数
     public Text roundText;
 
     public GameObject _block;         //所有场上位格父物体
     public GameObject[] blocks;       //所有位格的数组集合
     public GameObject ArrowPrefab;    //箭头预制体
     public int SelectingMonster;      //是否在玩家回合选择召唤怪物卡牌的伪bool类型，由于使用bool出了bug，改为了int，0代表false，1代表true
+    public bool exchangeMonster;
     public GameObject usingEquipment; //是否在玩家回合选择装备卡牌的bool类型
     public GameObject aimMonster;     //使用装备瞄准的怪物
     public bool AttackSelecting;      //是否玩家选择怪物攻击
@@ -64,13 +68,14 @@ public class BattleField : MonoSingleton<BattleField>
     public UnityEvent MonsterRoundEnd = new UnityEvent();                //怪物回合结束事件(结算buff)
     public UnityEvent MonsterDeadEvent = new UnityEvent();               
     public UnityEvent ChangeParent = new UnityEvent();                   //卡牌父物体改变事件，用于检测卡牌父物体是哪个牌堆
-    public MyGameObjectEvent AddToHand = new MyGameObjectEvent();        //加入手牌事件
+    public UnityEvent AddToHand = new UnityEvent();        //加入手牌事件
     public MyGameObjectEvent useEquipmentEvent = new MyGameObjectEvent();
     // Start is called before the first frame update
 
     void Start()
     {
         currentPlayerAttackTime = playerAttackTime;
+        currentPlayerExchangeTime = playerExchangeTime;
         //PlayerData设置为单例，其所在物体同时也是主角角色物体
         player = PlayerData.Instance.gameObject;    
         //提前为blocks数组申请空间为战场上格子数量的数组空间
@@ -82,18 +87,16 @@ public class BattleField : MonoSingleton<BattleField>
         }
     }
     //判断战斗是否结束
-    public void IsFinished()
+    IEnumerator IsFinished()
     {
-        if(monsterArea.childCount==0&& extractArea.childCount == 0&& discardArea.childCount == 0 && monsterInBattle.Count == 0)
+        yield return new WaitForSeconds(2);
+        if (monsterArea.childCount==0&& extractArea.childCount == 0&& discardArea.childCount == 0 && monsterInBattle.Count == 0)
         {
             //执行战斗结束函数
+            yield return new WaitForSeconds(0.5f);
             GameManager.Instance.BattleEnd();
             GameManager.Instance.ChoseCard();
             isFinished = true;
-        }
-        else
-        {
-            return;
         }
     }
     //战斗开始，由面板上战斗开始按钮调用
@@ -112,7 +115,7 @@ public class BattleField : MonoSingleton<BattleField>
         //生成怪物牌堆
         DrawMonsterDeck();
         //生成装备
-        StartCoroutine(DrawEquipmentDeck());
+        DrawEquipmentDeck();
         //生成手牌
         DrawHandMonster();
         //切换回合状态
@@ -156,9 +159,13 @@ public class BattleField : MonoSingleton<BattleField>
         {
             Destroy(extractArea.GetChild(i).gameObject);
         }
-        for (int i = 0; i < equipmentArea.childCount; i++)
+        for (int i = 0; i < equipmentAreaStatic.childCount; i++)
         {
-            Destroy(equipmentArea.GetChild(i).gameObject);
+            Destroy(equipmentAreaStatic.GetChild(i).gameObject);
+        }
+        for (int i = 0; i < equipmentAreaDynamic.childCount; i++)
+        {
+            Destroy(equipmentAreaDynamic.GetChild(i).gameObject);
         }
         cardsEquiptment.Clear();
         monsterDeck.Clear();
@@ -169,6 +176,7 @@ public class BattleField : MonoSingleton<BattleField>
         monstersCounter = 0;
         monsterChange.Invoke();
         currentPlayerAttackTime = playerAttackTime;
+        currentPlayerExchangeTime = playerExchangeTime;
         PlayerData.Instance.PerBattleRecover();
         PanelMask.SetActive(false);
     }
@@ -193,6 +201,12 @@ public class BattleField : MonoSingleton<BattleField>
             CloseHighlightWithinMonster();
             AttackSelecting = false;
         }
+        if(exchangeMonster && Input.GetMouseButtonUp(1))
+        {
+            DestroyArrow();
+            CloseHighlightWithinMonster();
+            exchangeMonster = false;
+        }
     }
     //游戏开始
    
@@ -210,6 +224,32 @@ public class BattleField : MonoSingleton<BattleField>
         //    StartCoroutine(MonsterAttack(player));
         //}
     }
+    public void StartPlayerAttack(GameObject monster)
+    {
+        Debug.Log("攻击怪物");
+        DestroyArrow();
+        CloseHighlightWithinMonster();
+        StartCoroutine(PlayerAttack(monster));
+        AttackSelecting = false;
+    }
+    public void StartExchangeMonster(Transform pos)
+    {
+        if (gameState == GameState.玩家回合 && monsterInBattle.Count > 0 && currentPlayerExchangeTime > 0)
+        {
+            CreateArrow(pos, ArrowPrefab);
+            OpenHighlightWithinMonster();
+            exchangeMonster = true;
+            
+        }
+    }
+    public void ExchangeMonster(GameObject monster) 
+    {
+        DestroyArrow();
+        CloseHighlightWithinMonster();
+        Skills.Instance.StartExchangeBesidePosition(monster);
+        exchangeMonster = false;
+        currentPlayerExchangeTime--;
+    }
     //玩家抽牌
     public void PlayerExtractCard()
     {
@@ -221,6 +261,7 @@ public class BattleField : MonoSingleton<BattleField>
             currentRound++;
             perRoundDead = 0;
             currentPlayerAttackTime = playerAttackTime;
+            currentPlayerExchangeTime = playerExchangeTime;
             StartCoroutine( FlyToDiscardArea());
             
             PlayerData.Instance.ChangeRound();
@@ -262,14 +303,7 @@ public class BattleField : MonoSingleton<BattleField>
         StartCoroutine(FlyToHand(PlayerData.Instance.currentCardMax + PlayerData.Instance.tempExtraCardMax));
     }
     //玩家开始攻击
-    public void StartPlayerAttack(GameObject monster)
-    {
-        Debug.Log("攻击怪物");
-        DestroyArrow();
-        CloseHighlightWithinMonster();
-        StartCoroutine(PlayerAttack(monster));
-        AttackSelecting = false;
-    }
+    
     //抽牌堆牌进入手牌协程（包含动效）
     IEnumerator FlyToHand(int count)
     {
@@ -303,7 +337,7 @@ public class BattleField : MonoSingleton<BattleField>
             card.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             card.transform.SetParent(monsterArea);
 
-            AddToHand.Invoke(card);
+            AddToHand.Invoke();
             
             ChangeParent.Invoke();
             
@@ -369,7 +403,7 @@ public class BattleField : MonoSingleton<BattleField>
             
             card.transform.DOLocalMove(Vector3.zero, 0.2f);
             card.transform.DOScale(Vector3.one*0.3f, 0.2f);
-            AddToHand.Invoke(null);
+            AddToHand.Invoke();
             yield return new WaitForSeconds(0.2f);
             
             ChangeParent.Invoke();
@@ -399,9 +433,10 @@ public class BattleField : MonoSingleton<BattleField>
             Debug.Log("敌人回合");
             gameState = GameState.敌方回合;
             stateChangeEvent.Invoke();
+            yield return new WaitWhile(() => Skills.Instance.isBooming = false);
             for(int i=0;i<monsterInBattle.Count;i++)
             {
-                
+                yield return new WaitWhile(() => Skills.Instance.isBooming = false);
                 ThisMonster thismonster = monsterInBattle[i].GetComponent<ThisMonster>();
                 if (thismonster.dizzyCount > 0)
                 {
@@ -423,12 +458,13 @@ public class BattleField : MonoSingleton<BattleField>
                         a = monsterInBattle[i];
                         Skills.Instance.StartSwallowMonster(monsterInBattle[i]);
                         yield return new WaitForSeconds(0.5f);
-                        n = monsterInBattle.Count;
-                        b = monsterInBattle[i];
+                        n = monsterInBattle.Count;                        
+                        if (i<monsterInBattle.Count) { b = monsterInBattle[i]; }
+                        else { b = null; }
                         if (n != m)//说明吞噬怪物为真
                         {
                             if (n==1){i = 0;}
-                            else if (a != b) { i--; }
+                            else if (a != b||b==null) { i--; }
                         }
                         yield return new WaitForSeconds(0.3f);
                     }
@@ -504,6 +540,8 @@ public class BattleField : MonoSingleton<BattleField>
             }
                 
         }
+        PlayerData.Instance.DecreaseAttackBesides();
+        PlayerData.Instance.DecreaseAttackInterval();
         player.transform.DOLocalMove(playerPos, 0.3f);
         PlayerData.Instance.perRoundHurt = 0;
 
@@ -521,33 +559,85 @@ public class BattleField : MonoSingleton<BattleField>
         StartCoroutine(MonsterAttack(player));
     }
     //将装备牌显示到装备牌堆（包含动效）
-    IEnumerator DrawEquipmentDeck()
+    public void  DrawEquipmentDeck()
     {
         foreach (var card in cardsEquiptment)
         {
             Destroy(card);
         }
         cardsEquiptment.Clear();
-        for (int i = 0; i < PlayerData.Instance.playerEquipmentCards.Count; i++)
+        if (PlayerData.Instance.playerEquipmentCards.Count <= PlayerData.Instance.maxEquipmentAmount)
         {
-            int id = PlayerData.Instance.playerEquipmentCards[i].id;
-            GameObject newCard = GameObject.Instantiate(eqiupmentCardPrefab.transform.GetChild(id).gameObject, equipmentArea);
-            cardsEquiptment.Add(newCard);
-            newCard.GetComponent<ThisEquiptmentCard>().card = PlayerData.Instance.playerEquipmentCards[i];
-            newCard.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), interval);
-            yield return new WaitForSeconds(interval);
+            for (int i = 0; i < PlayerData.Instance.playerEquipmentCards.Count; i++)
+            {
+                int id = PlayerData.Instance.playerEquipmentCards[i].id;
+                GameObject newCard = new GameObject();
+                GameObject equip = eqiupmentCardPrefab.transform.GetChild(id).gameObject;
+                if (cardData.equipmentCardList[id].isStatic == true)
+                {
+                    newCard = GameObject.Instantiate(equip, equipmentAreaStatic);
+                }
+                else if (cardData.equipmentCardList[id].isStatic == false) { newCard = GameObject.Instantiate(equip, equipmentAreaDynamic); }
+
+                cardsEquiptment.Add(newCard);
+                newCard.GetComponent<ThisEquiptmentCard>().card = PlayerData.Instance.playerEquipmentCards[i];
+                //newCard.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), interval);
+                //yield return new WaitForSeconds(interval/2);
+            }
+            ChangeParent.Invoke();
         }
-        ChangeParent.Invoke();
+        else
+        {
+            if (PlayerData.Instance.playerArmedEquipments.Count > 0)
+            {
+                for (int i = 0; i < PlayerData.Instance.playerArmedEquipments.Count; i++)
+                {
+                    int id = PlayerData.Instance.playerArmedEquipments[i].GetComponent<ThisEquiptmentCard>().id;
+                    GameObject newCard = new GameObject();
+                    GameObject equip = eqiupmentCardPrefab.transform.GetChild(id).gameObject;
+                    if (cardData.equipmentCardList[id].isStatic == true)
+                    {
+                        newCard = GameObject.Instantiate(equip, equipmentAreaStatic);
+                    }
+                    else if (cardData.equipmentCardList[id].isStatic == false) { newCard = GameObject.Instantiate(equip, equipmentAreaDynamic); }
+
+                    cardsEquiptment.Add(newCard);
+                    newCard.GetComponent<ThisEquiptmentCard>().card = PlayerData.Instance.playerArmedEquipments[i].GetComponent<ThisEquiptmentCard>().card;
+                    //newCard.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), interval);
+                    //yield return new WaitForSeconds(interval/2);
+                }
+            }
+            else//若没有装备上装备牌则自动装上
+            {
+                for(int i = 0; i < PlayerData.Instance.maxEquipmentAmount; i++)
+                {
+                    int id = PlayerData.Instance.playerEquipmentCards[i].id;
+                    GameObject newCard = new GameObject();
+                    GameObject equip = eqiupmentCardPrefab.transform.GetChild(id).gameObject;
+                    if (cardData.equipmentCardList[id].isStatic == true)
+                    {
+                        newCard = GameObject.Instantiate(equip, equipmentAreaStatic);
+                    }
+                    else if (cardData.equipmentCardList[id].isStatic == false) { newCard = GameObject.Instantiate(equip, equipmentAreaDynamic); }
+
+                    cardsEquiptment.Add(newCard);
+                    newCard.GetComponent<ThisEquiptmentCard>().card = PlayerData.Instance.playerEquipmentCards[i];
+                }
+            }
+           
+            ChangeParent.Invoke();
+        }
+        
     }
     //战斗时动态加入装备牌
-    public void AddEquipmentCard(EquipmentCard card)
-    {
-        GameObject newCard = GameObject.Instantiate(eqiupmentCardPrefab.transform.GetChild(card.id).gameObject, equipmentArea);        
-        newCard.GetComponent<ThisEquiptmentCard>().card = card;
-        cardsEquiptment.Add(newCard);
-        newCard.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), interval);
-        ChangeParent.Invoke();
-    }
+   // public void AddEquipmentCard(EquipmentCard card)
+   // {
+   //     //GameObject newCard = GameObject.Instantiate(eqiupmentCardPrefab.transform.GetChild(card.id).gameObject, equipmentArea);        
+   //     newCard.GetComponent<ThisEquiptmentCard>().card = card;
+   //     cardsEquiptment.Add(newCard);
+   //     newCard.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), interval);
+   //     ChangeParent.Invoke();
+   // }
     //从玩家数据中读取玩家目前具有的卡组并从卡牌库里复制一份给战场上的monsterDeck
     public void ReadDeck()
     {
@@ -583,7 +673,7 @@ public class BattleField : MonoSingleton<BattleField>
         bool hasEmptyBlock = false;
         if (_monsterCard)
         {
-            chosenCardNumber = _monsterCard.transform.GetSiblingIndex();
+            //chosenCardNumber = _monsterCard.transform.GetSiblingIndex();
             foreach (var block in blocks)
             {
                 if (block.transform.childCount<=3)
@@ -636,7 +726,7 @@ public class BattleField : MonoSingleton<BattleField>
         //此怪物对应的卡牌赋予给生成的怪物所在的block中的卡牌
         _block.GetComponent<Blocks>().card = _monster; 
         _monster.transform.SetParent(_block);
-        AddToHand.Invoke(null);
+        AddToHand.Invoke();
         _monster.transform.rotation = Quaternion.Euler(0, 0, 0);
         _monster.transform.DOScale(Vector3.one, 0.1f);
         _monster.SetActive(true);
@@ -664,33 +754,7 @@ public class BattleField : MonoSingleton<BattleField>
         //monster.GetComponent<ThisMonster>().multipleAttacks = multipleAttacks;
         //monster.GetComponent<ThisMonster>().multipleAwards = multipleAwards;
     }
-    //使用装备请求，传入使用的装备（其他脚本调用）
-    //public void UseEquipmentRequest(GameObject equipment)
-    //{
-    //    if (equipment.GetComponent<ThisEquiptmentCard>())
-    //    {
-    //        ThisEquiptmentCard card = equipment.GetComponent<ThisEquiptmentCard>();
-    //        if (card.summonTimes > 0&&card.isStatic==false)
-    //        {
-    //            if (card.needAim)
-    //            {
-    //                CreateArrow(equipment.transform, ArrowPrefab);
-    //                usingEquipment = equipment;
-    //                OpenHighlightWithinMonster();
-    //            }
-    //            else
-    //            {
-    //                card.
-    //                card.summonTimes--;
-    //            }
-    //        }
-    //        else
-    //        {
-    //
-    //        }
-    //    }        
-    //}
-    //对怪物使用装备，（之后可以考虑使用协程加入一些发射投掷物的动画）
+    
     public void UseEquipment(GameObject monster,GameObject equipment)
     {
         DestroyArrow();
@@ -703,6 +767,7 @@ public class BattleField : MonoSingleton<BattleField>
         //usingEquipment = null;
         card.summonTimes--;
     }
+    
     //使存在怪物的格子开启高光
     public void OpenHighlightWithinMonster()
     {
@@ -780,7 +845,7 @@ public class BattleField : MonoSingleton<BattleField>
         }
         if (monster.GetComponent<ThisMonster>().isBoom)
         {
-            monster.transform.DOScale(transform.localScale * 1.5f, 0.4f);
+            monster.transform.DOScale(transform.localScale * 1.3f, 0.4f);
             monster.GetComponent<ThisMonster>().image.DOColor(Color.HSVToRGB(1,1f,0.8f), 0.4f);
             yield return new WaitForSeconds(0.4f);
         }

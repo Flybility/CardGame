@@ -11,12 +11,13 @@ public class EquipmentCard
     public int summonTimes;
     public string description;
     public Sprite thisImage;
+    public bool isStatic;
 
     public EquipmentCard()
     {
 
     }
-    public EquipmentCard(int Id, string CardName, int Damage, int SummonTimes,string CardDescription, Sprite ThisImage)
+    public EquipmentCard(int Id, string CardName, int Damage, int SummonTimes,string CardDescription, Sprite ThisImage,bool IsStatic)
     {
         this.id = Id;
         this.cardName = CardName;
@@ -24,6 +25,7 @@ public class EquipmentCard
         this.summonTimes = SummonTimes;
         this.description = CardDescription;
         this.thisImage = ThisImage;
+        this.isStatic = IsStatic;
     }
 
 }
@@ -37,7 +39,7 @@ public class MonsterCard : EquipmentCard
 
     }
     public MonsterCard(int Id, string CardName,int Health,int Damage,int Award, int SummonTimes,string CardDescription, Sprite ThisImage,
-        Sprite ThisBackground) : base(Id, CardName, Damage,SummonTimes, CardDescription, ThisImage)
+        Sprite ThisBackground,bool IsStatic) : base(Id, CardName, Damage,SummonTimes, CardDescription, ThisImage,IsStatic)
     {
         this.health = Health;
         this.award = Award;

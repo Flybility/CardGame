@@ -229,8 +229,7 @@ public class MapManager : Singleton<MapManager>
                         line.transform.SetParent(transform);
                         LineRenderer ren = line.AddComponent<LineRenderer>();
                         ren.startWidth = 0.05f;
-                        ren.endWidth = 0.05f;
-                        ren.startColor = Color.black;
+                        ren.material=Resources.Load<Material>("Material/Line");
                         ren.endColor = Color.black;
                         Vector3[] current = { mapNodes[i][j].transform.position, mapNodes[i][j].left.transform.position };
                         ren.SetPositions(current);
@@ -241,8 +240,7 @@ public class MapManager : Singleton<MapManager>
                         line.transform.SetParent(transform);
                         LineRenderer ren = line.AddComponent<LineRenderer>();
                         ren.startWidth = 0.05f;
-                        ren.endWidth   = 0.05f;
-                        ren.startColor = Color.black;
+                        ren.material=Resources.Load<Material>("Material/Line");
                         ren.endColor = Color.black;
                         Vector3[] current = { mapNodes[i][j].transform.position, mapNodes[i][j].right.transform.position };
                         ren.SetPositions(current);

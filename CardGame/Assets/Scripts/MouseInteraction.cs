@@ -18,6 +18,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     public bool isInExtract;
     public bool isInEquipment;
     public bool isInBag;
+    public bool isInBagArmed;
     private bool clicked;
     public int number;
     ThisEquiptmentCard thisCard1;
@@ -32,11 +33,12 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     {
         number = transform.GetSiblingIndex();
         clicked = false;
-        isInOpenMonsterPool = transform.parent.CompareTag("OpenMonsterPool");
-        isInOpenEquipmentPool = transform.parent.CompareTag("OpenEquipmentPool");
-        isInBattle= transform.parent.CompareTag("BattleMonsterPanel");
-        isInEquipment = transform.parent.CompareTag("BattleEquipmentPanel");
-        isInBag= transform.parent.CompareTag("Bag");
+        //isInOpenMonsterPool = transform.parent.CompareTag("OpenMonsterPool");
+        //isInOpenEquipmentPool = transform.parent.CompareTag("OpenEquipmentPool");
+        //isInBattle= transform.parent.CompareTag("BattleMonsterPanel");
+        //isInEquipment = transform.parent.CompareTag("BattleEquipmentPanel");
+        //isInBag= transform.parent.CompareTag("Bag");
+        //isInBagArmed = transform.parent.CompareTag("Armed");
         if (GetComponent<ThisEquiptmentCard>() != null)
         {
             thisCard1 = GetComponent<ThisEquiptmentCard>();
@@ -71,6 +73,8 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         isInExtract = transform.parent.CompareTag("BattleExtractPanel");
         isInDiscard = transform.parent.CompareTag("BattleDiscardPanel");
         isInEquipment = transform.parent.CompareTag("BattleEquipmentPanel");
+        isInBagArmed = transform.parent.CompareTag("Armed");
+        isInBag = transform.parent.CompareTag("Bag");
     }
     
     public void OnPointerEnter(PointerEventData eventData)
@@ -125,10 +129,10 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
             }
             transform.DOScale(Vector3.one, 0.2f);
         }
-        if (isInBag&&thisCard1!=null)
-        {
-            Cancel();
-        }
+        //if (isInBag&&thisCard1!=null)
+        //{
+        //    Cancel();
+        //}
 
     }
     public void OnPointerDown(PointerEventData eventData)
@@ -136,6 +140,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         if (eventData.button == PointerEventData.InputButton.Left)
         { 
             transform.DOScale(clickSize, 0.1f);
+            
             transform.SetSiblingIndex(number);
             AudioManager.Instance.click.Play();
         }
@@ -148,6 +153,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         {
             transform.DOScale(zoomSize, 0.1f);
             clicked = true;
+            transform.SetSiblingIndex(number);
             BattleField.Instance.PanelMask.SetActive(true);
             BattleField.Instance.SummonRequest(gameObject);
         }
@@ -174,7 +180,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
             transform.DOScale(1 / clickSize, 0.1f);
             //向玩家装备卡组加入选中的装备牌并实时显示在装备栏中
             PlayerData.Instance.playerEquipmentCards.Add(thisCard1.card);
-            BattleField.Instance.AddEquipmentCard(thisCard1.card);
+            //BattleField.Instance.AddEquipmentCard(thisCard1.card);
             foreach (var equip in OpenPackage.Instance.cardsEquiptment)
             {
                 Destroy(equip);
@@ -184,11 +190,31 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
             GameManager.Instance.openEquipmentCard.SetActive(false);
             GameManager.Instance.nodePanel.SetActive(true);
         }
-        if (isInBag && eventData.button == PointerEventData.InputButton.Right && thisCard1 != null)
+       //if (isInBag && eventData.button == PointerEventData.InputButton.Right && thisCard1 != null)
+       //{
+       //    transform.GetChild(2).gameObject.SetActive(true);
+       //}
+        if(isInBag && eventData.button==PointerEventData.InputButton.Left && thisCard1 != null)
         {
-            transform.GetChild(2).gameObject.SetActive(true);
+            Debug.Log("hhhshabi");
+            if (PlayerData.Instance.playerArmedEquipments.Count < 8)
+            {
+                transform.SetParent(PlayerBag.Instance.armedEquipArea);
+                //transform.localPosition=Vector3.zero;
+                PlayerData.Instance.playerArmedEquipments.Add(gameObject);
+                OnChangeParent();
+                BattleField.Instance.DrawEquipmentDeck();
+            }       
         }
-
+        if (isInBagArmed && eventData.button == PointerEventData.InputButton.Right && thisCard1 != null)
+        {
+            Debug.Log("shabi");
+            transform.SetParent(PlayerBag.Instance.equipmentArea);
+            //transform.localPosition=Vector3.zero;
+            PlayerData.Instance.playerArmedEquipments.Remove(gameObject);
+            OnChangeParent();
+            BattleField.Instance.DrawEquipmentDeck();
+        }
 
     }
     public void DiscardEquipment()
@@ -200,10 +226,10 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         PlayerData.Instance.playerEquipmentCards.Remove(this.GetComponent<ThisEquiptmentCard>().card);
         Destroy(this.gameObject,0.2f);
     }
-    public void Cancel()
-    {
-        transform.GetChild(1).gameObject.SetActive(false);
-    }
+    //public void Cancel()
+    //{
+    //    transform.GetChild(1).gameObject.SetActive(false);
+    //}
     public void OnSummonOver()
     {
         transform.localScale = Vector3.one;

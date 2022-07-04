@@ -19,6 +19,7 @@ TagManager:
   - MonsterCard
   - Monster
   - Bag
+  - Armed
   layers:
   - Default
   - TransparentFX

@@ -10,6 +10,7 @@ public class Monster18 : MonoBehaviour
     void Start()
     {
         monster = GetComponent<ThisMonster>();
+        Instantiate(Skills.Instance.intangibleCounter, monster.stateBlock);
         monster.attackAttachedScare = attackAttachedScareCount;
         monster.isIntangible = true;
         monster.isAddAward = true;

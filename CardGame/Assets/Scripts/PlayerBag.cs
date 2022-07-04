@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class PlayerBag : MonoBehaviour
+public class PlayerBag : MonoSingleton<PlayerBag>
 {
-    public List<GameObject> objects = new List<GameObject>();
+    public List<GameObject> monster = new List<GameObject>();
+    public List<GameObject> equipment = new List<GameObject>();
     private List<MonsterCard> monsterDeck = new List<MonsterCard>();
     public GameObject monsterCardPrefab;
     public GameObject equipmentCardPrefab;
+    public Transform armedEquipArea;
+    public Transform cardArea;
+    public Transform equipmentArea;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,29 +27,36 @@ public class PlayerBag : MonoBehaviour
     public void StartShowPlayerMonsters()
     {
         transform.parent.gameObject.SetActive(true);
-        StartCoroutine(ShowPlayerMonsters());
+        ShowPlayerMonsters();
     }
-    IEnumerator ShowPlayerMonsters()
+    public void ShowPlayerMonsters()
     {
         ReadMonsterDeck();
-        if (objects != null)
+        if (equipment.Count!=0)
         {
-            foreach (var Monster in objects)
+            foreach (var equip in equipment)
             {
-                Destroy(Monster);
+                Destroy(equip);
             }
-            objects.Clear();
+            equipment.Clear();
         }
-        
+        if (monster.Count != 0)
+        {
+            foreach (var mons in monster)
+            {
+                Destroy(mons);
+            }
+            monster.Clear();
+        }
         for (int i = 0; i < monsterDeck.Count; i++)
         {
             //Debug.Log(monsterDeck.Count);
-            GameObject newCard = GameObject.Instantiate(monsterCardPrefab, transform);
+            GameObject newCard = GameObject.Instantiate(monsterCardPrefab, cardArea);
             newCard.GetComponent<ThisMonsterCard>().card = monsterDeck[i];
-            objects.Add(newCard);
-            newCard.transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 0.2f);
-            AudioManager.Instance.cardEnter.Play();
-            yield return new WaitForSeconds(0.15f);
+            monster.Add(newCard);
+            //newCard.transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 0.2f);
+            //AudioManager.Instance.cardEnter.Play();
+
         }
     }
     public void ReadMonsterDeck()
@@ -59,28 +70,32 @@ public class PlayerBag : MonoBehaviour
     public void StartShowPlayerEquipments()
     {
         transform.parent.gameObject.SetActive(true);
-        StartCoroutine(ShowPlayerEquipments());
+        ShowPlayerEquipments();
     }
-    IEnumerator ShowPlayerEquipments()
+    public void ShowPlayerEquipments()
     {
-        if (objects != null)
+       if (monster .Count!= 0)
+       {
+           foreach (var mons in monster)
+           {
+               Destroy(mons);
+           }
+           monster.Clear();
+       }
+        if (equipment.Count== 0)
         {
-            foreach (var equip in objects)
+            for (int i = 0; i < PlayerData.Instance.playerEquipmentCards.Count; i++)
             {
-                Destroy(equip);
+                int id = PlayerData.Instance.playerEquipmentCards[i].id;
+                GameObject newCard = GameObject.Instantiate(equipmentCardPrefab.transform.GetChild(id).gameObject, equipmentArea);
+                equipment.Add(newCard);
+                newCard.GetComponent<ThisEquiptmentCard>().card = PlayerData.Instance.playerEquipmentCards[i];
+                //newCard.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), 0.2f);
+                //AudioManager.Instance.cardEnter.Play();
+
             }
-            objects.Clear();
         }
-        for (int i = 0; i < PlayerData.Instance.playerEquipmentCards.Count; i++)
-        {
-            int id = PlayerData.Instance.playerEquipmentCards[i].id;
-            GameObject newCard = GameObject.Instantiate(equipmentCardPrefab.transform.GetChild(id).gameObject, transform);
-            objects.Add(newCard);
-            newCard.GetComponent<ThisEquiptmentCard>().card = PlayerData.Instance.playerEquipmentCards[i];
-            newCard.transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), 0.2f);
-            AudioManager.Instance.cardEnter.Play();
-            yield return new WaitForSeconds(0.15f);
-        }
+        
     }
 
 }

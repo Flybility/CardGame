@@ -60,6 +60,9 @@ public class ThisMonster : MonoBehaviour
     public bool isSwallowed;
     public GameObject leftMonster, rightMonster;
 
+    public bool isCW;//移动方向是否顺时针
+    public int reverse;
+
     public List<GameObject> neighbours;
     public List<GameObject> intervals;
     public List<GameObject> besides;

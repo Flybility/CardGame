@@ -5,6 +5,7 @@ using UnityEngine;
 public class Monster28 : MonoBehaviour
 {
     public ThisMonster monster;
+
     // Start is called before the first frame update
     void Start()
     {

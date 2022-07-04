@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor.EventSystems;
 
 public class ThisMonsterCard : MonoBehaviour
 {
@@ -23,6 +22,9 @@ public class ThisMonsterCard : MonoBehaviour
     public Image thatBackground;
 
     public MonsterCard card;
+    public MouseInteraction mi;
+
+    
 
     public Transform summonTimesBlock;
     public Text healthText;
@@ -33,6 +35,7 @@ public class ThisMonsterCard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mi = transform.GetChild(0).GetComponent<MouseInteraction>();
         ShowCardStaticStatus();
     }
 

@@ -22,9 +22,9 @@ public class Equipment5 : MonoBehaviour,IPointerClickHandler
         if (isInEquipment && eventData.button == PointerEventData.InputButton.Left)
         {
             transform.DOScale(1 / mi.clickSize, 0.1f);
-            if (card.summonTimes > 0)
+            if (card.summonTimes > 0 && PlayerData.Instance.isAttackBesides == false && PlayerData.Instance.isAttackInterval == false)
             {
-                PlayerData.Instance.isAttackInterval = true;
+                Skills.Instance.AddAttackExtendInterval();
                 card.summonTimes--;
             }
         }

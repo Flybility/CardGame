@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Events;
 
 public class Skills : MonoSingleton<Skills>
 {
+    public bool isBooming;
     public GameObject boomEffect;
     public GameObject dizzyEffect;
     public GameObject burnsEffect;
+    public GameObject attackEffect;
 
     public GameObject boomCounter;
     public GameObject dizzyCounter;
@@ -21,12 +24,17 @@ public class Skills : MonoSingleton<Skills>
     public GameObject summonTimesCounter;
     public GameObject armorCounter;//护甲计数器
     public GameObject alcoholCounter;
+    public GameObject extendBesidesCounter;//邻位扩散图标
+    public GameObject extendIntervalCounter;//间位扩散图标
     public GameObject explodedCounter;
+    public GameObject intangibleCounter;
 
+    public UnityEvent reverse = new UnityEvent();
     // Start is called before the first frame update
     public void AttackPlayer(int damage,ThisMonster monster)
     {
         PlayerData.Instance.HealthDecrease(damage);
+        Instantiate(attackEffect, PlayerData.Instance.transform);
         if (monster.isAddScareCount)
         {
             PlayerData.Instance.AddScareCount(BattleField.Instance.monsterInBattle.Count, scareCounter);
@@ -48,13 +56,14 @@ public class Skills : MonoSingleton<Skills>
         {
             
             monster = BlocksManager.Instance.GetNeighbours(target.GetComponent<ThisMonster>().block);
-            PlayerData.Instance.isAttackBesides = false;
+
+            //PlayerData.Instance.DecreaseAttackBesides();
         }
         if (PlayerData.Instance.isAttackInterval) 
         {
             
             monster = BlocksManager.Instance.GetInterval(target.GetComponent<ThisMonster>().block);
-            PlayerData.Instance.isAttackInterval = false;
+            //PlayerData.Instance.DecreaseAttackInterval();
         }
         monster.Add(target);
         int c = monster.Count;
@@ -67,6 +76,7 @@ public class Skills : MonoSingleton<Skills>
         foreach (var mons in monster)
         {
             mons.GetComponent<ThisMonster>().HealthDecrease(damage, isStraight, false);
+            Instantiate(attackEffect, mons.transform.parent);
             mons.transform.DOPunchPosition(new Vector3(30, 0, 0), 0.3f, 3, 1);
         }
         
@@ -80,7 +90,8 @@ public class Skills : MonoSingleton<Skills>
         StartCoroutine(BoomBeside(thisMonster, damage));
     }
     IEnumerator BoomBeside(ThisMonster thisMonster, int damage)
-    {       
+    {
+        isBooming = true;
         if (BattleField.Instance.isFinished == false)
         {
             
@@ -91,6 +102,7 @@ public class Skills : MonoSingleton<Skills>
             {
                 yield return new WaitForSeconds(0.06f);
                 AttackMonster(damage, monster,false);
+                Instantiate(boomEffect, monster.transform.parent);
                if(monster.GetComponent<ThisMonster>().isAddAlcohol )
                 {
                     monster.GetComponent<ThisMonster>().AddBurns(2, burnsCounter);
@@ -107,6 +119,7 @@ public class Skills : MonoSingleton<Skills>
             //    AttackMonster(damage, BlocksManager.Instance.backMonsters[i]);
             //}
         }
+        isBooming = false;
     }
     public void StartBoomAll(int damage)
     {
@@ -114,6 +127,7 @@ public class Skills : MonoSingleton<Skills>
     }
     IEnumerator BoomAll(int damage)
     {
+        isBooming = true;
         if (BattleField.Instance.isFinished == false)
         {
             yield return new WaitForSeconds(0.2f);
@@ -138,6 +152,7 @@ public class Skills : MonoSingleton<Skills>
             {
                 yield return new WaitForSeconds(0.06f);
                 AttackMonster(damage, monsters[i],false);
+                Instantiate(boomEffect, monsters[i].transform.parent);
                 if (monsters[i].GetComponent<ThisMonster>().isAddAlcohol)
                 {
                     monsters[i].GetComponent<ThisMonster>().AddBurns(2, burnsCounter);
@@ -148,7 +163,7 @@ public class Skills : MonoSingleton<Skills>
                 }
             }
         }
-        
+        isBooming = false;
     }
     public void AddArmorToPlayer(int count)
     {
@@ -173,6 +188,17 @@ public class Skills : MonoSingleton<Skills>
         ThisMonster tMonster = monster.GetComponent<ThisMonster>();
         tMonster.isAddAlcohol = true;
         tMonster.alcohol = Instantiate(alcoholCounter, tMonster.stateBlock);
+    }
+    //攻击邻位扩散
+    public void AddAttackExtendBeside()
+    {
+        PlayerData.Instance.isAttackBesides = true;
+        PlayerData.Instance.attackBesidesBar = Instantiate(extendBesidesCounter, PlayerData.Instance.playerStatesBar);
+    }
+    public void AddAttackExtendInterval()
+    {
+        PlayerData.Instance.isAttackInterval = true;
+        PlayerData.Instance.attackIntervalBar = Instantiate(extendIntervalCounter, PlayerData.Instance.playerStatesBar);
     }
     public void AddExplodedDizzy(GameObject monster)
     {
@@ -280,6 +306,8 @@ public class Skills : MonoSingleton<Skills>
             //
             yield return new WaitForSeconds(0.05f);
 
+            AudioManager.Instance.Exchange.Play();
+
             nextMonsterCard.transform.SetParent(block);
             nextMonster.transform.SetParent(block);
             //nextMonster.GetComponent<ThisMonster>().stateBlock.SetParent(block);
@@ -325,6 +353,8 @@ public class Skills : MonoSingleton<Skills>
             //
             yield return new WaitForSeconds(0.05f);
 
+            AudioManager.Instance.Exchange.Play();
+
             nextMonsterCard.transform.SetParent(block);
             nextMonster.transform.SetParent(block);
             //nextMonster.GetComponent<ThisMonster>().stateBlock.SetParent(block);
@@ -361,15 +391,14 @@ public class Skills : MonoSingleton<Skills>
     public GameObject nextMonster;
     public Transform nextBlock;
     public GameObject nextMonsterCard;
-    public bool isNext = true;
-    public int reverse;
+    
     public void StartSwallowMonster(GameObject monster)
     {
-        if (isNext == true)
+        if (monster.GetComponent<ThisMonster>().isCW == true)
         {
             StartCoroutine(SwallowMonsterNext(monster));
         }
-        else if(isNext==false)
+        else if(monster.GetComponent<ThisMonster>().isCW == false)
         {
             StartCoroutine(SwallowMonsterPrevious(monster));
         }
@@ -387,7 +416,7 @@ public class Skills : MonoSingleton<Skills>
             nextMonsterCard = nextMonster.GetComponent<ThisMonster>().monsterCard;
             if (nextMonster.GetComponent<ThisMonster>().health < monster.GetComponent<ThisMonster>().health)
             {
-                reverse = 0;
+                monster.GetComponent<ThisMonster>().reverse = 0;
                 yield return new WaitForSeconds(0.05f);
                 Debug.Log("change");
                 nextMonsterCard.GetComponent<ThisMonsterCard>().summonTimes--;
@@ -409,18 +438,19 @@ public class Skills : MonoSingleton<Skills>
                 // monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
                 monster.GetComponent<ThisMonster>().block = nextBlock;
                 monster.transform.DOLocalMove(Vector3.zero, 0.3f);
-
-
+                AudioManager.Instance.swallow.Play();
 
                 BlocksManager.Instance.MonsterChange();
+                yield return new WaitForSeconds(0.3f);
+                reverse.Invoke();
                 yield break;
             }
             else if (BlocksManager.Instance.GetNeighbourPrevious(block))
             {
-                reverse += 1;
-                isNext = false;
+                monster.GetComponent<ThisMonster>().reverse += 1;
+                monster.GetComponent<ThisMonster>().isCW = false;
 
-                if (reverse > 2)
+                if (monster.GetComponent<ThisMonster>().reverse > 2)
                 {
                     Debug.Log("stop");
                     yield break;
@@ -429,28 +459,14 @@ public class Skills : MonoSingleton<Skills>
                 {
                     StartCoroutine(SwallowMonsterPrevious(monster));
                 }
-                // nextMonster = BlocksManager.Instance.GetNeighbourNext(block);
-                // nextBlock = nextMonster.GetComponent<ThisMonster>().block;
-                // nextMonsterCard = nextMonster.GetComponent<ThisMonster>().monsterCard;
-                // yield return new WaitForSeconds(0.05f);
-                //
-                // nextMonsterCard.GetComponent<ThisMonsterCard>().summonTimes--;
-                //
-                // int award = nextMonster.GetComponent<ThisMonster>().awardHealth;
-                // int attack = nextMonster.GetComponent<ThisMonster>().currentAttacks;
-                // int health = nextMonster.GetComponent<ThisMonster>().health;
-                // monster.GetComponent<ThisMonster>().awardHealth += award;
-                // monster.GetComponent<ThisMonster>().currentAttacks += attack;
-                // monster.GetComponent<ThisMonster>().health += (int)health / 2;
-                // monster.GetComponent<ThisMonster>().maxHealth += (int)health / 2;
-                // //Destroy(nextMonster.GetComponent<ThisMonster>().stateBlock.gameObject);
-                // BattleField.Instance.StartMonsterDead(nextMonster, nextMonsterCard);
+               
 
             }
             else if (BlocksManager.Instance.GetNeighbourPrevious(block)==null)
             {
-                isNext = false;
-                reverse = 0;
+                monster.GetComponent<ThisMonster>().isCW = false;
+                
+                monster.GetComponent<ThisMonster>().reverse = 0;
                 nextBlock= BlocksManager.Instance.GetPreviousBlock(block).transform;
                 monsterCard.transform.SetParent(nextBlock);
                 monster.transform.SetParent(nextBlock);
@@ -458,17 +474,18 @@ public class Skills : MonoSingleton<Skills>
                 // monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
                 monster.GetComponent<ThisMonster>().block = nextBlock;
                 monster.transform.DOLocalMove(Vector3.zero, 0.3f);
-
-
+              
 
                 BlocksManager.Instance.MonsterChange();
+                yield return new WaitForSeconds(0.3f);
+                reverse.Invoke();
             }
 
             yield break;
         }
         else
         {
-            reverse = 0;
+            monster.GetComponent<ThisMonster>().reverse = 0;
             Debug.Log("hhh");
             yield return new WaitForSeconds(0.05f);
             Transform nextBlock = BlocksManager.Instance.GetNextBlock(block).transform;
@@ -478,8 +495,10 @@ public class Skills : MonoSingleton<Skills>
             //monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
             monster.GetComponent<ThisMonster>().block = nextBlock;
             monster.transform.DOLocalMove(Vector3.zero, 0.3f);
-
+            
             BlocksManager.Instance.MonsterChange();
+            yield return new WaitForSeconds(0.3f);
+            reverse.Invoke();
         }
     }
     IEnumerator SwallowMonsterPrevious(GameObject monster)
@@ -493,7 +512,7 @@ public class Skills : MonoSingleton<Skills>
             nextMonsterCard = nextMonster.GetComponent<ThisMonster>().monsterCard;
             if (nextMonster.GetComponent<ThisMonster>().health < monster.GetComponent<ThisMonster>().health)
             {
-                reverse = 0;
+                monster.GetComponent<ThisMonster>().reverse = 0;
                 yield return new WaitForSeconds(0.05f);
 
                 nextMonsterCard.GetComponent<ThisMonsterCard>().summonTimes--;
@@ -515,17 +534,20 @@ public class Skills : MonoSingleton<Skills>
                 // monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
                 monster.GetComponent<ThisMonster>().block = nextBlock;
                 monster.transform.DOLocalMove(Vector3.zero, 0.3f);
+                AudioManager.Instance.swallow.Play();
 
-
-
+                
                 BlocksManager.Instance.MonsterChange();
+                yield return new WaitForSeconds(0.3f);
+                reverse.Invoke();
                 yield break;
             }
             else if (BlocksManager.Instance.GetNeighbourNext(block))
             {
-                reverse += 1;
-                isNext = true;
-                if (reverse >2)
+                monster.GetComponent<ThisMonster>().reverse += 1;
+                monster.GetComponent<ThisMonster>().isCW = true;
+                
+                if (monster.GetComponent<ThisMonster>().reverse >2)
                 {
                     Debug.Log("stop");
                     yield break;
@@ -555,8 +577,8 @@ public class Skills : MonoSingleton<Skills>
             }
             else if (BlocksManager.Instance.GetNeighbourNext(block) == null)
             {
-                isNext = true;
-                reverse = 0;
+                monster.GetComponent<ThisMonster>().isCW = true;
+                monster.GetComponent<ThisMonster>().reverse = 0;
                 nextBlock = BlocksManager.Instance.GetNextBlock(block).transform;
                 monsterCard.transform.SetParent(nextBlock);
                 monster.transform.SetParent(nextBlock);
@@ -564,10 +586,12 @@ public class Skills : MonoSingleton<Skills>
                 // monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
                 monster.GetComponent<ThisMonster>().block = nextBlock;
                 monster.transform.DOLocalMove(Vector3.zero, 0.3f);
-
+                
 
 
                 BlocksManager.Instance.MonsterChange();
+                yield return new WaitForSeconds(0.3f);
+                reverse.Invoke();
             }
 
             yield break;
@@ -575,7 +599,7 @@ public class Skills : MonoSingleton<Skills>
         }
         else
         {
-            reverse = 0;
+            monster.GetComponent<ThisMonster>().reverse = 0;
             yield return new WaitForSeconds(0.05f);
             Transform nextBlock = BlocksManager.Instance.GetPreviousBlock(block).transform;
             monsterCard.transform.SetParent(nextBlock);
@@ -584,8 +608,10 @@ public class Skills : MonoSingleton<Skills>
             //monster.GetComponent<ThisMonster>().stateBlock.DOLocalMove(monster.GetComponent<ThisMonster>().initialStateBlock, 0.2f);
             monster.GetComponent<ThisMonster>().block = nextBlock;
             monster.transform.DOLocalMove(Vector3.zero, 0.3f);
-
+            
             BlocksManager.Instance.MonsterChange();
+            yield return new WaitForSeconds(0.3f);
+            reverse.Invoke();
         }
     }
 

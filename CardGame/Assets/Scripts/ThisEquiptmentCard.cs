@@ -33,6 +33,7 @@ public class ThisEquiptmentCard : MonoBehaviour
     void Start()
     {
         ShowCardStaticStatus();
+        if (isStatic) { transform.GetChild(1).gameObject.SetActive(false); }
     }
 
     // Update is called once per frame
@@ -50,7 +51,7 @@ public class ThisEquiptmentCard : MonoBehaviour
         thisSprite = equipment.thisImage;
         damage = equipment.damage;
         summonTimes = equipment.summonTimes;
-
+        isStatic = equipment.isStatic;
         //cardNameText.text = "" + cardName;
         //costText.text = "" + cost;
         //descriptionText.text = "" + description;

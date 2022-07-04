@@ -17,13 +17,23 @@ public class Equipment15 : MonoBehaviour
         if (isInEquipment)
         {
             PlayerData.Instance.extraMaxHealth = count;
-            PlayerData.Instance.currentHealth = PlayerData.Instance.maxHealth + count;//
+            PlayerData.Instance.currentHealth +=count;//
             PlayerData.Instance.HealthBarChange();
         }
+  
+    }
+    private void OnDestroy()
+    {
+        PlayerData.Instance.extraMaxHealth = 0;
+        PlayerData.Instance.currentHealth -= count;
+        PlayerData.Instance.HealthBarChange();
     }
     private void Update()
     {
+        if (mi.isInEquipment==true)
+        {
 
+        }
     }
     
 }

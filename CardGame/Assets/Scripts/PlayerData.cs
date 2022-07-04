@@ -18,10 +18,12 @@ public class PlayerData : MonoSingleton<PlayerData>
     public Text attackText;
     public Text healthText;
     public List<EquipmentCard> playerEquipmentCards = new List<EquipmentCard>();
+    public List<GameObject> playerArmedEquipments = new List<GameObject>();
     public List<MonsterCard> playerMonsterCards = new List<MonsterCard>();
 
     public Slider slider;
     //基础状态
+    public int maxEquipmentAmount;
     public int maxHealth;
     public int extraMaxHealth;//额外最大生命值
     public int currentHealth;//当前生命值
@@ -38,6 +40,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     public int burnsDamage;
     public int bondageCount;//束缚层数
     public int attackTimesCount;//攻击次数增加层数
+    public int attackExtendCount;
     public int initialAttacks;//初始攻击力
     public int currentAttacks;//目前攻击力
     public int tempAttaks;//临时攻击力
@@ -62,6 +65,8 @@ public class PlayerData : MonoSingleton<PlayerData>
     private GameObject burnsBar;
     private GameObject bondageBar;
     private GameObject ArmorBar;//护甲层数
+    public GameObject attackBesidesBar;//扩散状态
+    public GameObject attackIntervalBar;//扩散状态
 
     // Start is called before the first frame update
     void Awake()
@@ -81,10 +86,10 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerMonsterCards.Add(cardData.CopyMonsterCard(7));
         playerMonsterCards.Add(cardData.CopyMonsterCard(15));
         playerMonsterCards.Add(cardData.CopyMonsterCard(16));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(18));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(24));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(25));
         playerMonsterCards.Add(cardData.CopyMonsterCard(28));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(28));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(28));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(28));
         //playerMonsterCards.Add(cardData.CopyMonsterCard(9));
         //playerMonsterCards.Add(cardData.CopyMonsterCard(10));
         //playerMonsterCards.Add(cardData.CopyMonsterCard(11));
@@ -101,12 +106,13 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(1));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(2));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(4));
+        playerEquipmentCards.Add(cardData.CopyEquipmentCard(5));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(8));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(15));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(18));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(30));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(31));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(28));
+        //playerEquipmentCards.Add(cardData.CopyEquipmentCard(28));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(10));
         //playerEquipmentCards.Add(cardData.CopyEquipmentCard(7));
 
@@ -152,6 +158,8 @@ public class PlayerData : MonoSingleton<PlayerData>
         if (burnsCount > 0)         DecreaseBurns(1);
         //if (bondageCount > 0)       DecreaseBondage(1);
         if (attackTimesCount > 0)   DecreaseAttackTimeCount(1);
+         DecreaseAttackBesides();
+         DecreaseAttackInterval();
         //确保在玩家抽入手牌之后
 
 
@@ -160,6 +168,16 @@ public class PlayerData : MonoSingleton<PlayerData>
         BurnsEffect();
 
 
+    }
+    public void DecreaseAttackBesides()
+    {
+        if (attackBesidesBar != null)
+            Destroy(attackBesidesBar); isAttackBesides = false;
+    }
+    public void DecreaseAttackInterval()
+    {
+        if (attackIntervalBar != null)
+            Destroy(attackIntervalBar); isAttackInterval = false;
     }
     public void AddAttackTimeCount(int counts, GameObject prefab)
     {

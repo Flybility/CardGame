@@ -37,13 +37,15 @@ public class PlayerData : MonoSingleton<PlayerData>
     public int scareCount;//恐惧层数
     public int angerCount;//反击层数
     public int burnsCount;//灼伤层数
-    public int burnsDamage;
+    public int burnsDamageSelf;//灼伤伤害
+    public int burnsDamageMonster;
     public int bondageCount;//束缚层数
     public int attackTimesCount;//攻击次数增加层数
     public int attackExtendCount;
     public int initialAttacks;//初始攻击力
     public int currentAttacks;//目前攻击力
     public int tempAttaks;//临时攻击力
+    //public int burnsDamage;//灼伤伤害
     public int monsterCardMaxCount;//初始最大怪物手牌数
     public int currentCardMax;
     //public int perRoundExtractCount;//每回合抽牌数
@@ -76,17 +78,17 @@ public class PlayerData : MonoSingleton<PlayerData>
         currentHealth = maxHealth;
         HealthBarChange();
 
-        playerMonsterCards.Add(cardData.CopyMonsterCard(3));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(8));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(9));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(36));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(5));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(5));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(6));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(7));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(15));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(16));
-        playerMonsterCards.Add(cardData.CopyMonsterCard(28));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(3));
+          playerMonsterCards.Add(cardData.CopyMonsterCard(8));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(9));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(36));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(5));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(5));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(6));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(7));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(15));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(16));
+        //playerMonsterCards.Add(cardData.CopyMonsterCard(28));
         //playerMonsterCards.Add(cardData.CopyMonsterCard(28));
         //playerMonsterCards.Add(cardData.CopyMonsterCard(28));
         //playerMonsterCards.Add(cardData.CopyMonsterCard(28));
@@ -113,7 +115,7 @@ public class PlayerData : MonoSingleton<PlayerData>
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(30));
         playerEquipmentCards.Add(cardData.CopyEquipmentCard(31));
         //playerEquipmentCards.Add(cardData.CopyEquipmentCard(28));
-        playerEquipmentCards.Add(cardData.CopyEquipmentCard(10));
+        //playerEquipmentCards.Add(cardData.CopyEquipmentCard(10));
         //playerEquipmentCards.Add(cardData.CopyEquipmentCard(7));
 
         currentAttacks = initialAttacks;
@@ -319,7 +321,7 @@ public class PlayerData : MonoSingleton<PlayerData>
     }
     public void BurnsEffect()
     {
-        if (burnsCount > 0) { HealthDecrease(burnsDamage); }
+        if (burnsCount > 0) { HealthDecrease(burnsDamageSelf); }
 
     }
 

@@ -22,6 +22,9 @@ public class BattleField : MonoSingleton<BattleField>
     public Transform extractArea;     //抽牌堆父物体
     public Transform monsterArea;     //怪物手牌堆父物体
     public Transform usedArea;
+    public Transform myMonsterButton;
+    public Transform myEquipmentButton;
+
     public float interval;            //抽取单张手牌动画时间间隔
     public int summonMax;             //最大召唤怪物数量（默认为6），可删除
     public int monstersCounter;
@@ -861,7 +864,7 @@ public class BattleField : MonoSingleton<BattleField>
 
         yield return new WaitForSeconds(0.5f);
         //战斗胜利ui
-        IsFinished();
+        StartCoroutine(IsFinished());
         
     }
 

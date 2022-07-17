@@ -33,8 +33,8 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     {
         number = transform.GetSiblingIndex();
         clicked = false;
-        //isInOpenMonsterPool = transform.parent.CompareTag("OpenMonsterPool");
-        //isInOpenEquipmentPool = transform.parent.CompareTag("OpenEquipmentPool");
+        isInOpenMonsterPool = transform.parent.CompareTag("OpenMonsterPool");
+        isInOpenEquipmentPool = transform.parent.CompareTag("OpenEquipmentPool");
         //isInBattle= transform.parent.CompareTag("BattleMonsterPanel");
         //isInEquipment = transform.parent.CompareTag("BattleEquipmentPanel");
         //isInBag= transform.parent.CompareTag("Bag");
@@ -196,7 +196,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
        //}
         if(isInBag && eventData.button==PointerEventData.InputButton.Left && thisCard1 != null)
         {
-            Debug.Log("hhhshabi");
+            
             if (PlayerData.Instance.playerArmedEquipments.Count < 8)
             {
                 transform.SetParent(PlayerBag.Instance.armedEquipArea);
@@ -208,7 +208,7 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         }
         if (isInBagArmed && eventData.button == PointerEventData.InputButton.Right && thisCard1 != null)
         {
-            Debug.Log("shabi");
+            
             transform.SetParent(PlayerBag.Instance.equipmentArea);
             //transform.localPosition=Vector3.zero;
             PlayerData.Instance.playerArmedEquipments.Remove(gameObject);
@@ -217,15 +217,15 @@ public class MouseInteraction : MonoBehaviour,IPointerEnterHandler,IPointerExitH
         }
 
     }
-    public void DiscardEquipment()
-    {
-        if (BattleField.Instance.isFinished == false)
-        {
-            BattleField.Instance.cardsEquiptment.Remove(this.gameObject);
-        }
-        PlayerData.Instance.playerEquipmentCards.Remove(this.GetComponent<ThisEquiptmentCard>().card);
-        Destroy(this.gameObject,0.2f);
-    }
+    //public void DiscardEquipment()
+    //{
+    //    if (BattleField.Instance.isFinished == false)
+    //    {
+    //        BattleField.Instance.cardsEquiptment.Remove(this.gameObject);
+    //    }
+    //    PlayerData.Instance.playerEquipmentCards.Remove(this.GetComponent<ThisEquiptmentCard>().card);
+    //    Destroy(this.gameObject,0.2f);
+    //}
     //public void Cancel()
     //{
     //    transform.GetChild(1).gameObject.SetActive(false);

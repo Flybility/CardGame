@@ -33,7 +33,7 @@ public class ThisMonster : MonoBehaviour
 
     public int dizzyCount;//眩晕层数
     public int burnsCount;//灼伤层数
-    public int burnsDamage;//灼伤伤害
+    
     public int absorbCount;//吸收回合数
     public bool isAbsorbBoom;
     public int absorbDamages;//吸收总伤害数
@@ -316,7 +316,7 @@ public class ThisMonster : MonoBehaviour
     }
     public void BurnsEffect()
     {
-        if (burnsCount > 0) { HealthDecrease(burnsDamage,false,true); }
+        if (burnsCount > 0) { HealthDecrease(PlayerData.Instance.burnsDamageMonster,false,true); }
 
     }
     public void AddArmor(int Counts, GameObject armorPrefab)

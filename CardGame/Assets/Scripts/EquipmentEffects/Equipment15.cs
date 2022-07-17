@@ -24,9 +24,13 @@ public class Equipment15 : MonoBehaviour
     }
     private void OnDestroy()
     {
-        PlayerData.Instance.extraMaxHealth = 0;
-        PlayerData.Instance.currentHealth -= count;
-        PlayerData.Instance.HealthBarChange();
+        if (isInEquipment)
+        {
+            PlayerData.Instance.extraMaxHealth = 0;
+            PlayerData.Instance.currentHealth -= count;
+            PlayerData.Instance.HealthBarChange();
+        }
+        
     }
     private void Update()
     {

@@ -20,6 +20,7 @@ TagManager:
   - Monster
   - Bag
   - Armed
+  - DiscardArea
   layers:
   - Default
   - TransparentFX
